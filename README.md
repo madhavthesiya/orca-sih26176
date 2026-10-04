@@ -1,7 +1,9 @@
 # ORCA — Ocean Risk & Collaborative Agents
 
-**Team 69 · SagarMitra · SIH 2026 · Problem Statement PS-26176**  
-*Disaster Management Theme — Marine Fishermen Safety*
+**Team ID 138259 · SagarMitra · SIH 2026 · Problem Statement PS-26176**  
+*Space Technology Theme · Software Category — Marine Fishermen Safety*
+
+🔗 **Live Demo:** [orca-marine-six.vercel.app](https://orca-marine-six.vercel.app/) &nbsp;|&nbsp; 📂 **GitHub:** [madhavthesiya/orca-sih26176](https://github.com/madhavthesiya/orca-sih26176)
 
 ---
 
@@ -13,6 +15,7 @@ ORCA is a real-time marine ecosystem safety platform for Indian coastal fisherme
 > ```
 > RUN-ORCA.bat
 > ```
+> Or try the live demo: **https://orca-marine-six.vercel.app/**
 > Then open `http://localhost:5173`
 
 ---
@@ -132,8 +135,8 @@ $env:ANTHROPIC_API_KEY = "sk-ant-..."
 
 ## Team
 
-**Team 69 — SagarMitra**  
-SIH 2026 · PS-26176 · Disaster Management
+**Team ID 138259 — SagarMitra**  
+SIH 2026 · PS-26176 · Space Technology Theme · Software Category
 
 ---
 
