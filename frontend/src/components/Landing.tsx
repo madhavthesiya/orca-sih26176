@@ -334,7 +334,7 @@ export default function Landing({
               SIH26176 · ISRO · Smart India Hackathon 2026
             </span>
             <span className="font-mono text-[9px] text-ink-400 tracking-[0.1em]">
-              Team 69 · SagarMitra · Disaster Management
+              Team ID 138259 · SagarMitra · Space Technology
             </span>
           </div>
           <span className="ml-auto flex gap-1">
