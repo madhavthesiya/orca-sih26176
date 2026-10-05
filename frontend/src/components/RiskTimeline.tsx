@@ -101,12 +101,12 @@ export default function RiskTimeline({
           <p className="mt-0.5 text-[11px] text-ink-400">{t.sub}</p>
         </div>
         {window ? (
-          <span className="shrink-0 border border-dashed border-risk-low/70 bg-risk-low/[0.07] px-2.5 py-1 font-mono text-[10.5px] font-bold tabular-nums text-risk-low">
+          <span className="shrink-0 border border-dashed border-risk-low/70 bg-risk-low/[0.07] px-2.5 py-1 font-mono text-[12px] font-bold tabular-nums text-risk-low">
             {t.best}: {String(points[window[0]].hour).padStart(2, "0")}:00–
             {String((points[window[1]].hour + 1) % 24).padStart(2, "0")}:00
           </span>
         ) : (
-          <span className="stamp shrink-0 !px-2 !py-0.5 !text-[9px] text-risk-extreme">
+          <span className="stamp shrink-0 !px-2 !py-0.5 !text-[11.5px] text-risk-extreme">
             {t.none}
           </span>
         )}

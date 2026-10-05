@@ -158,7 +158,7 @@ export default function ChatPanel({
         {messages.map((m) => (
           <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
             <div className={`max-w-[88%] animate-rise ${m.role === "user" ? "text-right" : ""}`}>
-              <div className="label mb-1 !text-[8.5px] !tracking-[0.2em] !text-ink-300">
+              <div className="label mb-1 !text-[11px] !text-ink-300">
                 {m.role === "user" ? (T[language] ?? T.en).you : "ORCA"}
               </div>
               <div
@@ -192,7 +192,7 @@ export default function ChatPanel({
                   style={{ animationDelay: `${i * 120}ms` }}
                 />
               ))}
-              <span className="ml-1 font-mono text-[10px] uppercase tracking-[0.14em] text-ink-400">
+              <span className="ml-1 text-[12px] text-ink-400 font-bold">
                 {(T[language] ?? T.en).busy}
               </span>
             </div>

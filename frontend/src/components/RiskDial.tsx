@@ -138,7 +138,7 @@ export default function RiskDial({
           >
             {score < 0 ? "—" : Math.max(0, shown)}
           </div>
-          <div className="mt-1 font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-ink-400">
+          <div className="mt-1 text-[11.5px] font-semibold text-ink-400">
             / 100
           </div>
         </div>

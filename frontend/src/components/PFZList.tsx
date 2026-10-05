@@ -70,7 +70,7 @@ export default function PFZList({
                   </span>
                   <span className="text-[11px] text-ink-500">{z.bearing}</span>
                 </div>
-                <div className="mt-0.5 truncate font-mono text-[10.5px] text-ink-400">
+                <div className="mt-0.5 truncate font-mono text-[12px] text-ink-400">
                   SST {z.sst_c ?? "—"}°C · Chl {z.chlorophyll_mg_m3 ?? "—"} mg/m³
                   {z.wave_height_m != null ? ` · ${metres(z.wave_height_m)} m` : ""}
                 </div>
@@ -82,7 +82,7 @@ export default function PFZList({
                 >
                   {Math.round(z.confidence * 100)}%
                 </div>
-                <div className="font-mono text-[8.5px] uppercase tracking-wide text-ink-400">
+                <div className="text-[11px] text-ink-400 font-bold">
                   {t.conf}
                 </div>
               </div>
@@ -91,7 +91,7 @@ export default function PFZList({
         })}
       </div>
       <p
-        className="border-t px-4 py-2.5 text-[10.5px] italic leading-relaxed text-ink-400"
+        className="border-t px-4 py-2.5 text-[12px] italic leading-relaxed text-ink-400"
         style={{ borderColor: "var(--rule-faint)" }}
       >
         {t.note}

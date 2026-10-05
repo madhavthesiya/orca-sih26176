@@ -40,7 +40,7 @@ export default function ConditionsStrip({
           }`}
           style={{ borderColor: "var(--rule-faint)" }}
         >
-          <div className="label truncate !text-[9px]">{tile.label}</div>
+          <div className="label truncate !text-[11.5px]">{tile.label}</div>
           <div className="mt-1 truncate font-mono text-[14.5px] font-bold tabular-nums leading-none text-ink-900">
             {tile.value ?? "—"}
           </div>

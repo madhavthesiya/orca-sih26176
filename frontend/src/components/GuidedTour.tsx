@@ -378,11 +378,11 @@ export default function GuidedTour({
                 {s.title[language] ?? s.title.en}
               </h3>
               {s.feature && (
-                <span className="border border-chart-500/50 bg-chart-100/50 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-chart-700">
+                <span className="border border-chart-500/50 bg-chart-100/50 px-2 py-0.5 text-[11.5px] font-bold text-chart-700">
                   {s.feature}
                 </span>
               )}
-              <span className="ml-auto font-mono text-[10px] tabular-nums text-ink-400">
+              <span className="ml-auto font-mono text-[12px] tabular-nums text-ink-400">
                 {step + 1} / {TOUR.length}
               </span>
             </div>

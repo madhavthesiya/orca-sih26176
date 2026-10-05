@@ -113,7 +113,7 @@ export default function RiskCard({
                 {ui.warning}
               </span>
             )}
-            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-ink-400">
+            <span className="text-[12px] text-ink-400 font-bold">
               {risk.mode} data
             </span>
           </div>
@@ -147,7 +147,7 @@ export default function RiskCard({
               <div className="mt-1 flex items-center gap-2 text-[11px] leading-relaxed text-ink-400">
                 <span>{f.detail}</span>
                 {f.detail.toLowerCase().includes("lightning") && (
-                  <span className="shrink-0 rounded-[6px] border border-risk-extreme/60 bg-risk-extreme/10 px-1.5 py-px font-mono text-[9px] font-bold uppercase tracking-wider text-risk-extreme">
+                  <span className="shrink-0 rounded-[6px] border border-risk-extreme/60 bg-risk-extreme/10 px-1.5 py-px text-[11.5px] font-bold text-risk-extreme">
                     ⚡ dominates
                   </span>
                 )}
@@ -192,10 +192,10 @@ export default function RiskCard({
             <table className="w-full text-left font-mono text-[11px]">
               <thead>
                 <tr className="border-b" style={{ borderColor: "var(--rule)" }}>
-                  <th className="pb-1.5 pr-3 text-[9px] font-bold uppercase tracking-[0.12em] text-ink-400">{colValue}</th>
-                  <th className="pb-1.5 pr-3 text-[9px] font-bold uppercase tracking-[0.12em] text-ink-400">{colReading}</th>
-                  <th className="pb-1.5 pr-3 text-[9px] font-bold uppercase tracking-[0.12em] text-ink-400">{colSource}</th>
-                  <th className="pb-1.5 text-[9px] font-bold uppercase tracking-[0.12em] text-ink-400">{colUpdated}</th>
+                  <th className="pb-1.5 pr-3 text-[11.5px] font-bold text-ink-400">{colValue}</th>
+                  <th className="pb-1.5 pr-3 text-[11.5px] font-bold text-ink-400">{colReading}</th>
+                  <th className="pb-1.5 pr-3 text-[11.5px] font-bold text-ink-400">{colSource}</th>
+                  <th className="pb-1.5 text-[11.5px] font-bold text-ink-400">{colUpdated}</th>
                 </tr>
               </thead>
               <tbody className="text-ink-800">

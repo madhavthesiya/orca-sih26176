@@ -122,12 +122,12 @@ export default function LocationPicker({
               {current?.label ?? "—"}
             </span>
             {current?.source === "gps" && (
-              <span className="shrink-0 border border-risk-low/70 px-1.5 py-px font-mono text-[8.5px] font-bold uppercase tracking-wider text-risk-low">
+              <span className="shrink-0 border border-risk-low/70 px-1.5 py-px text-[11px] font-bold text-risk-low">
                 {t.gps}
               </span>
             )}
             {current && (
-              <span className="shrink-0 font-mono text-[10.5px] tabular-nums text-ink-400">
+              <span className="shrink-0 font-mono text-[12px] tabular-nums text-ink-400">
                 {position(current.latitude, current.longitude)}
               </span>
             )}
@@ -149,7 +149,7 @@ export default function LocationPicker({
           {status === "denied" ? t.denied : t.unavailable}
         </p>
       )}
-      <p className="mt-1.5 text-[10.5px] italic text-ink-400">{t.tapMap}</p>
+      <p className="mt-1.5 text-[12px] italic text-ink-400">{t.tapMap}</p>
 
       {open && (
         <div
@@ -183,7 +183,7 @@ export default function LocationPicker({
               >
                 <span className="text-[13px] font-semibold text-ink-900">{p.name}</span>
                 <span className="text-[11px] text-ink-400">{p.state}</span>
-                <span className="ml-auto font-mono text-[9.5px] tabular-nums text-ink-300">
+                <span className="ml-auto font-mono text-[11.5px] tabular-nums text-ink-300">
                   {position(p.lat, p.lon, 2)}
                 </span>
               </button>

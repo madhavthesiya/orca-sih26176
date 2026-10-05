@@ -141,7 +141,7 @@ export default function AgentTracePanel({
     <div className="panel overflow-hidden">
       <div className="hd">
         <span className="label">{t.crew}</span>
-        <span className="font-mono text-[10px] tabular-nums text-ink-400">
+        <span className="font-mono text-[12px] tabular-nums text-ink-400">
           {trace.length} {t.agents} · {elapsed ?? trace.reduce((s, x) => s + x.latency_ms, 0)}{" "}
           {t.total}
         </span>
@@ -152,9 +152,9 @@ export default function AgentTracePanel({
           <div key={phase.key}>
             <div className="mb-1.5 flex items-baseline gap-2">
               <span className="font-display text-[13px] font-bold text-ink-900">{phase.title}</span>
-              <span className="text-[10.5px] italic text-ink-400">{phase.note}</span>
+              <span className="text-[12px] italic text-ink-400">{phase.note}</span>
               {phase.key === "gather" && phase.rows.length > 1 && (
-                <span className="ml-auto border border-chart-500/50 bg-chart-100/50 px-2 py-0.5 font-mono text-[9px] font-bold tracking-wide text-chart-700">
+                <span className="ml-auto border border-chart-500/50 bg-chart-100/50 px-2 py-0.5 font-mono text-[11.5px] font-bold text-chart-700">
                   ∥ {phase.rows.length} {t.concurrent}
                 </span>
               )}
@@ -198,7 +198,7 @@ export default function AgentTracePanel({
                       <span className="min-w-0 flex-1 truncate text-ink-500">
                         {row.summary || "—"}
                       </span>
-                      <span className="shrink-0 font-mono text-[9.5px] tabular-nums text-ink-400">
+                      <span className="shrink-0 font-mono text-[11.5px] tabular-nums text-ink-400">
                         {row.latency_ms}ms
                       </span>
                       <span
@@ -233,7 +233,7 @@ export default function AgentTracePanel({
       </div>
 
       <p
-        className="border-t px-4 py-2.5 text-[10.5px] italic leading-relaxed text-ink-400"
+        className="border-t px-4 py-2.5 text-[12px] italic leading-relaxed text-ink-400"
         style={{ borderColor: "var(--rule-faint)" }}
       >
         {t.note} {t.openHint}
