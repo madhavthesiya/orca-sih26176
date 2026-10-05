@@ -22,7 +22,8 @@ import PFZList from "./components/PFZList";
 import RiskCard from "./components/RiskCard";
 import { RISK_COLOR } from "./components/RiskDial";
 import SystemPanel from "./components/SystemPanel";
-import { tripIsOff } from "./today";
+import { readingState, sameSpot, tripIsOff } from "./today";
+import ReadingStatus from "./components/ReadingStatus";
 import { failKind, failureText, type FailKind } from "./failure";
 import RiskTimeline from "./components/RiskTimeline";
 import type {
@@ -126,6 +127,14 @@ export default function App() {
   const [place, setPlace] = useState<PickedLocation | null>(null);
   const [outlook, setOutlook] = useState<FishingOutlook | null>(null);
   const [loadingOutlook, setLoadingOutlook] = useState(false);
+  const [outlookFail, setOutlookFail] = useState<FailKind | null>(null);
+  const [outlookTick, setOutlookTick] = useState(0);
+  // A one-minute clock so a reading left open visibly ages into "stale".
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const id = window.setInterval(() => setNow(Date.now()), 60_000);
+    return () => window.clearInterval(id);
+  }, []);
   const [focusRank, setFocusRank] = useState<number | null>(null);
 
   // ---- guided tour ----
@@ -203,13 +212,23 @@ export default function App() {
         days: 3,
         lang: language,
       })
-      .then((d) => alive && setOutlook(d))
-      .catch(() => alive && setOutlook(null))
+      .then((d) => {
+        if (!alive) return;
+        setOutlook(d);
+        setOutlookFail(null);
+        setNow(Date.now());
+      })
+      .catch((e) => {
+        if (!alive) return;
+        setOutlookFail(failKind(e));
+        // Hold a reading for this same spot (marked stale); never another spot's.
+        setOutlook((prev) => (prev && sameSpot(prev.location, place) ? prev : null));
+      })
       .finally(() => alive && setLoadingOutlook(false));
     return () => {
       alive = false;
     };
-  }, [place?.latitude, place?.longitude, language]);
+  }, [place?.latitude, place?.longitude, language, outlookTick]);
 
   const [timeOffset, setTimeOffset] = useState(0);
 
@@ -557,6 +576,21 @@ export default function App() {
             </div>
 
             <div className="space-y-4 lg:h-[calc(100vh-48px)] lg:overflow-y-auto lg:pr-1">
+              <ReadingStatus
+                state={readingState({
+                  hasData: !!outlook,
+                  loading: loadingOutlook,
+                  failed: !!outlookFail,
+                  generatedAt: outlook?.generated_at,
+                  now,
+                })}
+                failed={!!outlookFail}
+                failure={outlookFail}
+                generatedAt={outlook?.generated_at ?? null}
+                language={language}
+                now={now}
+                onRefresh={() => setOutlookTick((n) => n + 1)}
+              />
               {loadingOutlook && !outlook && (
                 <div className="panel p-6 text-center text-sm italic text-ink-400">
                   {language === "gu"

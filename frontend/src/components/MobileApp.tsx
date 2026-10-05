@@ -16,7 +16,9 @@ import {
 import { PORTS } from "./LocationPicker";
 import MarineMap from "./MarineMap";
 import { RISK_COLOR } from "./RiskDial";
-import { tripIsOff } from "../today";
+import { readingState, sameSpot, tripIsOff } from "../today";
+import ReadingStatus from "./ReadingStatus";
+import type { FailKind } from "../failure";
 import { failKind, failureText } from "../failure";
 
 /**
@@ -216,18 +218,44 @@ export default function MobileApp() {
     document.documentElement.lang = language;
   }, [language]);
 
+  const [loadingOutlook, setLoadingOutlook] = useState(false);
+  const [outlookFail, setOutlookFail] = useState<FailKind | null>(null);
+  const [outlookTick, setOutlookTick] = useState(0);
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const id = window.setInterval(() => setNow(Date.now()), 60_000);
+    return () => window.clearInterval(id);
+  }, []);
+
   useEffect(() => {
     if (!place) return;
     let alive = true;
-    setOutlook(null);
+    const spot = { latitude: place.lat, longitude: place.lon };
+    // Keep this spot's reading on screen while it refreshes; drop any other spot's.
+    setOutlook((prev) => (prev && sameSpot(prev.location, spot) ? prev : null));
+    setLoadingOutlook(true);
     api
       .fishingOutlook(place.lat, place.lon, { radiusKm: 100, days: 3, lang: language })
-      .then((d) => alive && setOutlook(d))
-      .catch(() => {});
+      .then((d) => {
+        if (!alive) return;
+        setOutlook(d);
+        setOutlookFail(null);
+        setNow(Date.now());
+      })
+      .catch((e) => alive && setOutlookFail(failKind(e)))
+      .finally(() => alive && setLoadingOutlook(false));
     return () => {
       alive = false;
     };
-  }, [place?.lat, place?.lon, language]);
+  }, [place?.lat, place?.lon, language, outlookTick]);
+
+  const reading = readingState({
+    hasData: !!outlook,
+    loading: loadingOutlook || !place,
+    failed: !!outlookFail,
+    generatedAt: outlook?.generated_at,
+    now,
+  });
 
   // ---------------------------------------------------------------- voice
   const speakPlan = () => {
@@ -358,7 +386,16 @@ export default function MobileApp() {
       {/* ================= TODAY ================= */}
       {tab === "today" && (
         <main className="flex-1 space-y-3 px-3 pb-24 pt-3">
-          {!outlook && (
+          <ReadingStatus
+            state={reading}
+            failed={!!outlookFail}
+            failure={outlookFail}
+            generatedAt={outlook?.generated_at ?? null}
+            language={language}
+            now={now}
+            onRefresh={() => setOutlookTick((n) => n + 1)}
+          />
+          {reading === "loading" && (
             <div className="panel flex flex-col items-center gap-3 p-10 text-center">
               <CompassMark size={56} className="text-ink-300" />
               <span className="text-[15px] italic text-ink-400">{t.reading}</span>
