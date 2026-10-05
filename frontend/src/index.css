@@ -3,6 +3,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Overpass draws its middle dot hard against the following word, which
+   breaks the "A · B" meta strings. Borrow just that glyph from a system face. */
+@font-face {
+  font-family: "ORCA Middot";
+  src: local("Segoe UI"), local("Helvetica Neue"), local("Arial"), local("DejaVu Sans");
+  unicode-range: U+00B7;
+}
+
 /* ============================================================
    ORCA — "signal flags & hull lettering"
    Sea-spray surfaces, navy ink, code-flag cobalt and one buoy
@@ -34,7 +42,7 @@ body,
 
 body {
   color: #22476e;
-  font-family: "Atkinson Hyperlegible Next Variable", "Noto Sans Devanagari Variable", "Nirmala UI",
+  font-family: "ORCA Middot", "Overpass Variable", "Noto Sans Devanagari Variable", "Nirmala UI",
     system-ui, sans-serif;
   font-size: 15px;
   -webkit-font-smoothing: antialiased;

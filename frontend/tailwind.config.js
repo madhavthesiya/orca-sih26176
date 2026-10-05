@@ -47,7 +47,8 @@ export default {
           "sans-serif",
         ],
         sans: [
-          '"Atkinson Hyperlegible Next Variable"',
+          '"ORCA Middot"',
+          '"Overpass Variable"',
           '"Noto Sans Devanagari Variable"',
           '"Nirmala UI"',
           "system-ui",
