@@ -5,6 +5,8 @@
 
 🔗 **Live Demo:** [orca-marine-six.vercel.app](https://orca-marine-six.vercel.app/) &nbsp;|&nbsp; 📂 **GitHub:** [madhavthesiya/orca-sih26176](https://github.com/madhavthesiya/orca-sih26176)
 
+> **Credit:** this project started from [ORCA by Saud Satopay (Team Random)](https://github.com/SaudSatopay/orca-sih26176) and is developed further by Team SagarMitra with his permission. See [Acknowledgements](#acknowledgements).
+
 ---
 
 ## What is ORCA?
@@ -137,6 +139,12 @@ $env:ANTHROPIC_API_KEY = "sk-ant-..."
 
 **Team ID 138259 — SagarMitra**  
 SIH 2026 · PS-26176 · Space Technology Theme · Software Category
+
+---
+
+## Acknowledgements
+
+ORCA's original multi-agent design and codebase are the work of **Saud Satopay** ([Team Random](https://github.com/SaudSatopay/orca-sih26176)), shared with Team SagarMitra with permission. Our additions include Gujarati support, the signal-flag interface, and the features listed in the commit history from October 2026 onward.
 
 ---
 
