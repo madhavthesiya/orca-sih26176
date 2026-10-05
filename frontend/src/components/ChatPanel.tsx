@@ -123,7 +123,7 @@ export default function ChatPanel({
             <button
               key={l}
               onClick={() => onLanguage(l)}
-              className={`rounded-[2px] border px-2.5 py-1 font-mono text-[11px] font-bold transition ${
+              className={`rounded-[6px] border px-2.5 py-1 font-mono text-[11px] font-bold transition ${
                 language === l
                   ? "border-ink-900 bg-ink-900 text-paper-50"
                   : "text-ink-400 hover:text-ink-800"
@@ -162,7 +162,7 @@ export default function ChatPanel({
                 {m.role === "user" ? (T[language] ?? T.en).you : "ORCA"}
               </div>
               <div
-                className={`inline-block rounded-[3px] px-3.5 py-2.5 text-left text-[13.5px] leading-relaxed ${
+                className={`inline-block rounded-[8px] px-3.5 py-2.5 text-left text-[13.5px] leading-relaxed ${
                   m.role === "user"
                     ? "rounded-br-none bg-ink-900 text-paper-50"
                     : "rounded-bl-none border bg-paper-bright text-ink-800"
@@ -182,7 +182,7 @@ export default function ChatPanel({
         {busy && (
           <div className="flex justify-start">
             <div
-              className="flex items-center gap-2 rounded-[3px] rounded-bl-none border px-3.5 py-2.5"
+              className="flex items-center gap-2 rounded-[8px] rounded-bl-none border px-3.5 py-2.5"
               style={{ borderColor: "var(--rule)", background: "var(--paper-bright)" }}
             >
               {[0, 1, 2].map((i) => (
@@ -232,7 +232,7 @@ export default function ChatPanel({
           <button
             onClick={toggleMic}
             title="Speak"
-            className={`grid h-10 w-10 shrink-0 place-items-center rounded-[2px] border transition hover:-translate-y-px ${
+            className={`grid h-10 w-10 shrink-0 place-items-center rounded-[6px] border transition hover:-translate-y-px ${
               listening
                 ? "border-risk-extreme bg-risk-extreme text-paper-50"
                 : "border-ink-900 bg-paper-50 text-ink-900 hover:bg-ink-900 hover:text-paper-50"
@@ -246,7 +246,7 @@ export default function ChatPanel({
           onClick={() => submit(text)}
           disabled={busy || !text.trim()}
           title="Send"
-          className="group grid h-10 w-10 shrink-0 place-items-center rounded-[2px] bg-ink-900 text-paper-50 transition hover:-translate-y-px hover:bg-ink-700 disabled:opacity-35"
+          className="group grid h-10 w-10 shrink-0 place-items-center rounded-[6px] bg-ink-900 text-paper-50 transition hover:-translate-y-px hover:bg-ink-700 disabled:opacity-35"
         >
           <CourseArrow size={17} className="transition-transform group-hover:translate-x-0.5" />
         </button>

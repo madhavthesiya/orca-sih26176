@@ -499,7 +499,7 @@ export default function MarineMap({
 
         {/* Time-Machine Simulator */}
         {onTimeOffset && (
-          <div className="absolute right-3 top-[92px] z-[500] rounded-[2px] border border-ink-700/50 bg-paper-50/95 px-3 pb-2 pt-2 shadow-md w-[200px]">
+          <div className="absolute right-3 top-[92px] z-[500] rounded-[6px] border border-ink-700/50 bg-paper-50/95 px-3 pb-2 pt-2 shadow-md w-[200px]">
             <div className="mb-1 flex justify-between items-center font-mono text-[9px] font-bold uppercase tracking-[0.1em] text-ink-700">
               <span>Time Simulator</span>
               <span id="time-val" className="text-risk-extreme font-bold">
@@ -526,7 +526,7 @@ export default function MarineMap({
         )}
 
         {/* the sea in motion — flow layer control */}
-        <div className="absolute left-3 top-[92px] z-[500] rounded-[2px] border border-ink-700/50 bg-paper-50/95 px-2 pb-2 pt-1.5 shadow-md">
+        <div className="absolute left-3 top-[92px] z-[500] rounded-[6px] border border-ink-700/50 bg-paper-50/95 px-2 pb-2 pt-1.5 shadow-md">
           <div className="mb-1 font-mono text-[8.5px] font-bold uppercase tracking-[0.16em] text-ink-400">
             {(LEGEND[language] ?? LEGEND.en).flow}
           </div>
@@ -535,7 +535,7 @@ export default function MarineMap({
               <button
                 key={m}
                 onClick={() => setFlowMode(m)}
-                className={`rounded-[2px] border px-1.5 py-0.5 font-mono text-[9.5px] font-bold transition ${
+                className={`rounded-[6px] border px-1.5 py-0.5 font-mono text-[9.5px] font-bold transition ${
                   flowMode === m
                     ? "border-ink-900 bg-ink-900 text-paper-50"
                     : "border-ink-700/30 text-ink-500 hover:text-ink-900"
@@ -548,7 +548,7 @@ export default function MarineMap({
         </div>
 
         {/* symbols legend, as a chart's key */}
-        <div className="pointer-events-none absolute bottom-3 left-3 z-[500] rounded-[2px] border border-ink-700/50 bg-paper-50/95 px-3 pb-2 pt-1.5 shadow-md">
+        <div className="pointer-events-none absolute bottom-3 left-3 z-[500] rounded-[6px] border border-ink-700/50 bg-paper-50/95 px-3 pb-2 pt-1.5 shadow-md">
           <div className="mb-1 font-mono text-[8.5px] font-bold uppercase tracking-[0.16em] text-ink-400">
             {(LEGEND[language] ?? LEGEND.en).symbols}
           </div>
@@ -607,7 +607,7 @@ export default function MarineMap({
 
         {/* drag hint */}
         {origin && !probe && !dragging && (
-          <div className="pointer-events-none absolute bottom-3 right-3 z-[500] rounded-[2px] border border-ink-700/40 bg-paper-50/95 px-2.5 py-1.5 text-[10.5px] font-medium text-ink-700 shadow-md">
+          <div className="pointer-events-none absolute bottom-3 right-3 z-[500] rounded-[6px] border border-ink-700/40 bg-paper-50/95 px-2.5 py-1.5 text-[10.5px] font-medium text-ink-700 shadow-md">
             {HINT[language] ?? HINT.en}
           </div>
         )}
@@ -615,7 +615,7 @@ export default function MarineMap({
         {/* live geofence banner */}
         {banner && (
           <div
-            className={`absolute left-1/2 top-3 z-[500] max-w-[78%] -translate-x-1/2 animate-rise rounded-[2px] px-3.5 py-2 text-[12px] font-semibold text-paper-50 shadow-lg ${banner.style}`}
+            className={`absolute left-1/2 top-3 z-[500] max-w-[78%] -translate-x-1/2 animate-rise rounded-[6px] px-3.5 py-2 text-[12px] font-semibold text-paper-50 shadow-lg ${banner.style}`}
           >
             <div>{banner.text}</div>
             {banner.sub && (

@@ -47,7 +47,7 @@ export default function PFZList({
           return (
             <div
               key={z.rank}
-              className={`group flex items-center gap-3 rounded-[2px] border px-3 py-2.5 transition-all duration-200 hover:-translate-y-[2px] hover:shadow-md ${
+              className={`group flex items-center gap-3 rounded-[6px] border px-3 py-2.5 transition-all duration-200 hover:-translate-y-[2px] hover:shadow-md ${
                 best ? "border-risk-low/60 bg-risk-low/[0.05]" : "bg-paper-100 hover:border-ink-700"
               }`}
               style={best ? undefined : { borderColor: "var(--rule)" }}

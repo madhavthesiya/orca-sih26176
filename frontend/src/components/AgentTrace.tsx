@@ -135,7 +135,7 @@ export default function AgentTracePanel({
                   // or invisible safety data, is not an acceptable failure.
                   <div
                     key={row.agent}
-                    className="rounded-[2px] border bg-paper-100 px-2.5 py-1.5"
+                    className="rounded-[6px] border bg-paper-100 px-2.5 py-1.5"
                     style={{
                       borderColor:
                         row.status === "ok" || row.status === "skipped"

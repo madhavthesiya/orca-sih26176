@@ -326,7 +326,7 @@ export default function MobileApp() {
             <button
               key={l}
               onClick={() => setLanguage(l)}
-              className={`min-w-[42px] rounded-[2px] border px-2 py-2 font-mono text-[13px] font-bold transition ${
+              className={`min-w-[42px] rounded-[6px] border px-2 py-2 font-mono text-[13px] font-bold transition ${
                 language === l
                   ? "border-ink-900 bg-ink-900 text-paper-50"
                   : "text-ink-400"
@@ -530,7 +530,7 @@ export default function MobileApp() {
           </div>
 
           {question && (
-            <div className="w-full rounded-[3px] bg-ink-900 px-4 py-3 text-[15px] text-paper-50">
+            <div className="w-full rounded-[8px] bg-ink-900 px-4 py-3 text-[15px] text-paper-50">
               {question}
             </div>
           )}

@@ -147,7 +147,7 @@ export default function RiskCard({
               <div className="mt-1 flex items-center gap-2 text-[11px] leading-relaxed text-ink-400">
                 <span>{f.detail}</span>
                 {f.detail.toLowerCase().includes("lightning") && (
-                  <span className="shrink-0 rounded-[2px] border border-risk-extreme/60 bg-risk-extreme/10 px-1.5 py-px font-mono text-[9px] font-bold uppercase tracking-wider text-risk-extreme">
+                  <span className="shrink-0 rounded-[6px] border border-risk-extreme/60 bg-risk-extreme/10 px-1.5 py-px font-mono text-[9px] font-bold uppercase tracking-wider text-risk-extreme">
                     ⚡ dominates
                   </span>
                 )}

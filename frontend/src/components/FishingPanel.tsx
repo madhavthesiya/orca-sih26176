@@ -207,7 +207,7 @@ export default function FishingPanel({
                 <button
                   key={a.id}
                   onClick={() => onSelectArea?.(a.rank)}
-                  className="group flex w-full items-center gap-3.5 rounded-[2px] border bg-paper-100 px-3 py-3 text-left transition-all duration-200 hover:-translate-y-[2px] hover:border-ink-700 hover:bg-paper-150 hover:shadow-md"
+                  className="group flex w-full items-center gap-3.5 rounded-[6px] border bg-paper-100 px-3 py-3 text-left transition-all duration-200 hover:-translate-y-[2px] hover:border-ink-700 hover:bg-paper-150 hover:shadow-md"
                   style={{ borderColor: "var(--rule)" }}
                 >
                   {/* buoy badge — identical symbology to the map markers,

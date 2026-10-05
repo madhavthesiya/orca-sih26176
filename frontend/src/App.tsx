@@ -669,7 +669,7 @@ export default function App() {
                       {latest.routes.map((r) => (
                         <div
                           key={r.name}
-                          className={`rounded-[2px] border px-3.5 py-3 ${
+                          className={`rounded-[6px] border px-3.5 py-3 ${
                             r.recommended ? "border-risk-low/70 bg-risk-low/[0.06]" : "bg-paper-100"
                           }`}
                           style={r.recommended ? undefined : { borderColor: "var(--rule)" }}

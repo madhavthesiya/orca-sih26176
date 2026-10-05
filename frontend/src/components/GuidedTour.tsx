@@ -328,7 +328,7 @@ export default function GuidedTour({
         </div>
 
         <div className="flex items-start gap-4 px-5 py-4">
-          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-[2px] bg-ink-900 font-display text-[16px] font-black text-paper-50">
+          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-[6px] bg-ink-900 font-display text-[16px] font-black text-paper-50">
             {step + 1}
           </div>
 
@@ -363,7 +363,7 @@ export default function GuidedTour({
             <button
               onClick={onPause}
               title={paused ? "Resume" : "Pause"}
-              className="grid h-9 w-9 place-items-center rounded-[2px] bg-ink-900 text-paper-50 transition hover:bg-ink-700"
+              className="grid h-9 w-9 place-items-center rounded-[6px] bg-ink-900 text-paper-50 transition hover:bg-ink-700"
             >
               {paused ? <PlayGlyph size={12} /> : <PauseGlyph size={12} />}
             </button>

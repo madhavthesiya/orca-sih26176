@@ -335,7 +335,7 @@ export default function SystemPanel({
           {providers.map((p) => (
             <div
               key={p.name}
-              className="lift rounded-[2px] border bg-paper-100 px-3.5 py-3"
+              className="lift rounded-[6px] border bg-paper-100 px-3.5 py-3"
               style={{ borderColor: "var(--rule)" }}
             >
               <div className="flex items-center gap-2">
@@ -370,7 +370,7 @@ export default function SystemPanel({
             <i />
           </div>
           <div
-            className="rounded-[2px] border-2 border-chart-600 bg-chart-100/40 px-4 py-3 text-center"
+            className="rounded-[6px] border-2 border-chart-600 bg-chart-100/40 px-4 py-3 text-center"
           >
             <div className="font-display text-[15px] font-bold text-ink-900">
               {t.cacheTitle}
@@ -429,7 +429,7 @@ export default function SystemPanel({
                   {c.agents.map((a, j) => (
                     <span
                       key={a}
-                      className="flex items-center gap-1.5 rounded-[2px] border bg-paper-100 px-2 py-1 font-mono text-[10px] font-semibold text-ink-800"
+                      className="flex items-center gap-1.5 rounded-[6px] border bg-paper-100 px-2 py-1 font-mono text-[10px] font-semibold text-ink-800"
                       style={{ borderColor: "var(--rule)" }}
                     >
                       <span
