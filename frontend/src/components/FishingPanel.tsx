@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { tripIsOff } from "../today";
 import type { CatchRating, FishingOutlook, Language } from "../types";
 import { FishGlyph, SchoolGlyph, WarnGlyph } from "./glyphs";
 
@@ -51,6 +53,11 @@ const T: Record<Language, Record<string, string>> = {
     profit: "Profit estimate",
     econNote: "Planning estimate — never a promise.",
     barsCaption: "Bars: chlorophyll · SST band · front · sea state · time of day",
+    noGo: "Do not go out today",
+    noGoNote:
+      "The fishing grounds and the trip plan are folded away — on a day like this they would read as an invitation.",
+    showGrounds: "Show the grounds anyway",
+    hideGrounds: "Fold the grounds",
   },
   hi: {
     advice: "आपको क्या करना चाहिए",
@@ -87,6 +94,10 @@ const T: Record<Language, Record<string, string>> = {
     profit: "अनुमानित मुनाफ़ा",
     econNote: "योजना के लिए अनुमान — कोई वादा नहीं।",
     barsCaption: "पट्टियाँ: क्लोरोफिल · तापमान · फ्रंट · समुद्र · समय",
+    noGo: "आज समुद्र में न जाएँ",
+    noGoNote: "मछली की जगहें और यात्रा योजना छिपा दी गई हैं — ऐसे दिन वे बुलावे जैसी लगेंगी।",
+    showGrounds: "फिर भी जगहें दिखाएँ",
+    hideGrounds: "जगहें छिपाएँ",
   },
   gu: {
     advice: "તમારે શું કરવું જોઈએ",
@@ -123,6 +134,10 @@ const T: Record<Language, Record<string, string>> = {
     profit: "અંદાજિત નફો",
     econNote: "આયોજન માટેનો અંદાજ — કોઈ વચન નથી.",
     barsCaption: "પટ્ટીઓ: ક્લોરોફિલ · તાપમાન · ફ્રન્ટ · સમુદ્ર · સમય",
+    noGo: "આજે દરિયામાં ન જશો",
+    noGoNote: "માછીમારીની જગ્યાઓ અને સફરની યોજના છુપાવી છે — આવા દિવસે તે આમંત્રણ જેવી લાગે.",
+    showGrounds: "છતાં જગ્યાઓ બતાવો",
+    hideGrounds: "જગ્યાઓ છુપાવો",
   },
 };
 
@@ -156,6 +171,9 @@ export default function FishingPanel({
   const t = T[language] ?? T.en;
   const words = RATING_WORD[language] ?? RATING_WORD.en;
   const top = data.areas.slice(0, 3);
+  // A no-go day shows the verdict and the warning, and nothing that plans a trip.
+  const off = tripIsOff(data);
+  const [showGrounds, setShowGrounds] = useState(false);
 
   return (
     <div className="space-y-4">
@@ -164,6 +182,20 @@ export default function FishingPanel({
         <div className="hd">
           <span className="label">{t.advice}</span>
         </div>
+        {off && (
+          <div
+            role="alert"
+            className="hatch-danger flex items-start gap-3 border-b border-risk-extreme/30 bg-risk-extreme/[0.06] px-5 py-3.5"
+          >
+            <WarnGlyph size={18} className="mt-1 shrink-0 text-risk-extreme" />
+            <div>
+              <div className="font-display text-[22px] font-extrabold leading-tight text-risk-extreme">
+                {data.safety.category === "EXTREME" ? t.noGo : t.notWorth}
+              </div>
+              <p className="mt-0.5 text-[13px] leading-snug text-ink-700">{t.noGoNote}</p>
+            </div>
+          </div>
+        )}
         <div className="px-5 py-4">
           {data.advice.map((line, i) =>
             i === 0 ? (
@@ -186,14 +218,33 @@ export default function FishingPanel({
         </div>
       </div>
 
-      {/* ---------- best places ---------- */}
-      {top.length > 0 && (
+      {/* ---------- best places (folded on a no-go day) ---------- */}
+      {top.length > 0 && off && !showGrounds && (
+        <button
+          onClick={() => setShowGrounds(true)}
+          className="panel flex w-full items-center justify-between gap-3 px-5 py-3.5 text-left transition-colors hover:bg-paper-100"
+        >
+          <span className="label">{t.areas}</span>
+          <span className="text-[13.5px] font-bold text-chart-600 underline decoration-2 underline-offset-4">
+            {t.showGrounds}
+          </span>
+        </button>
+      )}
+      {top.length > 0 && (!off || showGrounds) && (
         <div className="panel overflow-hidden">
           <div className="hd">
             <span className="label flex items-center gap-2">
               {t.areas}
               <SchoolGlyph size={26} className="swim text-chart-500" />
             </span>
+            {off && (
+              <button
+                onClick={() => setShowGrounds(false)}
+                className="text-[13px] font-bold text-chart-600 underline decoration-2 underline-offset-4"
+              >
+                {t.hideGrounds}
+              </button>
+            )}
             <span className="font-mono text-[10px] tabular-nums text-ink-400">
               {language === "en"
                 ? `${t.within} ${data.radius_km} km`
@@ -298,7 +349,7 @@ export default function FishingPanel({
               {t.barsCaption}
             </p>
 
-            {data.best_window && (
+            {data.best_window && !off && (
               <div className="mt-3 border border-dashed border-risk-low/70 bg-risk-low/[0.07] px-3.5 py-2.5">
                 <div className="label !text-risk-low">{t.bestTime}</div>
                 <div className="mt-0.5 font-display text-[17px] font-bold text-risk-low">
@@ -311,7 +362,7 @@ export default function FishingPanel({
       )}
 
       {/* ---------- trip plan ---------- */}
-      {data.duration && (
+      {data.duration && !off && (
         <div className="panel overflow-hidden">
           <div className="hd">
             <span className="label">{t.trip}</span>
@@ -383,7 +434,7 @@ export default function FishingPanel({
       )}
 
       {/* ---------- what the trip is worth: honest economics ---------- */}
-      {data.economics && data.duration?.feasible && (
+      {data.economics && data.duration?.feasible && !off && (
         <div className="panel overflow-hidden">
           <div className="hd">
             <span className="label">{t.econ}</span>

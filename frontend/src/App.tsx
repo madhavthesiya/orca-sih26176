@@ -22,6 +22,7 @@ import PFZList from "./components/PFZList";
 import RiskCard from "./components/RiskCard";
 import { RISK_COLOR } from "./components/RiskDial";
 import SystemPanel from "./components/SystemPanel";
+import { tripIsOff } from "./today";
 import RiskTimeline from "./components/RiskTimeline";
 import type {
   ChatMessage,
@@ -493,9 +494,9 @@ export default function App() {
                 origin={homeOrigin}
                 zones={zones}
                 pfz={[]}
-                areas={outlook?.areas ?? []}
+                areas={outlook && !tripIsOff(outlook) ? outlook.areas : []}
                 radiusKm={outlook?.radius_km ?? RADIUS_KM}
-                routes={outlook?.routes ?? []}
+                routes={outlook && !tripIsOff(outlook) ? outlook.routes : []}
                 geofence={[]}
                 language={language}
                 onPickLocation={pickLocation}

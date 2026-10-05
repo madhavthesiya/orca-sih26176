@@ -16,6 +16,7 @@ import {
 import { PORTS } from "./LocationPicker";
 import MarineMap from "./MarineMap";
 import { RISK_COLOR } from "./RiskDial";
+import { tripIsOff } from "../today";
 
 /**
  * The phone — ORCA for the fisher himself, many of whom read little.
@@ -55,6 +56,8 @@ const T: Record<Language, Record<string, string>> = {
     askExamples: "Can I go tomorrow at 6 AM?",
     bestTimeSay: "Best time to fish is {a} to {b}.",
     returnBySay: "Be back before {t}.",
+    noTrip: "No trip today",
+    noTripNote: "Grounds and times are hidden until the sea is safe.",
   },
   hi: {
     today: "आज",
@@ -76,6 +79,8 @@ const T: Record<Language, Record<string, string>> = {
     askExamples: "क्या मैं कल सुबह 6 बजे जा सकता हूँ?",
     bestTimeSay: "मछली पकड़ने का सबसे अच्छा समय {a} से {b} तक है।",
     returnBySay: "{t} से पहले लौट आएँ।",
+    noTrip: "आज कोई यात्रा नहीं",
+    noTripNote: "समुद्र सुरक्षित होने तक जगहें और समय छिपे हैं।",
   },
   gu: {
     today: "આજે",
@@ -97,6 +102,8 @@ const T: Record<Language, Record<string, string>> = {
     askExamples: "શું હું આવતીકાલે સવારે 6 વાગ્યે જઈ શકું?",
     bestTimeSay: "માછીમારી માટેનો શ્રેષ્ઠ સમય {a} થી {b} છે.",
     returnBySay: "{t} પહેલાં પાછા આવો.",
+    noTrip: "આજે કોઈ સફર નહીં",
+    noTripNote: "દરિયો સુરક્ષિત થાય ત્યાં સુધી જગ્યાઓ અને સમય છુપાવ્યા છે.",
   },
 };
 
@@ -225,14 +232,15 @@ export default function MobileApp() {
       setSpeaking(false);
       return;
     }
-    const bits = [...outlook.advice.slice(0, 4)];
-    if (outlook.best_window)
+    const bits = [...outlook.advice.slice(0, tripIsOff(outlook) ? 2 : 4)];
+    if (tripIsOff(outlook)) bits.push(t.noTrip + ".");
+    else if (outlook.best_window)
       bits.push(
         t.bestTimeSay
           .replace("{a}", clock12(outlook.best_window.from_hour))
           .replace("{b}", clock12(outlook.best_window.to_hour)),
       );
-    if (outlook.duration?.return_by)
+    if (!tripIsOff(outlook) && outlook.duration?.return_by)
       bits.push(t.returnBySay.replace("{t}", outlook.duration.return_by));
     speak(bits.join(" "), language);
     setSpeaking(true);
@@ -286,6 +294,8 @@ export default function MobileApp() {
   const cat = outlook?.safety.category;
   const color = cat ? RISK_COLOR[cat] : "#3F5A78";
   const danger = cat === "HIGH" || cat === "EXTREME";
+  // A no-go day plans nothing: no times, no grounds, no money.
+  const off = outlook ? tripIsOff(outlook) : false;
 
   const speakArea = (a: FishingOutlook["areas"][number]) => {
     const line = `${a.rank}. ${Math.round(a.distance_km)} ${t.km}. ${a.probability}%. ${(
@@ -401,7 +411,17 @@ export default function MobileApp() {
                 </button>
               )}
 
+              {off && (
+                <div role="alert" className="panel hatch-danger border-risk-extreme/60 px-4 py-4 text-center">
+                  <div className="font-display text-[28px] font-black leading-none text-risk-extreme">
+                    {t.noTrip}
+                  </div>
+                  <p className="mt-1.5 text-[14px] leading-snug text-ink-700">{t.noTripNote}</p>
+                </div>
+              )}
+
               {/* times — big numerals, tiny labels */}
+              {!off && (
               <div className="grid grid-cols-2 gap-3">
                 {outlook.best_window && (
                   <div className="panel px-3 py-3 text-center">
@@ -421,8 +441,10 @@ export default function MobileApp() {
                   </div>
                 )}
               </div>
+              )}
 
               {/* the grounds — tap to hear + see on the chart */}
+              {!off && (
               <div className="panel overflow-hidden">
                 <div className="hd !py-2">
                   <span className="label flex items-center gap-2 !text-[10px]">
@@ -461,9 +483,10 @@ export default function MobileApp() {
                   ))}
                 </div>
               </div>
+              )}
 
               {/* money — two numbers a fisher weighs every morning */}
-              {outlook.economics && (
+              {outlook.economics && !off && (
                 <div className="panel grid grid-cols-2">
                   <div className="px-3 py-3 text-center">
                     <div className="label !text-[9px]">{t.fuel}</div>
@@ -498,7 +521,7 @@ export default function MobileApp() {
             }
             zones={zones}
             pfz={[]}
-            areas={outlook?.areas ?? []}
+            areas={outlook && !off ? outlook.areas : []}
             radiusKm={outlook?.radius_km ?? 100}
             routes={outlook?.routes ?? []}
             geofence={[]}
