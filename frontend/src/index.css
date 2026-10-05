@@ -312,6 +312,8 @@ body {
       align-items: stretch;
       gap: 0;
       padding: 24px 16px 20px;
+      /* short laptop screens: the rail scrolls rather than stacking controls over tabs */
+      overflow-y: auto;
     }
   }
   .rail-tab {

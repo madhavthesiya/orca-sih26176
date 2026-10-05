@@ -364,7 +364,7 @@ export default function MobileApp() {
     <div className="flex min-h-full flex-col">
       <ChartDefs />
       {debugInfo && (
-        <pre className="fixed left-0 top-0 z-[999] max-w-[300px] whitespace-pre-wrap bg-black p-1 text-[10px] leading-tight text-white">
+        <pre className="fixed left-0 top-0 z-[999] max-w-[300px] whitespace-pre-wrap bg-black p-1 text-[12px] leading-tight text-white">
           {debugInfo}
         </pre>
       )}
@@ -378,7 +378,7 @@ export default function MobileApp() {
         <div className="min-w-0">
           <div className="font-display text-[17px] font-black leading-none text-ink-900">ORCA</div>
           {place && outlook && (
-            <div className="truncate font-mono text-[9px] text-chart-600">
+            <div className="truncate font-mono text-[11.5px] text-chart-600">
               {outlook.location.nearest_landing_centre}
             </div>
           )}
@@ -486,7 +486,7 @@ export default function MobileApp() {
               <div className="grid grid-cols-2 gap-3">
                 {outlook.best_window && (
                   <div className="panel px-3 py-3 text-center">
-                    <div className="label !text-[9px]">{t.bestTime}</div>
+                    <div className="label !text-[11.5px]">{t.bestTime}</div>
                     <div className="mt-1 font-display text-[21px] font-bold leading-none text-risk-low">
                       {clock12(outlook.best_window.from_hour)}–
                       {clock12(outlook.best_window.to_hour)}
@@ -495,7 +495,7 @@ export default function MobileApp() {
                 )}
                 {outlook.duration?.return_by && (
                   <div className="panel border-risk-extreme/50 bg-risk-extreme/[0.06] px-3 py-3 text-center">
-                    <div className="label !text-[9px] !text-risk-extreme">{t.returnBy}</div>
+                    <div className="label !text-[11.5px] !text-risk-extreme">{t.returnBy}</div>
                     <div className="mt-1 font-display text-[26px] font-black leading-none text-risk-extreme">
                       {outlook.duration.return_by}
                     </div>
@@ -508,7 +508,7 @@ export default function MobileApp() {
               {!off && (
               <div className="panel overflow-hidden">
                 <div className="hd !py-2">
-                  <span className="label flex items-center gap-2 !text-[10px]">
+                  <span className="label flex items-center gap-2 !text-[12px]">
                     {t.areas} <FishGlyph size={14} className="swim text-chart-500" />
                   </span>
                 </div>
@@ -563,7 +563,7 @@ export default function MobileApp() {
               {outlook.economics && !off && (
                 <div className="panel grid grid-cols-2">
                   <div className="px-3 py-3 text-center">
-                    <div className="label !text-[9px]">{t.fuel}</div>
+                    <div className="label !text-[11.5px]">{t.fuel}</div>
                     <div className="mt-1 font-mono text-[21px] font-bold text-ink-900">
                       {rupees(outlook.economics.fuel_cost_inr)}
                     </div>
@@ -572,7 +572,7 @@ export default function MobileApp() {
                     className="border-l bg-risk-low/[0.07] px-3 py-3 text-center"
                     style={{ borderColor: "var(--rule-faint)" }}
                   >
-                    <div className="label !text-[9px] !text-risk-low">{t.profit}</div>
+                    <div className="label !text-[11.5px] !text-risk-low">{t.profit}</div>
                     <div className="mt-1 font-mono text-[21px] font-bold text-risk-low">
                       {rupees(outlook.economics.profit_inr)}
                     </div>
@@ -616,13 +616,13 @@ export default function MobileApp() {
             className={`grid h-36 w-36 place-items-center rounded-full border-[6px] transition active:scale-95 ${
               listening
                 ? "border-risk-extreme bg-risk-extreme text-paper-50"
-                : "border-ink-900 bg-paper-50 text-ink-900"
+                : "border-ink-900 bg-flag text-ink-900 shadow-[inset_0_-4px_0_rgba(11,42,74,0.18)]"
             }`}
             style={listening ? { animation: "inkblink 1.1s ease-in-out infinite" } : undefined}
           >
             {listening ? <StopGlyph size={44} /> : <MicGlyph size={64} />}
           </button>
-          <div className="font-mono text-[13px] font-bold uppercase tracking-[0.14em] text-ink-500">
+          <div className="text-[13px] font-bold text-ink-500">
             {listening ? t.listening : busy ? t.thinking : t.tapMic}
           </div>
 
@@ -648,7 +648,7 @@ export default function MobileApp() {
               className="panel w-full px-4 py-3.5 text-left"
             >
               <p className="text-[16px] leading-relaxed text-ink-800">{answer}</p>
-              <span className="mt-2 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wide text-chart-600">
+              <span className="mt-2 flex items-center gap-1.5 text-[12px] text-chart-600 font-bold">
                 <SpeakerGlyph size={14} /> {t.listen}
               </span>
             </button>
@@ -694,7 +694,7 @@ export default function MobileApp() {
             }`}
           >
             {icon}
-            <span className="font-mono text-[11px] font-bold uppercase tracking-wide">{t[m]}</span>
+            <span className="text-[11px] font-bold">{t[m]}</span>
           </button>
         ))}
       </nav>
