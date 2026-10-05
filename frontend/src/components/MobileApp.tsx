@@ -380,7 +380,7 @@ export default function MobileApp() {
                 {/* THE button — one tap, hear everything */}
                 <button
                   onClick={speakPlan}
-                  className="mt-4 flex w-full items-center justify-center gap-3 rounded-[3px] bg-ink-900 py-4 font-mono text-[17px] font-bold uppercase tracking-[0.14em] text-paper-50 active:translate-y-px"
+                  className="mt-4 flex w-full items-center justify-center gap-3 rounded-[12px] bg-flag py-4 font-display text-[26px] font-extrabold text-ink-900 shadow-[inset_0_-3px_0_rgba(11,42,74,0.18)] active:translate-y-px"
                 >
                   {speaking ? <StopGlyph size={20} /> : <SpeakerGlyph size={24} />}
                   {speaking ? t.stop : t.listen}
@@ -593,7 +593,7 @@ export default function MobileApp() {
             key={m}
             onClick={() => setTab(m)}
             className={`flex flex-col items-center gap-1 py-2.5 transition ${
-              tab === m ? "bg-ink-900 text-paper-50" : "text-ink-500"
+              tab === m ? "bg-ink-900 text-flag" : "text-ink-500"
             }`}
           >
             {icon}
