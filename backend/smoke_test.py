@@ -10,10 +10,10 @@ from app.agents import planner
 from app.schemas import ChatRequest
 
 CASES = [
-    ("Scenario 2 (KILLER DEMO) — Marathi, Mumbai 6 AM",
-     "मी उद्या सकाळी ६ वाजता मुंबईजवळ मासेमारीला जाऊ शकतो का?", "s1"),
+    ("Scenario 2 (KILLER DEMO) — Gujarati, Mumbai 6 AM",
+     "શું હું આવતીકાલે સવારે 6 વાગ્યે મુંબઈ નજીક માછીમારી કરવા જઈ શકું?", "s1"),
     ("Follow-up — what about 12 PM? (context retained)",
-     "दुपारी १२ वाजता काय?", "s1"),
+     "બપોરે 12 વાગ્યે શું?", "s1"),
     ("Scenario 1 — Safe conditions, Goa, English",
      "Is it safe to go fishing tomorrow morning near Goa?", "s2"),
     ("Scenario 3 — Cyclone, Paradip",
@@ -62,6 +62,9 @@ def show(title: str, message: str, session: str) -> None:
 
 
 def main() -> int:
+    # Windows consoles default to cp1252, which cannot print Gujarati or Hindi.
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
     for title, message, session in CASES:
         show(title, message, session)
 
@@ -69,13 +72,13 @@ def main() -> int:
     failures = []
 
     r1 = planner.handle(ChatRequest(
-        message="मी उद्या सकाळी ६ वाजता मुंबईजवळ मासेमारीला जाऊ शकतो का?", session_id="a"))
-    if r1.language != "mr":
-        failures.append(f"Mumbai query language detected as {r1.language}, expected mr")
+        message="શું હું આવતીકાલે સવારે 6 વાગ્યે મુંબઈ નજીક માછીમારી કરવા જઈ શકું?", session_id="a"))
+    if r1.language != "gu":
+        failures.append(f"Mumbai query language detected as {r1.language}, expected gu")
     if not r1.risk or r1.risk.category != "HIGH":
         failures.append(f"Mumbai 06:00 expected HIGH, got {r1.risk.category if r1.risk else None}")
 
-    r2 = planner.handle(ChatRequest(message="दुपारी १२ वाजता काय?", session_id="a"))
+    r2 = planner.handle(ChatRequest(message="બપોરે 12 વાગ્યે શું?", session_id="a"))
     if not r2.risk or r2.risk.score >= r1.risk.score:
         failures.append("12:00 should be safer than 06:00")
     if r2.intent.location_text != "Mumbai":
