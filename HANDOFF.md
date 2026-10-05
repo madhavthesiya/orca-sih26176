@@ -48,14 +48,14 @@ Then open <http://127.0.0.1:8000>. Single process serves API *and* the built UI.
 
 Deep links: `/?tour=1` (guided walkthrough), `/?demo=safe|danger|cyclone|pfz|route`,
 `/?tab=home|ask|authority|system`, `/?at=lat,lon` (pin the Today-tab position,
-skips GPS), `/?lang=en|hi|mr` (force the UI language).
+skips GPS), `/?lang=en|hi|gu` (force the UI language).
 
 **Whole-app i18n (31 Aug 2026):** EVERY page is now trilingual — landing,
 System/engine room, Authority, agent crew, guided-tour narration (17 steps ×3),
 map legend/margins, header cells, scenario chips, route/warning cards. Pattern:
 per-component `T`/`L10N` records keyed by `Language`; global switcher lives in
 the header title block and on the landing (sets `langChoice`, same state the
-chat toggle uses). Keep new UI strings in all three languages; Hindi/Marathi
+chat toggle uses). Keep new UI strings in all three languages; Hindi/Gujarati
 postpositions go AFTER the number ("100 km च्या आत", not "च्या आत 100 km").
 
 **Trip economics + return-by (same date, inspired by a rival team's app):**
@@ -142,7 +142,7 @@ details filled, app mockup on slide 2. Considered final.
   only raise a score**. An official IMD severe warning forces EXTREME.
 - `services/fishing.py` — chance-of-fish model (chlorophyll 34%, SST 20%, front 16%,
   sea state 18%, time of day 12%) + trip-duration recommendation.
-- `services/plain_language.py` — non-technical advice in EN/HI/MR.
+- `services/plain_language.py` — non-technical advice in EN/HI/GU.
 - `services/route_optimizer.py` — A* on a risk-weighted grid; safest ≠ shortest.
 - `data/geo.py` — **pure-Python** geospatial (haversine, ray-casting point-in-polygon,
   A*). No shapely/GEOS to fail on stage.
@@ -187,7 +187,7 @@ watermarks; marine-ink foreground; hairline rules; 2–3 px corner radii.
 - Fonts (all self-hosted via `@fontsource-variable/*`, offline-safe):
   **Fraunces** display serif (verdicts, headings, buoy numbers, italic
   "sounding" percentages), **Archivo** body, **Spline Sans Mono** labels/data,
-  **Noto Serif Devanagari** for hi/mr headings. Nirmala UI remains the
+  **Noto Serif Devanagari** for hi/gu headings. Nirmala UI remains the
   Devanagari fallback in body/mono stacks.
 - Component vocabulary in `index.css`: `.panel`, `.rule-double`, `.hd`,
   `.label`, `.btn-ink`, `.btn-line`, `.btn-square`, `.chip`, `.tab`, `.field`,
@@ -264,7 +264,7 @@ These are deliberate. Do not "simplify" them away.
 | Risk dial rendered **0** instead of 92 | `requestAnimationFrame` is suspended in hidden/non-compositing tabs. Animation is decoration; the number is safety information — there is a `setTimeout` fail-safe that snaps to the final value. |
 | Agent-trace rows invisible | Staggered entrance animation with `fill-mode: both` leaves rows at opacity 0 if animations never run. Per-row stagger removed. **Follow-through:** every entrance keyframe (`rise`, `stampIn`) is now transform-only — opacity never animates, so nothing can be left invisible. Keep it that way. |
 | Nearest fishing ground ranked **worst** | It had the best chlorophyll but `sst_delta = 0` → no thermal front → near-zero front factor. Ground profiles now model productive water closer in. |
-| Marathi question answered in English | The UI was forcing its language selection over server-side detection. Language is now auto-detected unless the user explicitly clicks EN/हिं/मरा. |
+| Gujarati question answered in English | The UI was forcing its language selection over server-side detection. Language is now auto-detected unless the user explicitly clicks EN/हिं/मरा. |
 | PFZ #1 sat inside the naval exclusion zone | Added the restricted-zone filter to `pfz_agent`. |
 | `RUN-ORCA.bat` printed ECHO help text | A batch `echo` line must never start with `/?`. Use full URLs. |
 | **LIVE mode looked broken** — Today tab hung ~10 s, risk timeline ~32 s, and values kept falling back to demo | `live_client` made a fresh HTTPS call per agent per hour per port (timeline = 48 sequential requests, safe-window scan = 28, authority board = 20 every 30 s poll) even though ONE Open-Meteo response already contains 3 days of hourly data. The burst also got the IP throttled → silent demo fallbacks. Fixed with a TTL cache of the full hourly series per (provider, ~km-rounded position) in `data/live_client.py` (10 min for hits, 60 s for failures so offline live-mode fails fast, cleared on mode toggle). After: fishing 1.4 s cold, timeline 0.02 s warm, authority 0.01 s repeat. **Don't add per-hour fetching back.** |
@@ -325,7 +325,7 @@ Not started, roughly in order of value:
    it has already read the sea."*
 2. Point at the plain-language panel — *"no jargon: do not enter the red area between
    2 and 6 PM, areas 1, 2, 3 are your best chances, stay about three hours."*
-3. Ask in Marathi (Ask ORCA tab, scenario 2) — Marathi in, Marathi out, 70/100 HIGH.
+3. Ask in Gujarati (Ask ORCA tab, scenario 2) — Gujarati in, Gujarati out, 70/100 HIGH.
 4. Follow up *"दुपारी १२ वाजता काय?"* — context kept, drops to MODERATE.
 5. Scenario 3 (Paradip) — **official warning overrides the model**, forced EXTREME.
 6. Scenario 5 — safest route detours around the naval area; hand a judge the mouse
