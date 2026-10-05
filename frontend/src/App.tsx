@@ -25,6 +25,7 @@ import SystemPanel from "./components/SystemPanel";
 import { readingState, sameSpot, tripIsOff } from "./today";
 import { duration, kilometres, kmh, metres } from "./units";
 import ReadingStatus from "./components/ReadingStatus";
+import TodayHero from "./components/TodayHero";
 import { failKind, failureText, type FailKind } from "./failure";
 import RiskTimeline from "./components/RiskTimeline";
 import type {
@@ -513,10 +514,42 @@ export default function App() {
 
         {/* ================= HOME : location + today's plan ================= */}
         {tab === "home" && (
-          <div className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[1.35fr_minmax(370px,1fr)]">
-            <div className="space-y-4">
-              <LocationPicker current={place} language={language} onPick={setPlace} />
+          <div className="space-y-4">
+            <LocationPicker current={place} language={language} onPick={setPlace} />
 
+            <ReadingStatus
+              state={readingState({
+                hasData: !!outlook,
+                loading: loadingOutlook,
+                failed: !!outlookFail,
+                generatedAt: outlook?.generated_at,
+                now,
+              })}
+              failed={!!outlookFail}
+              failure={outlookFail}
+              generatedAt={outlook?.generated_at ?? null}
+              language={language}
+              now={now}
+              onRefresh={() => setOutlookTick((n) => n + 1)}
+            />
+
+            {/* the day's answer comes first, full width */}
+            {outlook ? (
+              <TodayHero data={outlook} language={language} />
+            ) : (
+              loadingOutlook && (
+                <div className="grid min-h-[180px] place-items-center rounded-[14px] bg-ink-900 text-[15px] text-ink-300">
+                  {language === "gu"
+                    ? "તમારા સ્થાનની માહિતી લેવાઈ રહી છે…"
+                    : language === "hi"
+                      ? "आपके स्थान की जानकारी ले रहे हैं…"
+                      : "Reading the sea at your location…"}
+                </div>
+              )
+            )}
+
+            {/* where to go: the chart beside the ranked grounds and the trip */}
+            <div className="grid items-start gap-4 xl:grid-cols-[minmax(0,1.55fr)_minmax(360px,1fr)]">
               <MarineMap
                 origin={homeOrigin}
                 zones={zones}
@@ -530,84 +563,25 @@ export default function App() {
                 focusRank={focusRank}
                 onTimeOffset={handleTimeOffset}
                 timeOffset={timeOffset}
+                heightPx={outlook && !tripIsOff(outlook) ? 640 : 520}
               />
-
-              {outlook && (
-                <div className="grid grid-cols-2 overflow-hidden rounded-[14px] bg-ink-900 sm:grid-cols-4">
-                  {[
-                    {
-                      k: language === "gu" ? "સુરક્ષા" : language === "hi" ? "सुरक्षा" : "Safety",
-                      v: `${outlook.safety.score}`,
-                      s: outlook.safety.category,
-                      color: RISK_COLOR[outlook.safety.category],
-                    },
-                    {
-                      k: language === "gu" ? "મોજાં" : language === "hi" ? "लहरें" : "Waves",
-                      v: metres(outlook.safety.wave_height_m),
-                      s: "m",
-                    },
-                    {
-                      k: language === "gu" ? "પવન" : language === "hi" ? "हवा" : "Wind",
-                      v: kmh(outlook.safety.wind_speed_kmh),
-                      s: "km/h",
-                    },
-                    {
-                      k: language === "gu" ? "વિસ્તારો" : language === "hi" ? "जगहें" : "Areas",
-                      v: `${outlook.areas.length}`,
-                      s: `in ${outlook.radius_km} km`,
-                    },
-                  ].map((x, i) => (
-                    <div
-                      key={x.k}
-                      className={`px-5 py-3.5 ${i > 0 ? "border-l border-paper-50/10" : ""}`}
-                    >
-                      <div className="flex items-center gap-2 truncate text-[12.5px] font-bold text-ink-300">
-                        {x.color && <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: x.color }} />}
-                        {x.k}
-                      </div>
-                      <div className="mt-1 font-display text-[34px] font-extrabold tabular-nums leading-none text-paper-50">
-                        {x.v}
-                        <span className="ml-1.5 font-sans text-[13px] font-bold text-ink-300">{x.s}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="space-y-4 lg:h-[calc(100vh-48px)] lg:overflow-y-auto lg:pr-1">
-              <ReadingStatus
-                state={readingState({
-                  hasData: !!outlook,
-                  loading: loadingOutlook,
-                  failed: !!outlookFail,
-                  generatedAt: outlook?.generated_at,
-                  now,
-                })}
-                failed={!!outlookFail}
-                failure={outlookFail}
-                generatedAt={outlook?.generated_at ?? null}
-                language={language}
-                now={now}
-                onRefresh={() => setOutlookTick((n) => n + 1)}
-              />
-              {loadingOutlook && !outlook && (
-                <div className="panel p-6 text-center text-sm italic text-ink-400">
-                  {language === "gu"
-                    ? "તમારા સ્થાનની માહિતી લેવાઈ રહી છે…"
-                    : language === "hi"
-                      ? "आपके स्थान की जानकारी ले रहे हैं…"
-                      : "Reading the sea at your location…"}
-                </div>
-              )}
               {outlook && (
                 <FishingPanel
                   data={outlook}
                   language={language}
+                  show={["places", "trip", "econ"]}
                   onSelectArea={(rank) => setFocusRank(rank)}
                 />
               )}
             </div>
+
+            {/* what to keep in mind: the rest of the advice, closed water, the next days */}
+            {outlook && (
+              <div className="grid items-start gap-4 lg:grid-cols-2 2xl:grid-cols-3">
+                <FishingPanel data={outlook} language={language} show={["advice"]} />
+                <FishingPanel data={outlook} language={language} show={["avoid", "forecast"]} />
+              </div>
+            )}
           </div>
         )}
 
