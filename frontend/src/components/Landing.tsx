@@ -55,7 +55,7 @@ const L10N: Record<
         kicker: "Ask ORCA",
         title: "Your language, spoken or typed",
         lines: [
-          "English · हिंदी · मराठी — detected, never configured",
+          "English · हिंदी · ગુજરાતી — detected, never configured",
           "A 0–100 risk verdict where every point is attributed",
           "Official warnings override the model. Always.",
         ],
@@ -108,7 +108,7 @@ const L10N: Record<
         kicker: "ORCA से पूछें",
         title: "आपकी भाषा, बोलकर या लिखकर",
         lines: [
-          "English · हिंदी · मराठी — ख़ुद पहचानता है, कोई सेटिंग नहीं",
+          "English · हिंदी · ગુજરાતી — ख़ुद पहचानता है, कोई सेटिंग नहीं",
           "0–100 का जोखिम, हर अंक के हिसाब के साथ",
           "आधिकारिक चेतावनी मॉडल से हमेशा ऊपर।",
         ],
