@@ -278,6 +278,18 @@ export const TOUR: TourStep[] = [
   },
 ];
 
+const CONTROLS: Record<Language, { prev: string; next: string; pause: string; resume: string; exit: string; keys: string }> = {
+  en: { prev: "Previous step", next: "Next step", pause: "Pause", resume: "Resume", exit: "Exit tour", keys: "Esc closes · ← → move" },
+  hi: { prev: "पिछला चरण", next: "अगला चरण", pause: "रोकें", resume: "जारी रखें", exit: "टूर बंद करें", keys: "Esc बंद करे · ← → आगे-पीछे" },
+  gu: { prev: "પાછલું પગલું", next: "આગલું પગલું", pause: "રોકો", resume: "ચાલુ રાખો", exit: "ટૂર બંધ કરો", keys: "Esc બંધ કરે · ← → આગળ-પાછળ" },
+};
+
+/** Keys belong to the tour only when the reader is not typing somewhere. */
+function typingInto(el: EventTarget | null): boolean {
+  if (!(el instanceof HTMLElement)) return false;
+  return el.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(el.tagName);
+}
+
 export default function GuidedTour({
   step,
   language = "en",
@@ -298,6 +310,30 @@ export default function GuidedTour({
   const s = TOUR[step];
   const [progress, setProgress] = useState(0);
   const startedAt = useRef<number>(Date.now());
+  const nextRef = useRef<HTMLButtonElement>(null);
+  const c = CONTROLS[language] ?? CONTROLS.en;
+
+  // Focus comes into the tour when it opens and goes back where it was when
+  // it closes, so a keyboard user never loses their place on the page.
+  useEffect(() => {
+    const before = document.activeElement as HTMLElement | null;
+    nextRef.current?.focus({ preventScroll: true });
+    return () => before?.focus?.({ preventScroll: true });
+  }, []);
+
+  // Esc closes; arrows step — unless the reader is typing a question.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (typingInto(e.target) || e.altKey || e.ctrlKey || e.metaKey) return;
+      if (e.key === "Escape") onExit();
+      else if (e.key === "ArrowRight") onNext();
+      else if (e.key === "ArrowLeft" && step > 0) onPrev();
+      else return;
+      e.preventDefault();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [step, onExit, onNext, onPrev]);
 
   // Progress bar driven by wall-clock, not rAF, so it still advances when the
   // window is not compositing.
@@ -316,6 +352,10 @@ export default function GuidedTour({
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[1000] flex justify-center p-4">
       <div
+        role="dialog"
+        aria-modal="false"
+        aria-labelledby="tour-title"
+        aria-describedby="tour-say"
         className="panel rule-double pointer-events-auto w-full max-w-3xl shadow-2xl"
         style={{ background: "var(--paper-bright)" }}
       >
@@ -334,7 +374,7 @@ export default function GuidedTour({
 
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2.5">
-              <h3 className="font-display text-[16px] font-bold text-ink-900">
+              <h3 id="tour-title" className="font-display text-[16px] font-bold text-ink-900">
                 {s.title[language] ?? s.title.en}
               </h3>
               {s.feature && (
@@ -346,33 +386,37 @@ export default function GuidedTour({
                 {step + 1} / {TOUR.length}
               </span>
             </div>
-            <p className="mt-1.5 text-[13.5px] leading-relaxed text-ink-700">
+            <p id="tour-say" aria-live="polite" className="mt-1.5 text-[13.5px] leading-relaxed text-ink-700">
               {s.say[language] ?? s.say.en}
             </p>
+            <p className="mt-1 hidden text-[11.5px] text-ink-400 sm:block">{c.keys}</p>
           </div>
 
           <div className="flex shrink-0 items-center gap-1.5">
             <button
               onClick={onPrev}
               disabled={step === 0}
-              title="Previous"
+              title={c.prev}
+              aria-label={c.prev}
               className="btn-square !h-8 !w-8 disabled:opacity-30"
             >
               ‹
             </button>
             <button
               onClick={onPause}
-              title={paused ? "Resume" : "Pause"}
+              title={paused ? c.resume : c.pause}
+              aria-label={paused ? c.resume : c.pause}
               className="grid h-9 w-9 place-items-center rounded-[6px] bg-ink-900 text-paper-50 transition hover:bg-ink-700"
             >
               {paused ? <PlayGlyph size={12} /> : <PauseGlyph size={12} />}
             </button>
-            <button onClick={onNext} title="Next" className="btn-square !h-8 !w-8">
+            <button ref={nextRef} onClick={onNext} title={c.next} aria-label={c.next} className="btn-square !h-8 !w-8">
               ›
             </button>
             <button
               onClick={onExit}
-              title="Exit tour"
+              title={c.exit}
+              aria-label={c.exit}
               className="btn-square !h-8 !w-8 hover:!border-risk-extreme hover:!bg-risk-extreme"
             >
               ✕
