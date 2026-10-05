@@ -12,6 +12,9 @@ import { ApiError } from "./failure";
 const API_HOST = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace(/\/$/, "") : "";
 const BASE = `${API_HOST}/api`;
 
+/** Absolute URL of an API path — for links a reader can open (e.g. /config). */
+export const apiUrl = (path: string) => `${BASE}${path}`;
+
 /** No request may hang a screen: past this, it is abandoned and reported. */
 const TIMEOUT_MS = 20_000;
 /** The crew's full sweep on live providers can legitimately take longer. */
