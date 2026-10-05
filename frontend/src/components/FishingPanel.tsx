@@ -160,15 +160,23 @@ function dayName(offset: number, t: Record<string, string>): string {
   return offset === 0 ? t.today : offset === 1 ? t.tomorrow : t.dayAfter;
 }
 
+/** The panel's blocks, so a page can place them in different parts of its layout. */
+export type OutlookBlock = "verdict" | "advice" | "places" | "trip" | "econ" | "avoid" | "forecast";
+const ALL_BLOCKS: OutlookBlock[] = ["verdict", "advice", "places", "trip", "econ", "avoid", "forecast"];
+
 export default function FishingPanel({
   data,
   language = "en",
   onSelectArea,
+  show = ALL_BLOCKS,
 }: {
   data: FishingOutlook;
   language?: Language;
   onSelectArea?: (rank: number) => void;
+  /** Which blocks to draw, in the panel's own order. Default: all of them. */
+  show?: OutlookBlock[];
 }) {
+  const has = (b: OutlookBlock) => show.includes(b);
   const t = T[language] ?? T.en;
   const words = RATING_WORD[language] ?? RATING_WORD.en;
   const top = data.areas.slice(0, 3);
@@ -179,11 +187,12 @@ export default function FishingPanel({
   return (
     <div className="space-y-4">
       {/* ---------- plain-language advice: the most important panel ---------- */}
+      {(has("verdict") || has("advice")) && (
       <div className="panel rule-double overflow-hidden">
         <div className="hd">
           <span className="label">{t.advice}</span>
         </div>
-        {off && (
+        {off && has("verdict") && (
           <div
             role="alert"
             className="hatch-danger flex items-start gap-3 border-b border-risk-extreme/30 bg-risk-extreme/[0.06] px-5 py-3.5"
@@ -197,16 +206,20 @@ export default function FishingPanel({
             </div>
           </div>
         )}
-        <div className="px-5 py-4">
+        {/* the first line drawn loses its top margin, whichever block leads */}
+        <div className="px-5 py-4 [&>p:first-of-type]:mt-0">
           {data.advice.map((line, i) =>
             i === 0 ? (
+              has("verdict") && (
               <p
                 key={i}
                 className="font-display text-[19px] font-semibold leading-snug text-ink-900"
               >
                 {line}
               </p>
+              )
             ) : (
+              has("advice") && (
               <p
                 key={i}
                 className="mt-2.5 flex gap-2.5 text-[13.5px] leading-relaxed text-ink-700"
@@ -214,13 +227,15 @@ export default function FishingPanel({
                 <span className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-chart-500" />
                 <span>{line}</span>
               </p>
+              )
             ),
           )}
         </div>
       </div>
+      )}
 
       {/* ---------- best places (folded on a no-go day) ---------- */}
-      {top.length > 0 && off && !showGrounds && (
+      {has("places") && top.length > 0 && off && !showGrounds && (
         <button
           onClick={() => setShowGrounds(true)}
           className="panel flex w-full items-center justify-between gap-3 px-5 py-3.5 text-left transition-colors hover:bg-paper-100"
@@ -231,7 +246,7 @@ export default function FishingPanel({
           </span>
         </button>
       )}
-      {top.length > 0 && (!off || showGrounds) && (
+      {has("places") && top.length > 0 && (!off || showGrounds) && (
         <div className="panel overflow-hidden">
           <div className="hd">
             <span className="label flex items-center gap-2">
@@ -363,7 +378,7 @@ export default function FishingPanel({
       )}
 
       {/* ---------- trip plan ---------- */}
-      {data.duration && !off && (
+      {has("trip") && data.duration && !off && (
         <div className="panel overflow-hidden">
           <div className="hd">
             <span className="label">{t.trip}</span>
@@ -435,7 +450,7 @@ export default function FishingPanel({
       )}
 
       {/* ---------- what the trip is worth: honest economics ---------- */}
-      {data.economics && data.duration?.feasible && !off && (
+      {has("econ") && data.economics && data.duration?.feasible && !off && (
         <div className="panel overflow-hidden">
           <div className="hd">
             <span className="label">{t.econ}</span>
@@ -494,7 +509,7 @@ export default function FishingPanel({
       )}
 
       {/* ---------- avoid: drawn as the chart's danger areas ---------- */}
-      {data.avoid.length > 0 && (
+      {has("avoid") && data.avoid.length > 0 && (
         <div className="panel hatch-danger overflow-hidden border-risk-extreme/60">
           <div className="hd border-risk-extreme/25">
             <span className="label flex items-center gap-2 !text-risk-extreme">
@@ -528,7 +543,7 @@ export default function FishingPanel({
       )}
 
       {/* ---------- 3-day outlook ---------- */}
-      {data.forecast.length > 1 && (
+      {has("forecast") && data.forecast.length > 1 && (
         <div className="panel overflow-hidden">
           <div className="hd">
             <span className="label">{t.forecast}</span>
