@@ -4,11 +4,13 @@
 """
 from __future__ import annotations
 
+import mimetypes
 import os
 from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -35,6 +37,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Outlooks, traces and flow fields are JSON-heavy; over a weak coastal
+# connection compression is the difference between seconds and a timeout.
+app.add_middleware(GZipMiddleware, minimum_size=1024)
+
 app.include_router(chat.router)
 app.include_router(fishing.router)
 app.include_router(forecast.router)
@@ -52,9 +58,33 @@ def health() -> dict:
 
 
 # --- serve the built frontend if it exists --------------------------------
+# Python takes MIME types from the Windows registry, where some installs map
+# .js to text/plain — the browser then refuses to run the module bundle and
+# the page stays blank. Pin every type the build emits.
+for _mime, _ext in (
+    ("text/javascript", ".js"),
+    ("text/css", ".css"),
+    ("image/svg+xml", ".svg"),
+    ("font/woff2", ".woff2"),
+    ("application/manifest+json", ".webmanifest"),
+):
+    mimetypes.add_type(_mime, _ext)
+
+
+class _FingerprintedAssets(StaticFiles):
+    """Vite puts a content hash in every /assets filename, so a name never
+    changes meaning: browsers may keep these for a year without asking."""
+
+    async def get_response(self, path, scope):
+        response = await super().get_response(path, scope)
+        if response.status_code == 200:
+            response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+        return response
+
+
 _DIST = Path(__file__).resolve().parents[2] / "frontend" / "dist"
 if _DIST.is_dir():
-    app.mount("/assets", StaticFiles(directory=_DIST / "assets"), name="assets")
+    app.mount("/assets", _FingerprintedAssets(directory=_DIST / "assets"), name="assets")
 
     # index.html must NEVER be cached: a browser tab holding yesterday's HTML
     # keeps loading yesterday's JS bundle, and the demo quietly runs old code
