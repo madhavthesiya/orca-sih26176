@@ -635,12 +635,12 @@ export default function Landing({
             {t.footer}
           </span>
           <a
-            href="https://github.com/SaudSatopay/orca-sih26176"
+            href="https://github.com/madhavthesiya/orca-sih26176"
             target="_blank"
             rel="noreferrer"
             className="font-mono text-[9.5px] uppercase tracking-[0.14em] text-chart-600 transition-colors hover:text-ink-900"
           >
-            github.com/SaudSatopay/orca-sih26176
+            github.com/madhavthesiya/orca-sih26176
           </a>
         </div>
       </Reveal>

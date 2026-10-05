@@ -13,7 +13,7 @@ Last updated: **24 August 2026**.
 | Team | **Team Random**, Team ID **U3M71E5U** |
 | Problem statement | **SIH26176 — ORCA: Marine EcOsystem Reasoning with Collaborative Agents** (ISRO, Software, theme *Miscellaneous*) |
 | National idea deadline | **20 September 2026** |
-| GitHub | https://github.com/SaudSatopay/orca-sih26176 (public, account `SaudSatopay`) |
+| GitHub | https://github.com/madhavthesiya/orca-sih26176 (public, account `madhavthesiya`) |
 
 **The pitch in one line:** ORCA is not a chatbot — it is a crew of ten cooperating
 AI agents that turn India's marine data into one safe, explainable decision for a
