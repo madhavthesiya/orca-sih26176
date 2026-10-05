@@ -377,383 +377,355 @@ export default function App() {
   }
 
   return (
-    <div className="mx-auto flex min-h-full max-w-[1580px] flex-col gap-4 p-4 lg:p-6">
+    <div className="flex min-h-full flex-col lg:flex-row">
       <ChartDefs />
 
-      {/* ---------------- title block, drafted like a chart's cartouche ---------------- */}
-      <header className="panel rule-double">
-        <div className="flex flex-wrap items-stretch">
-          {/* identity — clicking it returns to the front page */}
-          <button
-            onClick={() => setTab("landing")}
-            title="Back to the front page"
-            className="flex items-center gap-4 py-3.5 pl-5 pr-6 text-left"
-          >
-            <CompassMark size={46} className="shrink-0 text-ink-900" />
-            <div>
-              <h1 className="font-display text-[30px] font-black leading-none tracking-tight text-ink-900">
-                ORCA
-              </h1>
-              <p className="mt-1 font-mono text-[9px] font-semibold uppercase tracking-[0.18em] text-chart-600">
-                Marine EcOsystem Reasoning · Collaborative Agents
-              </p>
-            </div>
-          </button>
-
-          {/* title-block cells */}
-          <div className="ml-auto flex flex-wrap items-stretch">
-            <div className="hidden flex-col justify-center border-l px-5 py-3 sm:flex" style={{ borderColor: "var(--rule-faint)" }}>
-              <span className="label">{ui.chartNo}</span>
-              <span className="mt-1 font-mono text-[13px] font-bold text-ink-800">SIH26176</span>
-            </div>
-
-            <button
-              onClick={toggleMode}
-              disabled={switching}
-              title="Switch between cached demo data and live public providers"
-              className="group flex flex-col justify-center border-l px-5 py-3 text-left transition hover:bg-paper-150 disabled:opacity-50"
-              style={{ borderColor: "var(--rule-faint)" }}
-            >
-              <span className="label">{ui.dataEdition}</span>
-              <span
-                className={`mt-1 font-mono text-[13px] font-bold ${
-                  mode === "LIVE" ? "text-risk-low" : "text-risk-high"
-                }`}
-              >
-                {switching ? "…" : mode}
-                <span className="ml-1.5 text-ink-300 transition group-hover:text-ink-700">⇄</span>
-              </span>
-            </button>
-
-            <button
-              onClick={() => setSpeak((v) => !v)}
-              title="Speak answers aloud"
-              className="flex flex-col justify-center border-l px-5 py-3 text-left transition hover:bg-paper-150"
-              style={{ borderColor: "var(--rule-faint)" }}
-            >
-              <span className="label">{ui.voice}</span>
-              <span className="mt-1 flex items-center gap-1.5 font-mono text-[13px] font-bold text-ink-800">
-                {speak ? <SpeakerGlyph /> : <SpeakerOffGlyph className="text-ink-300" />}
-                {speak ? "ON" : "OFF"}
-              </span>
-            </button>
-
-            <div
-              className="flex flex-col justify-center border-l px-4 py-3"
-              style={{ borderColor: "var(--rule-faint)" }}
-            >
-              <span className="label">{ui.lang}</span>
-              <span className="mt-1 flex gap-1">
-                {(["en", "hi", "gu"] as Language[]).map((l) => (
-                  <button
-                    key={l}
-                    onClick={() => setLangChoice(l)}
-                    className={`rounded-[2px] border px-1.5 py-0.5 font-mono text-[10.5px] font-bold transition ${
-                      language === l
-                        ? "border-ink-900 bg-ink-900 text-paper-50"
-                        : "text-ink-400 hover:text-ink-800"
-                    }`}
-                    style={language === l ? undefined : { borderColor: "var(--rule)" }}
-                  >
-                    {l === "en" ? "EN" : l === "hi" ? "हिं" : "ગુજ"}
-                  </button>
-                ))}
-              </span>
-            </div>
-
-            <div className="flex items-center border-l px-4" style={{ borderColor: "var(--rule-faint)" }}>
-              <button onClick={() => (tourOn ? setTourOn(false) : startTour())} className="btn-ink">
-                {tourOn ? <StopGlyph size={11} /> : <PlayGlyph size={11} />}
-                {tourOn ? ui.stopTour : ui.tour}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* folio tabs */}
-        <nav
-          className="flex items-end gap-6 border-t px-5"
-          style={{ borderColor: "var(--rule-faint)" }}
+      {/* ---------------- navigation rail: identity, destinations, controls ---------------- */}
+      <aside className="rail">
+        {/* identity — clicking it returns to the front page */}
+        <button
+          onClick={() => setTab("landing")}
+          title="Back to the front page"
+          className="flex items-center gap-3 rounded-[10px] text-left lg:px-2"
         >
+          <CompassMark size={34} className="shrink-0 text-flag" />
+          <span>
+            <span className="block font-display text-[34px] font-black leading-none text-paper-50">ORCA</span>
+            <span className="mt-1 hidden text-[11.5px] leading-snug text-ink-300 lg:block">
+              Marine ecosystem reasoning with collaborative agents
+            </span>
+          </span>
+        </button>
+
+        <nav className="flex gap-1 lg:mt-8 lg:flex-col">
           {(["home", "ask", "authority", "system"] as AppTab[]).map((x) => (
             <button
               key={x}
               onClick={() => setTab(x)}
-              className={`tab mt-2 ${tab === x ? "tab-on" : ""}`}
+              aria-current={tab === x ? "page" : undefined}
+              className={`rail-tab ${tab === x ? "rail-tab-on" : ""}`}
             >
               {tabLabels[x]}
             </button>
           ))}
-          <span className="label ml-auto hidden pb-2.5 !tracking-[0.12em] !text-chart-500 md:block">
-            {ui.marginalia}
-          </span>
         </nav>
-      </header>
 
-      {tourOn && (
-        <GuidedTour
-          step={tourStep}
-          language={language}
-          paused={tourPaused}
-          onPause={() => setTourPaused((p) => !p)}
-          onNext={() => gotoStep(tourStep + 1)}
-          onPrev={() => gotoStep(tourStep - 1)}
-          onExit={() => setTourOn(false)}
-        />
-      )}
+        <div className="ml-auto flex flex-wrap items-center gap-2 lg:ml-0 lg:mt-auto lg:flex-col lg:items-stretch lg:gap-4">
+          <div className="flex items-center gap-2 lg:justify-between">
+            <span className="rail-label">{ui.dataEdition}</span>
+            <button
+              onClick={toggleMode}
+              disabled={switching}
+              title="Switch between cached demo data and live public providers"
+              className="rail-toggle disabled:opacity-50"
+            >
+              <span className={`h-2 w-2 rounded-full ${mode === "LIVE" ? "bg-risk-low" : "bg-flag"}`} />
+              {switching ? "…" : mode}
+            </button>
+          </div>
 
-      {error && (
-        <div className="panel hatch-danger flex items-center gap-3 border-signal/60 px-4 py-2.5 text-[12.5px] text-risk-extreme">
-          <WarnGlyph size={15} className="shrink-0" />
-          <span>
-            {error} — start the backend with{" "}
-            <code className="font-mono font-bold">uvicorn app.main:app --port 8000</code>
-          </span>
+          <div className="flex items-center gap-2 lg:justify-between">
+            <span className="rail-label">{ui.voice}</span>
+            <button onClick={() => setSpeak((v) => !v)} title="Speak answers aloud" className="rail-toggle">
+              {speak ? <SpeakerGlyph /> : <SpeakerOffGlyph className="text-ink-300" />}
+              {speak ? "On" : "Off"}
+            </button>
+          </div>
+
+          <div className="flex items-center gap-2 lg:justify-between">
+            <span className="rail-label">{ui.lang}</span>
+            <span className="flex gap-1">
+              {(["en", "hi", "gu"] as Language[]).map((l) => (
+                <button
+                  key={l}
+                  onClick={() => setLangChoice(l)}
+                  className={`rounded-[7px] px-2 py-1 text-[12.5px] font-bold transition ${
+                    language === l ? "bg-flag text-ink-900" : "text-ink-300 hover:text-paper-50"
+                  }`}
+                >
+                  {l === "en" ? "EN" : l === "hi" ? "हिं" : "ગુજ"}
+                </button>
+              ))}
+            </span>
+          </div>
+
+          <button onClick={() => (tourOn ? setTourOn(false) : startTour())} className="btn-ink justify-center">
+            {tourOn ? <StopGlyph size={11} /> : <PlayGlyph size={11} />}
+            {tourOn ? ui.stopTour : ui.tour}
+          </button>
+
+          <p className="hidden text-[11px] leading-snug text-ink-300 lg:block">
+            {ui.chartNo} SIH26176 · {ui.marginalia}
+          </p>
         </div>
-      )}
+      </aside>
 
-      {/* ================= HOME : location + today's plan ================= */}
-      {tab === "home" && (
-        <div className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[1.35fr_minmax(370px,1fr)]">
-          <div className="space-y-4">
-            <LocationPicker current={place} language={language} onPick={setPlace} />
+      <main className="flex min-w-0 flex-1 flex-col gap-4 p-4 lg:p-6">
+        {tourOn && (
+          <GuidedTour
+            step={tourStep}
+            language={language}
+            paused={tourPaused}
+            onPause={() => setTourPaused((p) => !p)}
+            onNext={() => gotoStep(tourStep + 1)}
+            onPrev={() => gotoStep(tourStep - 1)}
+            onExit={() => setTourOn(false)}
+          />
+        )}
 
-            <MarineMap
-              origin={homeOrigin}
-              zones={zones}
-              pfz={[]}
-              areas={outlook?.areas ?? []}
-              radiusKm={outlook?.radius_km ?? RADIUS_KM}
-              routes={outlook?.routes ?? []}
-              geofence={[]}
-              language={language}
-              onPickLocation={pickLocation}
-              focusRank={focusRank}
-              onTimeOffset={handleTimeOffset}
-              timeOffset={timeOffset}
-            />
-
-            {outlook && (
-              <div className="panel grid grid-cols-2 sm:grid-cols-4">
-                {[
-                  {
-                    k: language === "gu" ? "સુરક્ષા" : language === "hi" ? "सुरक्षा" : "Safety",
-                    v: `${outlook.safety.score}`,
-                    s: outlook.safety.category,
-                    color: RISK_COLOR[outlook.safety.category],
-                  },
-                  {
-                    k: language === "gu" ? "મોજાં" : language === "hi" ? "लहरें" : "Waves",
-                    v: `${outlook.safety.wave_height_m ?? "—"}`,
-                    s: "m",
-                  },
-                  {
-                    k: language === "gu" ? "પવન" : language === "hi" ? "हवा" : "Wind",
-                    v: `${Math.round(outlook.safety.wind_speed_kmh ?? 0)}`,
-                    s: "km/h",
-                  },
-                  {
-                    k: language === "gu" ? "વિસ્તારો" : language === "hi" ? "जगहें" : "Areas",
-                    v: `${outlook.areas.length}`,
-                    s: `in ${outlook.radius_km} km`,
-                  },
-                ].map((x, i) => (
-                  <div
-                    key={x.k}
-                    className={`group px-4 py-3 transition-colors hover:bg-chart-100/40 ${i > 0 ? "border-l" : ""}`}
-                    style={{ borderColor: "var(--rule-faint)" }}
-                  >
-                    <div className="label truncate">{x.k}</div>
-                    <div
-                      className={`mt-1 font-mono text-[20px] font-bold tabular-nums leading-none text-ink-900 ${
-                        x.color ? "" : "transition-colors group-hover:text-chart-600"
-                      }`}
-                      style={x.color ? { color: x.color } : undefined}
-                    >
-                      {x.v}
-                      <span className="ml-1.5 text-[10px] font-semibold opacity-60">{x.s}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+        {error && (
+          <div className="panel hatch-danger flex items-center gap-3 border-signal/60 px-4 py-2.5 text-[12.5px] text-risk-extreme">
+            <WarnGlyph size={15} className="shrink-0" />
+            <span>
+              {error} — start the backend with{" "}
+              <code className="font-mono font-bold">uvicorn app.main:app --port 8000</code>
+            </span>
           </div>
+        )}
 
-          <div className="space-y-4 lg:h-[calc(100vh-235px)] lg:overflow-y-auto lg:pr-1">
-            {loadingOutlook && !outlook && (
-              <div className="panel p-6 text-center text-sm italic text-ink-400">
-                {language === "gu"
-                  ? "તમારા સ્થાનની માહિતી લેવાઈ રહી છે…"
-                  : language === "hi"
-                    ? "आपके स्थान की जानकारी ले रहे हैं…"
-                    : "Reading the sea at your location…"}
-              </div>
-            )}
-            {outlook && (
-              <FishingPanel
-                data={outlook}
-                language={language}
-                onSelectArea={(rank) => setFocusRank(rank)}
-              />
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* ================= ASK : the conversational view ================= */}
-      {tab === "ask" && (
-        <>
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="label mr-1">{ui.scenarios}</span>
-            {SCENARIOS.map((s) => (
-              <button
-                key={s.id}
-                onClick={() => runScenario(s.ask)}
-                disabled={busy}
-                title={s.ask}
-                className="chip disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                <span className="grid w-[18px] shrink-0 place-items-center rounded-full bg-ink-900 font-display text-[10px] font-bold leading-none text-paper-50" style={{ height: 18 }}>
-                  {s.n}
-                </span>
-                <span className="font-semibold">{s.label[language] ?? s.label.en}</span>
-                <span className="font-mono text-[10px] uppercase tracking-wide opacity-60">{s.hint}</span>
-              </button>
-            ))}
-          </div>
-
-          <div className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[minmax(350px,1fr)_1.6fr]">
-            <div className="min-h-[540px] lg:h-[calc(100vh-280px)]">
-              <ChatPanel
-                messages={messages}
-                busy={busy}
-                language={language}
-                suggestions={suggestions}
-                onSend={send}
-                onLanguage={setLangChoice}
-              />
-            </div>
-
-            <div className="space-y-4 lg:h-[calc(100vh-280px)] lg:overflow-y-auto lg:pr-1">
-              {latest && <ConditionsStrip res={latest} language={latest.language} />}
+        {/* ================= HOME : location + today's plan ================= */}
+        {tab === "home" && (
+          <div className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[1.35fr_minmax(370px,1fr)]">
+            <div className="space-y-4">
+              <LocationPicker current={place} language={language} onPick={setPlace} />
 
               <MarineMap
-                origin={latest?.intent.location ?? null}
+                origin={homeOrigin}
                 zones={zones}
-                pfz={latest?.pfz ?? []}
-                routes={latest?.routes ?? []}
-                geofence={latest?.geofence ?? []}
-                alerts={latest?.alerts ?? []}
+                pfz={[]}
+                areas={outlook?.areas ?? []}
+                radiusKm={outlook?.radius_km ?? RADIUS_KM}
+                routes={outlook?.routes ?? []}
+                geofence={[]}
                 language={language}
+                onPickLocation={pickLocation}
+                focusRank={focusRank}
                 onTimeOffset={handleTimeOffset}
                 timeOffset={timeOffset}
               />
 
-              {latest?.risk && (
-                <RiskCard
-                  risk={latest.risk}
-                  evidence={latest.evidence}
-                  language={latest.language}
-                />
-              )}
-
-              {latest && (
-                <RiskTimeline location={latest.intent.location} language={latest.language} />
-              )}
-
-              {latest && latest.alerts.length > 0 && (
-                <div className="panel hatch-danger overflow-hidden border-risk-extreme/60">
-                  <div className="hd border-risk-extreme/25">
-                    <span className="label flex items-center gap-2 !text-risk-extreme">
-                      <WarnGlyph size={13} /> {ui.warnings}
-                    </span>
-                  </div>
-                  <div className="px-4 py-3.5">
-                    {latest.alerts.map((a, i) => (
-                      <div key={i} className="mb-3 last:mb-0">
-                        <div className="font-display text-[15px] font-bold leading-snug text-risk-extreme">
-                          {a.headline}
-                        </div>
-                        <div className="mt-1 text-[12px] leading-relaxed text-ink-700">
-                          {a.detail}
-                        </div>
-                        <div className="mt-1 font-mono text-[10px] uppercase tracking-wide text-ink-400">
-                          {a.source} · {a.severity}
-                          {a.valid_till ? ` · ${ui.validTill} ${a.valid_till}` : ""}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {latest && <PFZList zones={latest.pfz} language={latest.language} />}
-
-              {latest && latest.routes.length > 0 && (
-                <div className="panel overflow-hidden">
-                  <div className="hd">
-                    <span className="label">{ui.courses}</span>
-                  </div>
-                  <div className="space-y-2 px-4 py-3.5">
-                    {latest.routes.map((r) => (
+              {outlook && (
+                <div className="panel grid grid-cols-2 sm:grid-cols-4">
+                  {[
+                    {
+                      k: language === "gu" ? "સુરક્ષા" : language === "hi" ? "सुरक्षा" : "Safety",
+                      v: `${outlook.safety.score}`,
+                      s: outlook.safety.category,
+                      color: RISK_COLOR[outlook.safety.category],
+                    },
+                    {
+                      k: language === "gu" ? "મોજાં" : language === "hi" ? "लहरें" : "Waves",
+                      v: `${outlook.safety.wave_height_m ?? "—"}`,
+                      s: "m",
+                    },
+                    {
+                      k: language === "gu" ? "પવન" : language === "hi" ? "हवा" : "Wind",
+                      v: `${Math.round(outlook.safety.wind_speed_kmh ?? 0)}`,
+                      s: "km/h",
+                    },
+                    {
+                      k: language === "gu" ? "વિસ્તારો" : language === "hi" ? "जगहें" : "Areas",
+                      v: `${outlook.areas.length}`,
+                      s: `in ${outlook.radius_km} km`,
+                    },
+                  ].map((x, i) => (
+                    <div
+                      key={x.k}
+                      className={`group px-4 py-3 transition-colors hover:bg-chart-100/40 ${i > 0 ? "border-l" : ""}`}
+                      style={{ borderColor: "var(--rule-faint)" }}
+                    >
+                      <div className="label truncate">{x.k}</div>
                       <div
-                        key={r.name}
-                        className={`rounded-[2px] border px-3.5 py-3 ${
-                          r.recommended ? "border-risk-low/70 bg-risk-low/[0.06]" : "bg-paper-100"
+                        className={`mt-1 font-mono text-[20px] font-bold tabular-nums leading-none text-ink-900 ${
+                          x.color ? "" : "transition-colors group-hover:text-chart-600"
                         }`}
-                        style={r.recommended ? undefined : { borderColor: "var(--rule)" }}
+                        style={x.color ? { color: x.color } : undefined}
                       >
-                        <div className="flex items-baseline justify-between gap-3">
-                          <span className="flex items-center gap-2.5 font-display text-[14.5px] font-bold text-ink-900">
-                            {/* course symbology, drawn as plotted */}
-                            <svg width="26" height="8" aria-hidden>
-                              <line
-                                x1="1"
-                                y1="4"
-                                x2="25"
-                                y2="4"
-                                stroke={r.recommended ? "#0F8A5C" : "#5C7189"}
-                                strokeWidth="2"
-                                strokeDasharray={r.recommended ? "7 4" : "2 4"}
-                              />
-                            </svg>
-                            {r.name}
-                            {r.recommended && (
-                              <span className="stamp !px-1.5 !py-0.5 !text-[9px] text-risk-low">
-                                {ui.recommended}
-                              </span>
-                            )}
-                          </span>
-                          <span className="shrink-0 font-mono text-[11.5px] tabular-nums text-ink-500">
-                            {r.distance_km} km · {Math.round(r.eta_minutes)} min
-                          </span>
-                        </div>
-                        <div className="mt-1 pl-[36px] text-[11.5px] leading-relaxed text-ink-500">
-                          {r.notes}
-                        </div>
+                        {x.v}
+                        <span className="ml-1.5 text-[10px] font-semibold opacity-60">{x.s}</span>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                 </div>
               )}
+            </div>
 
-              {latest && (
-                <AgentTracePanel trace={latest.trace} elapsed={latest.elapsed_ms} language={latest.language} />
+            <div className="space-y-4 lg:h-[calc(100vh-48px)] lg:overflow-y-auto lg:pr-1">
+              {loadingOutlook && !outlook && (
+                <div className="panel p-6 text-center text-sm italic text-ink-400">
+                  {language === "gu"
+                    ? "તમારા સ્થાનની માહિતી લેવાઈ રહી છે…"
+                    : language === "hi"
+                      ? "आपके स्थान की जानकारी ले रहे हैं…"
+                      : "Reading the sea at your location…"}
+                </div>
               )}
-
-              {latest && (
-                <p className="px-1 pb-2 font-mono text-[10.5px] leading-relaxed text-ink-400">
-                  {latest.disclaimer}
-                </p>
+              {outlook && (
+                <FishingPanel
+                  data={outlook}
+                  language={language}
+                  onSelectArea={(rank) => setFocusRank(rank)}
+                />
               )}
             </div>
           </div>
-        </>
-      )}
+        )}
 
-      {tab === "authority" && <AuthorityPanel language={language} />}
+        {/* ================= ASK : the conversational view ================= */}
+        {tab === "ask" && (
+          <>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="label mr-1">{ui.scenarios}</span>
+              {SCENARIOS.map((s) => (
+                <button
+                  key={s.id}
+                  onClick={() => runScenario(s.ask)}
+                  disabled={busy}
+                  title={s.ask}
+                  className="chip disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  <span className="grid w-[18px] shrink-0 place-items-center rounded-full bg-ink-900 font-display text-[10px] font-bold leading-none text-paper-50" style={{ height: 18 }}>
+                    {s.n}
+                  </span>
+                  <span className="font-semibold">{s.label[language] ?? s.label.en}</span>
+                  <span className="font-mono text-[10px] uppercase tracking-wide opacity-60">{s.hint}</span>
+                </button>
+              ))}
+            </div>
 
-      {tab === "system" && <SystemPanel mode={mode} language={language} />}
+            <div className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[minmax(350px,1fr)_1.6fr]">
+              <div className="min-h-[540px] lg:h-[calc(100vh-112px)]">
+                <ChatPanel
+                  messages={messages}
+                  busy={busy}
+                  language={language}
+                  suggestions={suggestions}
+                  onSend={send}
+                  onLanguage={setLangChoice}
+                />
+              </div>
+
+              <div className="space-y-4 lg:h-[calc(100vh-112px)] lg:overflow-y-auto lg:pr-1">
+                {latest && <ConditionsStrip res={latest} language={latest.language} />}
+
+                <MarineMap
+                  origin={latest?.intent.location ?? null}
+                  zones={zones}
+                  pfz={latest?.pfz ?? []}
+                  routes={latest?.routes ?? []}
+                  geofence={latest?.geofence ?? []}
+                  alerts={latest?.alerts ?? []}
+                  language={language}
+                  onTimeOffset={handleTimeOffset}
+                  timeOffset={timeOffset}
+                />
+
+                {latest?.risk && (
+                  <RiskCard
+                    risk={latest.risk}
+                    evidence={latest.evidence}
+                    language={latest.language}
+                  />
+                )}
+
+                {latest && (
+                  <RiskTimeline location={latest.intent.location} language={latest.language} />
+                )}
+
+                {latest && latest.alerts.length > 0 && (
+                  <div className="panel hatch-danger overflow-hidden border-risk-extreme/60">
+                    <div className="hd border-risk-extreme/25">
+                      <span className="label flex items-center gap-2 !text-risk-extreme">
+                        <WarnGlyph size={13} /> {ui.warnings}
+                      </span>
+                    </div>
+                    <div className="px-4 py-3.5">
+                      {latest.alerts.map((a, i) => (
+                        <div key={i} className="mb-3 last:mb-0">
+                          <div className="font-display text-[15px] font-bold leading-snug text-risk-extreme">
+                            {a.headline}
+                          </div>
+                          <div className="mt-1 text-[12px] leading-relaxed text-ink-700">
+                            {a.detail}
+                          </div>
+                          <div className="mt-1 font-mono text-[10px] uppercase tracking-wide text-ink-400">
+                            {a.source} · {a.severity}
+                            {a.valid_till ? ` · ${ui.validTill} ${a.valid_till}` : ""}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {latest && <PFZList zones={latest.pfz} language={latest.language} />}
+
+                {latest && latest.routes.length > 0 && (
+                  <div className="panel overflow-hidden">
+                    <div className="hd">
+                      <span className="label">{ui.courses}</span>
+                    </div>
+                    <div className="space-y-2 px-4 py-3.5">
+                      {latest.routes.map((r) => (
+                        <div
+                          key={r.name}
+                          className={`rounded-[2px] border px-3.5 py-3 ${
+                            r.recommended ? "border-risk-low/70 bg-risk-low/[0.06]" : "bg-paper-100"
+                          }`}
+                          style={r.recommended ? undefined : { borderColor: "var(--rule)" }}
+                        >
+                          <div className="flex items-baseline justify-between gap-3">
+                            <span className="flex items-center gap-2.5 font-display text-[14.5px] font-bold text-ink-900">
+                              {/* course symbology, drawn as plotted */}
+                              <svg width="26" height="8" aria-hidden>
+                                <line
+                                  x1="1"
+                                  y1="4"
+                                  x2="25"
+                                  y2="4"
+                                  stroke={r.recommended ? "#0F8A5C" : "#5C7189"}
+                                  strokeWidth="2"
+                                  strokeDasharray={r.recommended ? "7 4" : "2 4"}
+                                />
+                              </svg>
+                              {r.name}
+                              {r.recommended && (
+                                <span className="stamp !px-1.5 !py-0.5 !text-[9px] text-risk-low">
+                                  {ui.recommended}
+                                </span>
+                              )}
+                            </span>
+                            <span className="shrink-0 font-mono text-[11.5px] tabular-nums text-ink-500">
+                              {r.distance_km} km · {Math.round(r.eta_minutes)} min
+                            </span>
+                          </div>
+                          <div className="mt-1 pl-[36px] text-[11.5px] leading-relaxed text-ink-500">
+                            {r.notes}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {latest && (
+                  <AgentTracePanel trace={latest.trace} elapsed={latest.elapsed_ms} language={latest.language} />
+                )}
+
+                {latest && (
+                  <p className="px-1 pb-2 font-mono text-[10.5px] leading-relaxed text-ink-400">
+                    {latest.disclaimer}
+                  </p>
+                )}
+              </div>
+            </div>
+          </>
+        )}
+
+        {tab === "authority" && <AuthorityPanel language={language} />}
+
+        {tab === "system" && <SystemPanel mode={mode} language={language} />}
+      </main>
     </div>
   );
 }

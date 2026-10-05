@@ -288,6 +288,47 @@ body {
     letter-spacing: 0.01em;
   }
 
+  /* ------------------------------------------------ navigation rail */
+  /* Navy rail on the left at desktop widths; a top bar below that. */
+  .rail {
+    @apply flex shrink-0 flex-wrap items-center gap-x-5 gap-y-3 bg-ink-900 px-4 py-3;
+  }
+  @media (min-width: 1024px) {
+    .rail {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 236px;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 0;
+      padding: 24px 16px 20px;
+    }
+  }
+  .rail-tab {
+    @apply rounded-[10px] px-3 py-1.5 text-left font-display text-[19px] font-extrabold text-paper-50/70 transition;
+  }
+  @media (min-width: 1024px) {
+    .rail-tab {
+      font-size: 24px;
+      padding: 6px 12px;
+    }
+  }
+  .rail-tab:hover {
+    @apply bg-paper-50/10 text-paper-50;
+  }
+  .rail-tab-on,
+  .rail-tab-on:hover {
+    @apply bg-flag text-ink-900;
+  }
+  .rail-label {
+    @apply text-[12.5px] font-bold text-ink-300;
+  }
+  .rail-toggle {
+    @apply inline-flex items-center gap-2 rounded-[8px] border border-paper-50/20 px-2.5 py-1 text-[13px] font-bold text-paper-50 transition hover:border-flag;
+  }
+
   /* ------------------------------------------------ controls */
   /* Primary action is buoy yellow — the one thing on screen you can't miss. */
   .btn-ink {
