@@ -286,7 +286,7 @@ genuinely live (check the evidence table's source column).
   git commit messages. Write the message to a file and use `git commit -F <file>`.
 - **git/gh write to stderr**, which PowerShell surfaces as a red error even on
   success. Check the actual output (`main -> main`) before believing a failure.
-- **`gh` is installed and authenticated** as `SaudSatopay` with `repo` scope.
+
 - **Screenshots:** the in-app Browser pane does not composite, so
   `mcp__Claude_Browser__computer screenshot` fails. Use headless Edge instead:
   `msedge --headless=new --disable-gpu --screenshot=out.png --window-size=W,H
