@@ -218,7 +218,7 @@ export default function RiskTimeline({
             fill="#2A7391"
             fontSize="10"
             fontWeight="700"
-            fontFamily="'Spline Sans Mono Variable', monospace"
+            fontFamily="'JetBrains Mono Variable',monospace"
           >
             {t.now}
           </text>
@@ -232,7 +232,7 @@ export default function RiskTimeline({
             fontWeight="700"
             fontStyle="italic"
             textAnchor="middle"
-            fontFamily="'Fraunces Variable', Georgia, serif"
+            fontFamily="'Big Shoulders Variable',Impact,sans-serif"
           >
             {peak.score}
           </text>
@@ -247,7 +247,7 @@ export default function RiskTimeline({
                 fill="#5D7386"
                 fontSize="9.5"
                 textAnchor="middle"
-                fontFamily="'Spline Sans Mono Variable', monospace"
+                fontFamily="'JetBrains Mono Variable',monospace"
               >
                 {String(p.hour).padStart(2, "0")}
               </text>

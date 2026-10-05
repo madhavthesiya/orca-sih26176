@@ -454,12 +454,12 @@ export default function Landing({
                 strokeLinecap="round"
               />
             ))}
-            <text x="150" y="230" fontFamily="Georgia" fontStyle="italic" fontSize="11" fill="#2A7391" opacity="0.65">27</text>
-            <text x="300" y="90" fontFamily="Georgia" fontStyle="italic" fontSize="11" fill="#2A7391" opacity="0.65">44</text>
+            <text x="150" y="230" fontFamily="'Big Shoulders Variable',Impact,sans-serif" fontStyle="italic" fontSize="11" fill="#2A7391" opacity="0.65">27</text>
+            <text x="300" y="90" fontFamily="'Big Shoulders Variable',Impact,sans-serif" fontStyle="italic" fontSize="11" fill="#2A7391" opacity="0.65">44</text>
             {/* hatched danger areas the course detours around */}
             <g>
               <rect x="150" y="95" width="105" height="62" fill="url(#hatch-critical)" stroke="#AF2318" strokeWidth="1.4" strokeDasharray="7 4" />
-              <text x="202" y="130" textAnchor="middle" fontFamily="'Spline Sans Mono Variable',monospace" fontSize="8.5" fill="#AF2318" letterSpacing="1.5">
+              <text x="202" y="130" textAnchor="middle" fontFamily="'JetBrains Mono Variable',monospace" fontSize="8.5" fill="#AF2318" letterSpacing="1.5">
                 NO ENTRY
               </text>
               <rect x="265" y="180" width="80" height="50" fill="url(#hatch-warning)" stroke="#BF4E12" strokeWidth="1.2" strokeDasharray="7 4" />
@@ -490,12 +490,12 @@ export default function Landing({
               <circle className="svg-ping" r="17" fill="none" stroke="#1D7A50" strokeWidth="2" />
               <g className="svg-bob" style={{ animationDelay: "1.2s" }}>
                 <circle r="17" fill="#FBF7ED" stroke="#1D7A50" strokeWidth="4" />
-                <text y="6" textAnchor="middle" fontFamily="'Fraunces Variable',Georgia,serif" fontWeight="800" fontSize="16" fill="#12212D">
+                <text y="6" textAnchor="middle" fontFamily="'Big Shoulders Variable',Impact,sans-serif" fontWeight="800" fontSize="16" fill="#12212D">
                   1
                 </text>
               </g>
             </g>
-            <text x="392" y="64" fontFamily="'Fraunces Variable',Georgia,serif" fontStyle="italic" fontWeight="600" fontSize="13" fill="#1D7A50">
+            <text x="392" y="64" fontFamily="'Big Shoulders Variable',Impact,sans-serif" fontStyle="italic" fontWeight="600" fontSize="13" fill="#1D7A50">
               82%
             </text>
             {/* compass */}
@@ -504,11 +504,11 @@ export default function Landing({
               <g className="compass-needle">
                 <path d="M0 -20 L5 6 L0 11 L-5 6 Z" fill="#12212D" />
               </g>
-              <text y="-27" textAnchor="middle" fontFamily="'Spline Sans Mono Variable',monospace" fontSize="8" fill="#12212D">
+              <text y="-27" textAnchor="middle" fontFamily="'JetBrains Mono Variable',monospace" fontSize="8" fill="#12212D">
                 N
               </text>
             </g>
-            <text x="60" y="285" fontFamily="'Spline Sans Mono Variable',monospace" fontSize="8.5" fill="#5D7386" letterSpacing="1.5">
+            <text x="60" y="285" fontFamily="'JetBrains Mono Variable',monospace" fontSize="8.5" fill="#5D7386" letterSpacing="1.5">
               SAFEST ≠ SHORTEST · 5 KM LONGER · LEGAL
             </text>
           </svg>

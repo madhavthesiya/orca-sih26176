@@ -34,7 +34,7 @@ body,
 
 body {
   color: #263b4d;
-  font-family: "Archivo Variable", "Segoe UI", "Nirmala UI", system-ui, sans-serif;
+  font-family: "Atkinson Hyperlegible Next Variable", "Segoe UI", "Nirmala UI", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   /* The sheet itself: graticule grid, aged edges, and the sea rising from
      the foot of the sheet — the page always stands in shallow water. */
@@ -66,7 +66,7 @@ body::before {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='860' height='640' viewBox='0 0 860 640' fill='none' stroke='%232A7391' stroke-width='1'%3E%3Cg opacity='0.16'%3E%3Cpath d='M430 40 C640 55 800 170 805 320 C810 470 640 595 430 600 C220 605 55 480 60 320 C65 160 220 25 430 40 Z'/%3E%3Cpath d='M430 92 C598 102 742 196 748 320 C754 444 604 543 430 549 C256 555 112 452 116 320 C120 188 262 82 430 92 Z'/%3E%3Cpath d='M441 146 C574 152 684 231 689 325 C694 419 575 494 441 499 C307 504 196 424 201 325 C206 226 308 140 441 146 Z'/%3E%3Cpath d='M446 201 C545 206 624 261 627 325 C630 389 546 444 446 447 C346 450 266 394 269 325 C272 256 347 196 446 201 Z'/%3E%3Cpath d='M451 256 C515 259 564 291 566 327 C568 363 516 394 451 396 C386 398 337 364 339 327 C341 290 387 253 451 256 Z'/%3E%3Ctext x='430' y='330' font-family='Georgia' font-style='italic' font-size='14' fill='%232A7391' stroke='none' text-anchor='middle'%3E9%3C/text%3E%3Ctext x='560' y='250' font-family='Georgia' font-style='italic' font-size='13' fill='%232A7391' stroke='none'%3E18%3C/text%3E%3Ctext x='250' y='420' font-family='Georgia' font-style='italic' font-size='13' fill='%232A7391' stroke='none'%3E27%3C/text%3E%3Ctext x='640' y='430' font-family='Georgia' font-style='italic' font-size='13' fill='%232A7391' stroke='none'%3E44%3C/text%3E%3Ctext x='300' y='150' font-family='Georgia' font-style='italic' font-size='13' fill='%232A7391' stroke='none'%3E61%3C/text%3E%3C/g%3E%3C/svg%3E"),
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='860' height='640' viewBox='0 0 860 640' fill='none' stroke='%232A7391' stroke-width='1'%3E%3Cg opacity='0.16'%3E%3Cpath d='M430 40 C640 55 800 170 805 320 C810 470 640 595 430 600 C220 605 55 480 60 320 C65 160 220 25 430 40 Z'/%3E%3Cpath d='M430 92 C598 102 742 196 748 320 C754 444 604 543 430 549 C256 555 112 452 116 320 C120 188 262 82 430 92 Z'/%3E%3Cpath d='M441 146 C574 152 684 231 689 325 C694 419 575 494 441 499 C307 504 196 424 201 325 C206 226 308 140 441 146 Z'/%3E%3Cpath d='M446 201 C545 206 624 261 627 325 C630 389 546 444 446 447 C346 450 266 394 269 325 C272 256 347 196 446 201 Z'/%3E%3Cpath d='M451 256 C515 259 564 291 566 327 C568 363 516 394 451 396 C386 398 337 364 339 327 C341 290 387 253 451 256 Z'/%3E%3Ctext x='430' y='330' font-family='Impact' font-size='14' fill='%232A7391' stroke='none' text-anchor='middle'%3E9%3C/text%3E%3Ctext x='560' y='250' font-family='Impact' font-size='13' fill='%232A7391' stroke='none'%3E18%3C/text%3E%3Ctext x='250' y='420' font-family='Impact' font-size='13' fill='%232A7391' stroke='none'%3E27%3C/text%3E%3Ctext x='640' y='430' font-family='Impact' font-size='13' fill='%232A7391' stroke='none'%3E44%3C/text%3E%3Ctext x='300' y='150' font-family='Impact' font-size='13' fill='%232A7391' stroke='none'%3E61%3C/text%3E%3C/g%3E%3C/svg%3E"),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420' viewBox='0 0 420 420'%3E%3Cg fill='%2312212D' opacity='0.05'%3E%3Ccircle cx='210' cy='210' r='168' fill='none' stroke='%2312212D' stroke-width='1.5'/%3E%3Ccircle cx='210' cy='210' r='128' fill='none' stroke='%2312212D' stroke-width='1'/%3E%3Cg%3E%3Cpath d='M210 30 L224 196 L210 210 L196 196 Z'/%3E%3Cpath d='M210 390 L224 224 L210 210 L196 224 Z'/%3E%3Cpath d='M30 210 L196 196 L210 210 L196 224 Z'/%3E%3Cpath d='M390 210 L224 196 L210 210 L224 224 Z'/%3E%3C/g%3E%3Cg transform='rotate(45 210 210)'%3E%3Cpath d='M210 82 L220 200 L210 210 L200 200 Z'/%3E%3Cpath d='M210 338 L220 220 L210 210 L200 220 Z'/%3E%3Cpath d='M82 210 L200 200 L210 210 L200 220 Z'/%3E%3Cpath d='M338 210 L220 200 L210 210 L220 220 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   background-repeat: no-repeat, no-repeat;
   background-position:
@@ -525,7 +525,7 @@ body::after {
 
   /* Chart soundings: the italic serif numerals used for depths. */
   .sounding {
-    font-family: "Fraunces Variable", Georgia, serif;
+    font-family: "Big Shoulders Variable", Impact, sans-serif;
     font-style: italic;
     font-weight: 600;
     font-variation-settings: "SOFT" 40;
@@ -598,7 +598,7 @@ body::after {
   background: rgba(245, 238, 221, 0.85) !important;
   color: #5d7386 !important;
   font-size: 9px !important;
-  font-family: "Spline Sans Mono Variable", Consolas, monospace;
+  font-family: "JetBrains Mono Variable", Consolas, monospace;
 }
 .leaflet-control-attribution a {
   color: #1e5f7a !important;
@@ -617,7 +617,7 @@ body::after {
   font-size: 12px;
 }
 .leaflet-popup-content b {
-  font-family: "Fraunces Variable", Georgia, serif;
+  font-family: "Big Shoulders Variable", Impact, sans-serif;
   font-size: 13px;
 }
 .leaflet-bar {
@@ -672,7 +672,7 @@ path.radius-drift {
   color: #af2318;
   border: 1.5px solid #af2318;
   border-radius: 2px;
-  font-family: "Spline Sans Mono Variable", Consolas, monospace;
+  font-family: "JetBrains Mono Variable", Consolas, monospace;
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.12em;

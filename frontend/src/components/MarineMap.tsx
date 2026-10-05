@@ -89,8 +89,8 @@ const STATUS_STYLE: Record<PositionCheck["status"], string> = {
   critical: "bg-risk-extreme",
 };
 
-const SERIF = `'Fraunces Variable',Georgia,serif`;
-const MONO = `'Spline Sans Mono Variable',Consolas,monospace`;
+const SERIF = `'Big Shoulders Variable',Impact,sans-serif`;
+const MONO = `'JetBrains Mono Variable',Consolas,monospace`;
 
 /**
  * Leaflet map presented as a chart sheet: paper margin, tick marks, double
