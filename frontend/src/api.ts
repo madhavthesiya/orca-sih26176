@@ -7,16 +7,33 @@ import type {
   RiskCategory,
   ZoneFeature,
 } from "./types";
+import { ApiError } from "./failure";
 
 const API_HOST = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace(/\/$/, "") : "";
 const BASE = `${API_HOST}/api`;
 
-async function json<T>(url: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(url, {
-    headers: { "Content-Type": "application/json" },
-    ...init,
-  });
-  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+/** No request may hang a screen: past this, it is abandoned and reported. */
+const TIMEOUT_MS = 20_000;
+/** The crew's full sweep on live providers can legitimately take longer. */
+const CHAT_TIMEOUT_MS = 45_000;
+
+async function json<T>(url: string, init: RequestInit & { timeoutMs?: number } = {}): Promise<T> {
+  const { timeoutMs = TIMEOUT_MS, ...rest } = init;
+  const ctl = new AbortController();
+  const timer = window.setTimeout(() => ctl.abort(), timeoutMs);
+  let res: Response;
+  try {
+    res = await fetch(url, {
+      headers: { "Content-Type": "application/json" },
+      ...rest,
+      signal: ctl.signal,
+    });
+  } catch (e) {
+    throw new ApiError(ctl.signal.aborted ? "timeout" : "offline", String(e));
+  } finally {
+    window.clearTimeout(timer);
+  }
+  if (!res.ok) throw new ApiError("server", `${res.status} ${res.statusText}`);
   return (await res.json()) as T;
 }
 
@@ -30,6 +47,7 @@ export function ask(params: {
 }): Promise<ChatResponse> {
   return json<ChatResponse>(`${BASE}/chat`, {
     method: "POST",
+    timeoutMs: CHAT_TIMEOUT_MS,
     body: JSON.stringify({
       message: params.message,
       language: params.language ?? null,
