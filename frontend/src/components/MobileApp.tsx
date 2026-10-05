@@ -18,6 +18,7 @@ import MarineMap from "./MarineMap";
 import { RISK_COLOR } from "./RiskDial";
 import { readingState, sameSpot, tripIsOff } from "../today";
 import ReadingStatus from "./ReadingStatus";
+import { kilometres, rupees } from "../units";
 import type { FailKind } from "../failure";
 import { failKind, failureText } from "../failure";
 
@@ -523,7 +524,7 @@ export default function MobileApp() {
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="block text-[17px] font-bold text-ink-900">
-                          {Math.round(a.distance_km)} {t.km}
+                          {kilometres(a.distance_km)} {t.km}
                         </span>
                         <span className="block truncate font-mono text-[11px] text-chart-700">
                           {(a.likely_species ?? []).map((s) => s.split(" (")[0]).join(" · ")}
@@ -564,7 +565,7 @@ export default function MobileApp() {
                   <div className="px-3 py-3 text-center">
                     <div className="label !text-[9px]">{t.fuel}</div>
                     <div className="mt-1 font-mono text-[21px] font-bold text-ink-900">
-                      ₹{outlook.economics.fuel_cost_inr.toLocaleString("en-IN")}
+                      {rupees(outlook.economics.fuel_cost_inr)}
                     </div>
                   </div>
                   <div
@@ -573,7 +574,7 @@ export default function MobileApp() {
                   >
                     <div className="label !text-[9px] !text-risk-low">{t.profit}</div>
                     <div className="mt-1 font-mono text-[21px] font-bold text-risk-low">
-                      ₹{outlook.economics.profit_inr.toLocaleString("en-IN")}
+                      {rupees(outlook.economics.profit_inr)}
                     </div>
                   </div>
                 </div>

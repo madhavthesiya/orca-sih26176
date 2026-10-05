@@ -23,6 +23,7 @@ import RiskCard from "./components/RiskCard";
 import { RISK_COLOR } from "./components/RiskDial";
 import SystemPanel from "./components/SystemPanel";
 import { readingState, sameSpot, tripIsOff } from "./today";
+import { duration, kilometres, kmh, metres } from "./units";
 import ReadingStatus from "./components/ReadingStatus";
 import { failKind, failureText, type FailKind } from "./failure";
 import RiskTimeline from "./components/RiskTimeline";
@@ -540,12 +541,12 @@ export default function App() {
                     },
                     {
                       k: language === "gu" ? "મોજાં" : language === "hi" ? "लहरें" : "Waves",
-                      v: `${outlook.safety.wave_height_m ?? "—"}`,
+                      v: metres(outlook.safety.wave_height_m),
                       s: "m",
                     },
                     {
                       k: language === "gu" ? "પવન" : language === "hi" ? "हवा" : "Wind",
-                      v: `${Math.round(outlook.safety.wind_speed_kmh ?? 0)}`,
+                      v: kmh(outlook.safety.wind_speed_kmh),
                       s: "km/h",
                     },
                     {
@@ -736,7 +737,7 @@ export default function App() {
                               )}
                             </span>
                             <span className="shrink-0 font-mono text-[11.5px] tabular-nums text-ink-500">
-                              {r.distance_km} km · {Math.round(r.eta_minutes)} min
+                              {kilometres(r.distance_km)} km · {duration(r.eta_minutes)}
                             </span>
                           </div>
                           <div className="mt-1 pl-[36px] text-[11.5px] leading-relaxed text-ink-500">

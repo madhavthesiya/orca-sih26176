@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { Language } from "../types";
+import { position } from "../units";
 import { CrosshairGlyph } from "./glyphs";
 
 export interface PickedLocation {
@@ -127,7 +128,7 @@ export default function LocationPicker({
             )}
             {current && (
               <span className="shrink-0 font-mono text-[10.5px] tabular-nums text-ink-400">
-                {current.latitude.toFixed(3)}°N, {current.longitude.toFixed(3)}°E
+                {position(current.latitude, current.longitude)}
               </span>
             )}
           </div>
@@ -183,7 +184,7 @@ export default function LocationPicker({
                 <span className="text-[13px] font-semibold text-ink-900">{p.name}</span>
                 <span className="text-[11px] text-ink-400">{p.state}</span>
                 <span className="ml-auto font-mono text-[9.5px] tabular-nums text-ink-300">
-                  {p.lat.toFixed(2)}°N {p.lon.toFixed(2)}°E
+                  {position(p.lat, p.lon, 2)}
                 </span>
               </button>
             ))}

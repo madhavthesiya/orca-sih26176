@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { tripIsOff } from "../today";
+import { kilometres, rupees } from "../units";
 import type { CatchRating, FishingOutlook, Language } from "../types";
 import { FishGlyph, SchoolGlyph, WarnGlyph } from "./glyphs";
 
@@ -276,7 +277,7 @@ export default function FishingPanel({
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="text-[14px] font-bold text-ink-900">
-                        {Math.round(a.distance_km)} km {t.away}
+                        {kilometres(a.distance_km)} km {t.away}
                       </span>
                       {a.recommended && (
                         <span className="stamp !px-1.5 !py-0.5 !text-[8.5px] text-risk-low">
@@ -446,7 +447,7 @@ export default function FishingPanel({
             {[
               {
                 k: t.fuel,
-                v: `₹${data.economics.fuel_cost_inr.toLocaleString("en-IN")}`,
+                v: rupees(data.economics.fuel_cost_inr),
                 s: `${data.economics.fuel_litres} L`,
               },
               {
@@ -456,12 +457,12 @@ export default function FishingPanel({
               },
               {
                 k: t.revenue,
-                v: `₹${data.economics.revenue_inr.toLocaleString("en-IN")}`,
+                v: rupees(data.economics.revenue_inr),
                 s: "",
               },
               {
                 k: t.profit,
-                v: `₹${data.economics.profit_inr.toLocaleString("en-IN")}`,
+                v: rupees(data.economics.profit_inr),
                 s: "",
                 hero: true,
               },
