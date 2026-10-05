@@ -139,6 +139,9 @@ def build(*, lang: Language, risk_category: str, official_warning: bool,
           best_window: Optional[Sequence[int]], forecast: Sequence[Dict]) -> List[str]:
     """The whole advisory, as short spoken-style sentences."""
     lines: List[str] = []
+    # A no-go day never names grounds or hours: under "do not go out" they read
+    # as an invitation. Same rule as the frontend's tripIsOff().
+    trip_off = risk_category == "EXTREME" or (duration is not None and not duration.get("feasible"))
 
     # 1. safety first, always
     lines.append(GO_LINE.get(risk_category, GO_LINE["MODERATE"])[lang])
@@ -181,7 +184,9 @@ def build(*, lang: Language, risk_category: str, official_warning: bool,
 
     # 3. where the fish are
     good = [z for z in zones if z.get("rating") in ("very_good", "good")]
-    if good:
+    if trip_off:
+        pass
+    elif good:
         numbers = ", ".join(str(z["rank"]) for z in good[:3])
         # Point him at the ground worth the trip, not merely the highest odds.
         top = next((z for z in zones if z.get("recommended")), good[0])
@@ -207,7 +212,7 @@ def build(*, lang: Language, risk_category: str, official_warning: bool,
         }[lang])
 
     # 4. best hours to be on the water
-    if best_window and len(best_window) == 2:
+    if best_window and len(best_window) == 2 and not trip_off:
         lines.append({
             "en": f"The best time to fish is {span(best_window[0], best_window[1], 'en')}.",
             "hi": f"मछली पकड़ने का सबसे अच्छा समय {span(best_window[0], best_window[1], 'hi')} है।",
