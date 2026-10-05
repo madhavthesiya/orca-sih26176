@@ -107,44 +107,45 @@ export default function AuthorityPanel({ language = "en" }: { language?: Languag
     return <div className="panel p-6 text-sm text-risk-extreme">Failed to load: {error}</div>;
   if (!data) return <div className="panel p-6 text-sm italic text-ink-400">{t.loading}</div>;
 
+  // Counts that need someone's attention light up in buoy yellow; the rest stay white.
   const tiles = [
-    { key: "monitored", label: t.centres, color: "#2148BF" },
-    { key: "extreme", label: t.extreme, color: RISK_COLOR.EXTREME },
-    { key: "high", label: t.high, color: RISK_COLOR.HIGH },
-    { key: "official_warnings", label: t.warnings, color: "#A86B00" },
+    { key: "monitored", label: t.centres, alarm: false },
+    { key: "extreme", label: t.extreme, alarm: true },
+    { key: "high", label: t.high, alarm: true },
+    { key: "official_warnings", label: t.warnings, alarm: true },
   ];
 
   return (
     <div className="space-y-4">
-      <div className="panel grid grid-cols-2 sm:grid-cols-4">
-        {tiles.map((t, i) => (
-          <div
-            key={t.key}
-            className={`px-5 py-4 ${i > 0 ? "border-l" : ""}`}
-            style={{ borderColor: "var(--rule-faint)" }}
-          >
-            <div
-              className="font-display text-[34px] font-black leading-none tabular-nums"
-              style={{ color: t.color }}
-            >
-              {data.summary[t.key] ?? 0}
+      <div className="grid grid-cols-2 overflow-hidden rounded-[14px] bg-ink-900 sm:grid-cols-4">
+        {tiles.map((x, i) => {
+          const n = Number(data.summary[x.key] ?? 0);
+          return (
+            <div key={x.key} className={`px-5 py-4 ${i > 0 ? "border-l border-paper-50/10" : ""}`}>
+              <div className="text-[12.5px] font-bold text-ink-300">{x.label}</div>
+              <div
+                className={`mt-1.5 font-display text-[40px] font-extrabold leading-none tabular-nums ${
+                  x.alarm && n > 0 ? "text-flag" : "text-paper-50"
+                }`}
+              >
+                {n}
+              </div>
             </div>
-            <div className="label mt-1.5">{t.label}</div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <div className="panel rule-double overflow-hidden">
         <div className="hd">
           <span className="label">{t.board}</span>
           <span className="flex items-center gap-3">
-            <span className="font-mono text-[10px] tabular-nums text-ink-400">
+            <span className="font-mono text-[12px] tabular-nums text-ink-400">
               {data.generated_at.slice(0, 16).replace("T", " ")} IST · {t.refresh}
             </span>
             {/* The day's advisory board as a file the administration can circulate. */}
             <button
               onClick={() => exportCsv(data)}
-              className="btn-line !px-2.5 !py-1 !text-[9.5px]"
+              className="btn-line !px-2.5 !py-1 !text-[11.5px]"
               title="Download the board as a CSV advisory sheet"
             >
               {t.export}
@@ -158,7 +159,7 @@ export default function AuthorityPanel({ language = "en" }: { language?: Languag
                 {[t.hCentre, t.hState, t.hRisk, t.hWave, t.hWind, t.hWarning].map((h, i) => (
                   <th
                     key={h}
-                    className={`py-2.5 font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-ink-400 ${
+                    className={`py-2.5 text-[11.5px] font-bold text-ink-400 ${
                       i === 0 ? "pl-4 pr-3" : i === 5 ? "px-4" : "px-3"
                     }`}
                   >
@@ -189,7 +190,7 @@ export default function AuthorityPanel({ language = "en" }: { language?: Languag
                           {row.risk_score}
                         </span>
                         <span
-                          className="border px-1.5 py-px font-mono text-[8.5px] font-bold tracking-wider"
+                          className="border px-1.5 py-px font-mono text-[11px] font-bold"
                           style={{ color, borderColor: color }}
                         >
                           {row.risk_category}
@@ -211,7 +212,7 @@ export default function AuthorityPanel({ language = "en" }: { language?: Languag
                               setSmsData({ port: row.name, payload: res.sms_payload });
                             });
                           }}
-                          className="btn-line !px-2 !py-0.5 !text-[9px] hover:bg-ink-100"
+                          className="btn-line !px-2 !py-0.5 !text-[11.5px] hover:bg-ink-100"
                           title="Generate offline SMS payload"
                         >
                           SMS

@@ -187,12 +187,14 @@ export default function App() {
       setTab(tabParam);
     const langParam = params.get("lang");
     if (langParam === "en" || langParam === "hi" || langParam === "gu") setLangChoice(langParam);
+    const timers: number[] = [];
     const wanted = params.get("demo");
     if (wanted) {
       const s = SCENARIOS.find((x) => x.id === wanted || x.n === wanted);
-      if (s) setTimeout(() => runScenario(s.ask), 250);
+      if (s) timers.push(window.setTimeout(() => runScenario(s.ask), 250));
     }
-    if (params.get("tour") === "1") setTimeout(() => startTour(), 500);
+    if (params.get("tour") === "1") timers.push(window.setTimeout(() => startTour(), 500));
+    return () => timers.forEach((id) => window.clearTimeout(id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -531,7 +533,7 @@ export default function App() {
               />
 
               {outlook && (
-                <div className="panel grid grid-cols-2 sm:grid-cols-4">
+                <div className="grid grid-cols-2 overflow-hidden rounded-[14px] bg-ink-900 sm:grid-cols-4">
                   {[
                     {
                       k: language === "gu" ? "સુરક્ષા" : language === "hi" ? "सुरक्षा" : "Safety",
@@ -557,18 +559,15 @@ export default function App() {
                   ].map((x, i) => (
                     <div
                       key={x.k}
-                      className={`group px-4 py-3 transition-colors hover:bg-chart-100/40 ${i > 0 ? "border-l" : ""}`}
-                      style={{ borderColor: "var(--rule-faint)" }}
+                      className={`px-5 py-3.5 ${i > 0 ? "border-l border-paper-50/10" : ""}`}
                     >
-                      <div className="label truncate">{x.k}</div>
-                      <div
-                        className={`mt-1 font-mono text-[20px] font-bold tabular-nums leading-none text-ink-900 ${
-                          x.color ? "" : "transition-colors group-hover:text-chart-600"
-                        }`}
-                        style={x.color ? { color: x.color } : undefined}
-                      >
+                      <div className="flex items-center gap-2 truncate text-[12.5px] font-bold text-ink-300">
+                        {x.color && <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: x.color }} />}
+                        {x.k}
+                      </div>
+                      <div className="mt-1 font-display text-[34px] font-extrabold tabular-nums leading-none text-paper-50">
                         {x.v}
-                        <span className="ml-1.5 text-[10px] font-semibold opacity-60">{x.s}</span>
+                        <span className="ml-1.5 font-sans text-[13px] font-bold text-ink-300">{x.s}</span>
                       </div>
                     </div>
                   ))}
@@ -625,11 +624,11 @@ export default function App() {
                   title={s.ask}
                   className="chip disabled:cursor-not-allowed disabled:opacity-40"
                 >
-                  <span className="grid w-[18px] shrink-0 place-items-center rounded-full bg-ink-900 font-display text-[10px] font-bold leading-none text-paper-50" style={{ height: 18 }}>
+                  <span className="grid w-[18px] shrink-0 place-items-center rounded-full bg-ink-900 font-display text-[12px] font-bold leading-none text-paper-50" style={{ height: 18 }}>
                     {s.n}
                   </span>
                   <span className="font-semibold">{s.label[language] ?? s.label.en}</span>
-                  <span className="font-mono text-[10px] uppercase tracking-wide opacity-60">{s.hint}</span>
+                  <span className="text-[12px] opacity-60 font-bold">{s.hint}</span>
                 </button>
               ))}
             </div>
@@ -689,7 +688,7 @@ export default function App() {
                           <div className="mt-1 text-[12px] leading-relaxed text-ink-700">
                             {a.detail}
                           </div>
-                          <div className="mt-1 font-mono text-[10px] uppercase tracking-wide text-ink-400">
+                          <div className="mt-1 text-[12px] text-ink-400 font-bold">
                             {a.source} · {a.severity}
                             {a.valid_till ? ` · ${ui.validTill} ${a.valid_till}` : ""}
                           </div>
@@ -731,7 +730,7 @@ export default function App() {
                               </svg>
                               {r.name}
                               {r.recommended && (
-                                <span className="stamp !px-1.5 !py-0.5 !text-[9px] text-risk-low">
+                                <span className="stamp !px-1.5 !py-0.5 !text-[11.5px] text-risk-low">
                                   {ui.recommended}
                                 </span>
                               )}
@@ -754,7 +753,7 @@ export default function App() {
                 )}
 
                 {latest && (
-                  <p className="px-1 pb-2 font-mono text-[10.5px] leading-relaxed text-ink-400">
+                  <p className="px-1 pb-2 font-mono text-[12px] leading-relaxed text-ink-400">
                     {latest.disclaimer}
                   </p>
                 )}

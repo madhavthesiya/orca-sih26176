@@ -211,7 +211,7 @@ export default function FishingPanel({
                 key={i}
                 className="mt-2.5 flex gap-2.5 text-[13.5px] leading-relaxed text-ink-700"
               >
-                <span className="mt-[8px] h-1.5 w-1.5 shrink-0 rotate-45 bg-chart-500/70" />
+                <span className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-chart-500" />
                 <span>{line}</span>
               </p>
             ),
@@ -246,7 +246,7 @@ export default function FishingPanel({
                 {t.hideGrounds}
               </button>
             )}
-            <span className="font-mono text-[10px] tabular-nums text-ink-400">
+            <span className="font-mono text-[12px] tabular-nums text-ink-400">
               {language === "en"
                 ? `${t.within} ${data.radius_km} km`
                 : `${data.radius_km} km ${t.within}`}
@@ -280,7 +280,7 @@ export default function FishingPanel({
                         {kilometres(a.distance_km)} km {t.away}
                       </span>
                       {a.recommended && (
-                        <span className="stamp !px-1.5 !py-0.5 !text-[8.5px] text-risk-low">
+                        <span className="stamp !px-1.5 !py-0.5 !text-[11px] text-risk-low">
                           {language === "gu" ? "સૂચવેલ" : language === "hi" ? "सुझाई गई" : "Best trip"}
                         </span>
                       )}
@@ -313,7 +313,7 @@ export default function FishingPanel({
                     </div>
                     {(a.likely_species?.length ?? 0) > 0 && (
                       <div
-                        className="mt-1 flex items-center gap-1.5 truncate font-mono text-[10px] text-chart-700"
+                        className="mt-1 flex items-center gap-1.5 truncate font-mono text-[12px] text-chart-700"
                         title={`${t.likely}: ${a.likely_species!.join(" · ")} — ${t.likelyNote}`}
                       >
                         <FishGlyph size={13} className="swim shrink-0" />
@@ -346,7 +346,7 @@ export default function FishingPanel({
               ))}
             </div>
 
-            <p className="mt-2 font-mono text-[8.5px] uppercase tracking-[0.14em] text-ink-300">
+            <p className="mt-2 text-[11px] text-ink-300 font-bold">
               {t.barsCaption}
             </p>
 
@@ -393,7 +393,7 @@ export default function FishingPanel({
                       }`}
                     >
                       {x.v}
-                      <span className="ml-1 text-[10.5px] font-semibold opacity-65">{x.u}</span>
+                      <span className="ml-1 text-[12px] font-semibold opacity-65">{x.u}</span>
                     </div>
                   </div>
                 ))}
@@ -408,7 +408,7 @@ export default function FishingPanel({
                     {data.duration.return_by}
                   </span>
                   {data.duration.return_reason_wave_m != null && (
-                    <span className="font-mono text-[10.5px] text-ink-500">
+                    <span className="font-mono text-[12px] text-ink-500">
                       — {t.returnWhy} {metres(data.duration.return_reason_wave_m)} m
                     </span>
                   )}
@@ -439,7 +439,7 @@ export default function FishingPanel({
         <div className="panel overflow-hidden">
           <div className="hd">
             <span className="label">{t.econ}</span>
-            <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-ink-400">
+            <span className="text-[11.5px] text-ink-400 font-bold">
               {t.econNote}
             </span>
           </div>
@@ -472,20 +472,20 @@ export default function FishingPanel({
                 className={`px-4 py-3 ${i > 0 ? "border-l" : ""} ${x.hero ? "bg-risk-low/[0.07]" : ""}`}
                 style={{ borderColor: "var(--rule-faint)" }}
               >
-                <div className="label truncate !text-[9px]">{x.k}</div>
+                <div className="label truncate !text-[11.5px]">{x.k}</div>
                 <div
                   className={`mt-1 font-mono text-[18px] font-bold tabular-nums leading-none ${
                     x.hero ? "text-risk-low" : "text-ink-900"
                   }`}
                 >
                   {x.v}
-                  {x.s && <span className="ml-1 text-[10px] font-semibold opacity-60">{x.s}</span>}
+                  {x.s && <span className="ml-1 text-[12px] font-semibold opacity-60">{x.s}</span>}
                 </div>
               </div>
             ))}
           </div>
           <p
-            className="border-t px-4 py-2 font-mono text-[9px] uppercase tracking-[0.08em] text-ink-400"
+            className="border-t px-4 py-2 text-[11.5px] text-ink-400 font-bold"
             style={{ borderColor: "var(--rule-faint)" }}
           >
             {data.economics.assumptions}
@@ -542,7 +542,7 @@ export default function FishingPanel({
                 }`}
                 style={{ borderColor: "var(--rule-faint)" }}
               >
-                <div className="label truncate !tracking-[0.1em]">{dayName(f.day_offset, t)}</div>
+                <div className="label truncate">{dayName(f.day_offset, t)}</div>
                 <div
                   className="sounding mt-1.5 text-[27px] leading-none tabular-nums"
                   style={{ color: RATING_COLOR[f.rating] }}
@@ -550,21 +550,21 @@ export default function FishingPanel({
                   {f.probability}
                   <span className="text-[14px]">%</span>
                 </div>
-                <div className="mt-1.5 text-[10.5px] leading-tight text-ink-500">
+                <div className="mt-1.5 text-[12px] leading-tight text-ink-500">
                   {t.bestAt} {clock12(f.best_hour)}
                 </div>
-                <div className="mt-0.5 font-mono text-[10px] text-ink-400">{metres(f.wave_height_m)} m</div>
+                <div className="mt-0.5 font-mono text-[12px] text-ink-400">{metres(f.wave_height_m)} m</div>
                 {f.official_warning && (
                   <div className="mt-1.5 inline-flex items-center gap-1 border border-risk-extreme/60 px-1.5 py-0.5 text-risk-extreme">
                     <WarnGlyph size={10} />
-                    <span className="font-mono text-[8.5px] font-bold uppercase tracking-wide">Warning</span>
+                    <span className="text-[11px] font-bold">Warning</span>
                   </div>
                 )}
               </div>
             ))}
           </div>
           <p
-            className="border-t px-4 py-2.5 font-mono text-[10px] leading-relaxed text-ink-400"
+            className="border-t px-4 py-2.5 font-mono text-[12px] leading-relaxed text-ink-400"
             style={{ borderColor: "var(--rule-faint)" }}
           >
             {data.method}
