@@ -714,7 +714,7 @@ export default function App() {
                                 y1="4"
                                 x2="25"
                                 y2="4"
-                                stroke={r.recommended ? "#1D7A50" : "#5D7386"}
+                                stroke={r.recommended ? "#0F8A5C" : "#5C7189"}
                                 strokeWidth="2"
                                 strokeDasharray={r.recommended ? "7 4" : "2 4"}
                               />

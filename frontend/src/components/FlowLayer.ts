@@ -22,13 +22,13 @@ export type FlowMode = "wind" | "current" | "off";
 type Vec = { u: number; v: number } | null;
 
 const WIND_RAMP: [number, string][] = [
-  [5, "#8FB0C0"], [14, "#2A7391"], [24, "#1D7A50"], [34, "#63862B"], [999, "#B08000"],
+  [5, "#93AEEB"], [14, "#3461D9"], [24, "#0F8A5C"], [34, "#63862B"], [999, "#B57A00"],
 ];
 const CUR_RAMP: [number, string][] = [
-  [0.4, "#8FB0C0"], [0.9, "#2A7391"], [1.6, "#1D7A50"], [2.6, "#63862B"], [999, "#B08000"],
+  [0.4, "#93AEEB"], [0.9, "#3461D9"], [1.6, "#0F8A5C"], [2.6, "#63862B"], [999, "#B57A00"],
 ];
 const SST_RAMP: [number, string][] = [
-  [25.0, "#3E7A99"], [27.0, "#2F8A7D"], [28.5, "#7E9A4A"], [30.0, "#B08532"], [99, "#BF6A1F"],
+  [25.0, "#4A6FD6"], [27.0, "#2F8A7D"], [28.5, "#7E9A4A"], [30.0, "#B08532"], [99, "#BF6A1F"],
 ];
 
 function rampColor(ramp: [number, string][], v: number): string {

@@ -3,9 +3,9 @@ import { FishGlyph, SchoolGlyph, WarnGlyph } from "./glyphs";
 
 /** Rating colours tuned for chart paper — inky enough to read as drafted. */
 export const RATING_COLOR: Record<CatchRating, string> = {
-  very_good: "#1D7A50",
+  very_good: "#0F8A5C",
   good: "#63862B",
-  fair: "#B08000",
+  fair: "#B57A00",
   poor: "#9C5F44",
 };
 
@@ -453,7 +453,7 @@ export default function FishingPanel({
             {data.avoid.map((z) => (
               <div key={z.name} className="flex items-start gap-2.5">
                 <svg width="14" height="14" className="mt-0.5 shrink-0" aria-hidden>
-                  <rect x="0.5" y="0.5" width="13" height="13" fill="url(#hatch-critical)" stroke="#AF2318" strokeWidth="1" />
+                  <rect x="0.5" y="0.5" width="13" height="13" fill="url(#hatch-critical)" stroke="#C81E36" strokeWidth="1" />
                 </svg>
                 <div className="min-w-0 flex-1">
                   <div className="text-[13px] font-bold text-ink-900">{z.name}</div>

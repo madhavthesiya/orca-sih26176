@@ -277,11 +277,11 @@ export default function SystemPanel({
   const pText = providerText[language] ?? providerText.en;
 
   const providers = [
-    { name: "Open-Meteo Marine", status: "LIVE", color: "#1D7A50", live: true, ...pText[0] },
-    { name: "Open-Meteo Forecast", status: "LIVE", color: "#1D7A50", live: true, ...pText[1] },
-    { name: "INCOIS · IMD · MOSDAC", status: "INTERFACE READY", color: "#A17000", live: false, ...pText[2] },
-    { name: "OBIS · Map of Life", status: "BUNDLED SNAPSHOT", color: "#1E5F7A", live: false, ...pText[3] },
-    { name: "Demo store", status: "ALWAYS ON", color: "#42596D", live: false, ...pText[4] },
+    { name: "Open-Meteo Marine", status: "LIVE", color: "#0F8A5C", live: true, ...pText[0] },
+    { name: "Open-Meteo Forecast", status: "LIVE", color: "#0F8A5C", live: true, ...pText[1] },
+    { name: "INCOIS · IMD · MOSDAC", status: "INTERFACE READY", color: "#A86B00", live: false, ...pText[2] },
+    { name: "OBIS · Map of Life", status: "BUNDLED SNAPSHOT", color: "#2148BF", live: false, ...pText[3] },
+    { name: "Demo store", status: "ALWAYS ON", color: "#3F5A78", live: false, ...pText[4] },
   ];
 
   const crewText: Record<Language, { phase: string; agents: string[]; note: string }[]> = {
@@ -435,8 +435,8 @@ export default function SystemPanel({
                       <span
                         className="pulse-dot !h-[6px] !w-[6px]"
                         style={{
-                          background: "#2A7391",
-                          color: "#2A7391",
+                          background: "#3461D9",
+                          color: "#3461D9",
                           animationDelay: `${j * 0.3}s`,
                         }}
                       />
@@ -478,7 +478,7 @@ export default function SystemPanel({
           <span className="label flex items-center gap-2">
             <span
               className={`pulse-dot ${scanning ? "" : "pulse-dot--still"}`}
-              style={{ background: scanning ? "#1D7A50" : "#AF2318", color: scanning ? "#1D7A50" : "#AF2318" }}
+              style={{ background: scanning ? "#0F8A5C" : "#C81E36", color: scanning ? "#0F8A5C" : "#C81E36" }}
             />
             {t.reading}
           </span>
@@ -554,8 +554,8 @@ export default function SystemPanel({
                     <span
                       className="border px-1.5 py-px text-[8.5px] font-bold tracking-wider"
                       style={{
-                        color: r.mode === "LIVE" ? "#1D7A50" : "#A17000",
-                        borderColor: r.mode === "LIVE" ? "#1D7A50" : "#A17000",
+                        color: r.mode === "LIVE" ? "#0F8A5C" : "#A86B00",
+                        borderColor: r.mode === "LIVE" ? "#0F8A5C" : "#A86B00",
                       }}
                     >
                       {r.mode}

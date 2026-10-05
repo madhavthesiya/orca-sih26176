@@ -63,10 +63,10 @@ const PHASES: { key: string; agents: string[] }[] = [
 ];
 
 const STATUS_DOT: Record<Trace["status"], string> = {
-  ok: "#1D7A50",
-  degraded: "#A17000",
-  failed: "#AF2318",
-  skipped: "#82949F",
+  ok: "#0F8A5C",
+  degraded: "#A86B00",
+  failed: "#C81E36",
+  skipped: "#8A9AAD",
 };
 
 /**

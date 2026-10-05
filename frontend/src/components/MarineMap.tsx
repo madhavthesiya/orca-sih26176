@@ -18,9 +18,9 @@ import { CompassMark } from "./glyphs";
 
 /** Zone stroke colours; the fills are true chart hatching via CSS patterns. */
 const ZONE_COLOR: Record<string, string> = {
-  critical: "#AF2318",
-  warning: "#BF4E12",
-  info: "#2A7391",
+  critical: "#C81E36",
+  warning: "#D1460E",
+  info: "#3461D9",
 };
 
 const HINT: Record<Language, string> = {
@@ -218,11 +218,11 @@ export default function MarineMap({
     if (origin && radiusKm) {
       L.circle([origin.latitude, origin.longitude], {
         radius: radiusKm * 1000,
-        color: "#2A7391",
+        color: "#3461D9",
         weight: 1.6,
         opacity: 0.75,
         dashArray: "2 7",
-        fillColor: "#2A7391",
+        fillColor: "#3461D9",
         fillOpacity: 0.03,
         interactive: false,
         className: "radius-drift",
@@ -257,7 +257,7 @@ export default function MarineMap({
       // warning area, hatched like every danger area on this chart
       L.circle([s.latitude, s.longitude], {
         radius: s.radius_km * 1000,
-        color: "#AF2318",
+        color: "#C81E36",
         weight: 2,
         opacity: 0.9,
         dashArray: "10 6",
@@ -270,7 +270,7 @@ export default function MarineMap({
       if (track.length > 1) {
         const line = track.map((p) => [p.latitude, p.longitude] as [number, number]);
         L.polyline(line, {
-          color: "#AF2318",
+          color: "#C81E36",
           weight: 2.5,
           opacity: 0.85,
           dashArray: "3 7",
@@ -282,8 +282,8 @@ export default function MarineMap({
               className: "",
               iconSize: [11, 11],
               iconAnchor: [5.5, 5.5],
-              html: `<div style="width:11px;height:11px;border-radius:50%;background:#FBF7ED;
-                       border:2.5px solid #AF2318;box-shadow:0 1px 4px rgba(18,33,45,.4)"></div>`,
+              html: `<div style="width:11px;height:11px;border-radius:50%;background:#FFFFFF;
+                       border:2.5px solid #C81E36;box-shadow:0 1px 4px rgba(11,42,74,.4)"></div>`,
             }),
           })
             .bindTooltip(p.label, { direction: "top", offset: [0, -6] })
@@ -301,12 +301,12 @@ export default function MarineMap({
             iconSize: [56, 56],
             iconAnchor: [28, 28],
             html: `<div class="storm-spin" style="width:56px;height:56px;
-                        filter:drop-shadow(0 0 3px rgba(245,238,221,.95)) drop-shadow(0 2px 6px rgba(18,33,45,.35))">
+                        filter:drop-shadow(0 0 3px rgba(238,242,245,.95)) drop-shadow(0 2px 6px rgba(11,42,74,.35))">
                      <svg viewBox="0 0 56 56" width="56" height="56" fill="none">
-                       <path d="M28 5 A 23 23 0 0 1 51 28" stroke="#AF2318" stroke-width="6" stroke-linecap="round"/>
-                       <path d="M28 51 A 23 23 0 0 1 5 28" stroke="#AF2318" stroke-width="6" stroke-linecap="round"/>
-                       <circle cx="28" cy="28" r="10.5" fill="#AF2318"/>
-                       <circle cx="28" cy="28" r="4" fill="#FBF7ED"/>
+                       <path d="M28 5 A 23 23 0 0 1 51 28" stroke="#C81E36" stroke-width="6" stroke-linecap="round"/>
+                       <path d="M28 51 A 23 23 0 0 1 5 28" stroke="#C81E36" stroke-width="6" stroke-linecap="round"/>
+                       <circle cx="28" cy="28" r="10.5" fill="#C81E36"/>
+                       <circle cx="28" cy="28" r="4" fill="#FFFFFF"/>
                      </svg>
                    </div>`,
           }),
@@ -332,7 +332,7 @@ export default function MarineMap({
       line.forEach((p) => bounds.push(p));
       const rec = r.recommended;
       L.polyline(line, {
-        color: rec ? "#1D7A50" : "#5D7386",
+        color: rec ? "#0F8A5C" : "#5C7189",
         weight: rec ? 4 : 2.5,
         opacity: rec ? 0.95 : 0.55,
         dashArray: rec ? "12 12" : "2 8",
@@ -362,12 +362,12 @@ export default function MarineMap({
                         animation-delay:${((a.rank * 7) % 10) / 3}s">
                      ${focused ? `<div style="position:absolute;inset:-8px;border-radius:50%;
                         border:2px solid ${color};animation:ping2 1.6s cubic-bezier(0,0,.2,1) infinite"></div>` : ""}
-                     <div class="buoy" style="position:absolute;inset:0;border-radius:50%;background:#FBF7ED;
+                     <div class="buoy" style="position:absolute;inset:0;border-radius:50%;background:#FFFFFF;
                        border:${best ? 4 : 3.5}px solid ${color};display:flex;flex-direction:column;
                        align-items:center;justify-content:center;line-height:1;gap:1px;
-                       box-shadow:0 3px 10px rgba(18,33,45,.4);color:#12212D">
+                       box-shadow:0 3px 10px rgba(11,42,74,.4);color:#0B2A4A">
                        <span style="font:${best ? "800 16px" : "700 14px"} ${SERIF}">${a.rank}</span>
-                       <span style="font:600 ${best ? 8.5 : 8}px ${MONO};color:#42596D">${a.probability}%</span>
+                       <span style="font:600 ${best ? 8.5 : 8}px ${MONO};color:#3F5A78">${a.probability}%</span>
                      </div>
                    </div>`,
           }),
@@ -386,17 +386,17 @@ export default function MarineMap({
       pfz.forEach((z) => {
         const best = z.rank === 1;
         const size = best ? 40 : 32;
-        const color = best ? "#1D7A50" : "#2A7391";
+        const color = best ? "#0F8A5C" : "#3461D9";
         L.marker([z.latitude, z.longitude], {
           icon: L.divIcon({
             className: "",
             iconSize: [size, size],
             iconAnchor: [size / 2, size / 2],
             html: `<div class="bob" style="width:${size}px;height:${size}px;animation-delay:${((z.rank * 7) % 10) / 3}s">
-                     <div class="buoy" style="width:100%;height:100%;border-radius:50%;background:#FBF7ED;
+                     <div class="buoy" style="width:100%;height:100%;border-radius:50%;background:#FFFFFF;
                        border:${best ? 4 : 3}px solid ${color};display:grid;place-items:center;
-                       color:#12212D;font:${best ? "800 16px" : "700 13px"} ${SERIF};
-                       box-shadow:0 3px 10px rgba(18,33,45,.4)">${z.rank}</div>
+                       color:#0B2A4A;font:${best ? "800 16px" : "700 13px"} ${SERIF};
+                       box-shadow:0 3px 10px rgba(11,42,74,.4)">${z.rank}</div>
                    </div>`,
           }),
         })
@@ -424,15 +424,15 @@ export default function MarineMap({
           // fail to render entirely on a projector/kiosk machine.
           html: `<div class="roll" style="position:relative;width:34px;height:34px;cursor:grab">
                    <div style="position:absolute;inset:-9px;border-radius:50%;
-                     border:2px solid rgba(42,115,145,.6);
+                     border:2px solid rgba(52,97,217,.6);
                      animation:ping2 2s cubic-bezier(0,0,.2,1) infinite"></div>
-                   <div class="buoy" style="position:absolute;inset:0;border-radius:50%;background:#12212D;
-                     border:2.5px solid #FBF7ED;box-shadow:0 3px 10px rgba(18,33,45,.5);
+                   <div class="buoy" style="position:absolute;inset:0;border-radius:50%;background:#0B2A4A;
+                     border:2.5px solid #FFFFFF;box-shadow:0 3px 10px rgba(11,42,74,.5);
                      display:grid;place-items:center">
                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                          stroke="#FBF7ED" stroke-width="2" stroke-linecap="round"
+                          stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"
                           stroke-linejoin="round">
-                       <path d="M12 3v10"/><path d="M12 5l7 8H5l7-8z" fill="#FBF7ED" stroke="none"/>
+                       <path d="M12 3v10"/><path d="M12 5l7 8H5l7-8z" fill="#FFFFFF" stroke="none"/>
                        <path d="M3 17c2 1.6 4 1.6 6 0s4-1.6 6 0 4 1.6 6 0"/>
                      </svg>
                    </div>
@@ -553,8 +553,8 @@ export default function MarineMap({
             {(LEGEND[language] ?? LEGEND.en).symbols}
           </div>
           {[
-            ["#1D7A50", (LEGEND[language] ?? LEGEND.en).veryGood],
-            ["#B08000", (LEGEND[language] ?? LEGEND.en).some],
+            ["#0F8A5C", (LEGEND[language] ?? LEGEND.en).veryGood],
+            ["#B57A00", (LEGEND[language] ?? LEGEND.en).some],
           ].map(([c, label]) => (
             <div key={label} className="flex items-center gap-2 py-[1.5px] text-[10.5px] font-medium text-ink-700">
               <span
@@ -566,22 +566,22 @@ export default function MarineMap({
           ))}
           <div className="flex items-center gap-2 py-[1.5px] text-[10.5px] font-medium text-ink-700">
             <svg width="10" height="10" aria-hidden>
-              <rect x="0.5" y="0.5" width="9" height="9" fill="url(#hatch-critical)" stroke="#AF2318" strokeWidth="1" />
+              <rect x="0.5" y="0.5" width="9" height="9" fill="url(#hatch-critical)" stroke="#C81E36" strokeWidth="1" />
             </svg>
             {(LEGEND[language] ?? LEGEND.en).noEntry}
           </div>
           <div className="flex items-center gap-2 py-[1.5px] text-[10.5px] font-medium text-ink-700">
             <svg width="12" height="6" aria-hidden>
-              <line x1="0" y1="3" x2="12" y2="3" stroke="#1D7A50" strokeWidth="2" strokeDasharray="4 2.5" />
+              <line x1="0" y1="3" x2="12" y2="3" stroke="#0F8A5C" strokeWidth="2" strokeDasharray="4 2.5" />
             </svg>
             {(LEGEND[language] ?? LEGEND.en).course}
           </div>
           {alerts.some((a) => a.storm) && (
             <div className="flex items-center gap-2 py-[1.5px] text-[10.5px] font-medium text-ink-700">
               <svg width="11" height="11" viewBox="0 0 56 56" fill="none" aria-hidden>
-                <path d="M28 5 A 23 23 0 0 1 51 28" stroke="#AF2318" strokeWidth="9" strokeLinecap="round" />
-                <path d="M28 51 A 23 23 0 0 1 5 28" stroke="#AF2318" strokeWidth="9" strokeLinecap="round" />
-                <circle cx="28" cy="28" r="12" fill="#AF2318" />
+                <path d="M28 5 A 23 23 0 0 1 51 28" stroke="#C81E36" strokeWidth="9" strokeLinecap="round" />
+                <path d="M28 51 A 23 23 0 0 1 5 28" stroke="#C81E36" strokeWidth="9" strokeLinecap="round" />
+                <circle cx="28" cy="28" r="12" fill="#C81E36" />
               </svg>
               {(LEGEND[language] ?? LEGEND.en).storm}
             </div>
@@ -597,7 +597,7 @@ export default function MarineMap({
                 className="h-[5px] w-14 rounded-sm"
                 style={{
                   background:
-                    "linear-gradient(90deg,#3E7A99,#2F8A7D,#7E9A4A,#B08532,#BF6A1F)",
+                    "linear-gradient(90deg,#4A6FD6,#2F8A7D,#7E9A4A,#B08532,#BF6A1F)",
                 }}
               />
               <span>{(LEGEND[language] ?? LEGEND.en).sstWarm}</span>

@@ -284,7 +284,7 @@ export default function MobileApp() {
 
   // ---------------------------------------------------------------- bits
   const cat = outlook?.safety.category;
-  const color = cat ? RISK_COLOR[cat] : "#42596D";
+  const color = cat ? RISK_COLOR[cat] : "#3F5A78";
   const danger = cat === "HIGH" || cat === "EXTREME";
 
   const speakArea = (a: FishingOutlook["areas"][number]) => {

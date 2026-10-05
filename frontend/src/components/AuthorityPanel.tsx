@@ -107,10 +107,10 @@ export default function AuthorityPanel({ language = "en" }: { language?: Languag
   if (!data) return <div className="panel p-6 text-sm italic text-ink-400">{t.loading}</div>;
 
   const tiles = [
-    { key: "monitored", label: t.centres, color: "#1E5F7A" },
+    { key: "monitored", label: t.centres, color: "#2148BF" },
     { key: "extreme", label: t.extreme, color: RISK_COLOR.EXTREME },
     { key: "high", label: t.high, color: RISK_COLOR.HIGH },
-    { key: "official_warnings", label: t.warnings, color: "#A17000" },
+    { key: "official_warnings", label: t.warnings, color: "#A86B00" },
   ];
 
   return (

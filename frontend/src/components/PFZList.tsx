@@ -43,7 +43,7 @@ export default function PFZList({
       <div className="space-y-2 px-4 py-3.5">
         {zones.map((z) => {
           const best = z.rank === 1;
-          const ring = best ? "#1D7A50" : "#2A7391";
+          const ring = best ? "#0F8A5C" : "#3461D9";
           return (
             <div
               key={z.rank}
@@ -77,7 +77,7 @@ export default function PFZList({
               <div className="shrink-0 text-right">
                 <div
                   className="sounding text-[17px] tabular-nums"
-                  style={{ color: best ? "#1D7A50" : "#2A7391" }}
+                  style={{ color: best ? "#0F8A5C" : "#3461D9" }}
                 >
                   {Math.round(z.confidence * 100)}%
                 </div>

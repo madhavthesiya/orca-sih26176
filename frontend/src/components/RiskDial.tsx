@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import type { RiskCategory } from "../types";
 
 export const RISK_COLOR: Record<RiskCategory, string> = {
-  LOW: "#1D7A50",
-  MODERATE: "#A17000",
-  HIGH: "#BF4E12",
-  EXTREME: "#AF2318",
-  UNKNOWN: "#888888",
+  LOW: "#0F8A5C",
+  MODERATE: "#A86B00",
+  HIGH: "#D1460E",
+  EXTREME: "#C81E36",
+  UNKNOWN: "#8A9AAD",
 };
 
 /**
@@ -98,7 +98,7 @@ export default function RiskDial({
             y1={tk.y1}
             x2={tk.x2}
             y2={tk.y2}
-            stroke="#12212D"
+            stroke="#0B2A4A"
             strokeWidth={tk.major ? 1.3 : 0.6}
             opacity={tk.major ? 0.7 : 0.35}
           />
@@ -114,7 +114,7 @@ export default function RiskDial({
             strokeWidth={2.4}
           />
         ))}
-        <circle cx={c} cy={c} r={rArc} fill="#FBF7ED" stroke="rgba(18,33,45,0.2)" strokeWidth={7} />
+        <circle cx={c} cy={c} r={rArc} fill="#FFFFFF" stroke="rgba(11,42,74,0.2)" strokeWidth={7} />
         <circle
           cx={c}
           cy={c}
@@ -128,7 +128,7 @@ export default function RiskDial({
           style={{ transition: "stroke-dashoffset .12s linear" }}
           transform={`rotate(-90 ${c} ${c})`}
         />
-        <circle cx={c} cy={c} r={rArc - 6.5} fill="none" stroke="rgba(18,33,45,0.3)" strokeWidth={0.8} />
+        <circle cx={c} cy={c} r={rArc - 6.5} fill="none" stroke="rgba(11,42,74,0.3)" strokeWidth={0.8} />
       </svg>
       <div className="absolute inset-0 grid place-items-center">
         <div className="text-center leading-none">

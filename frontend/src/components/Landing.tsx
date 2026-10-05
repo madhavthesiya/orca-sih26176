@@ -410,17 +410,17 @@ export default function Landing({
         <Reveal delay={260} className="hidden justify-self-end lg:block">
           <svg viewBox="0 0 440 300" className="w-full max-w-[440px]" aria-hidden>
             {/* the water itself */}
-            <rect x="0" y="0" width="440" height="300" fill="#2A7391" opacity="0.06" />
-            <rect x="0" y="150" width="440" height="150" fill="#2A7391" opacity="0.05" />
+            <rect x="0" y="0" width="440" height="300" fill="#3461D9" opacity="0.06" />
+            <rect x="0" y="150" width="440" height="150" fill="#3461D9" opacity="0.05" />
             {/* graticule */}
             {[60, 130, 200, 270].map((y) => (
-              <line key={y} x1="0" y1={y} x2="440" y2={y} stroke="#2A7391" strokeWidth="0.5" opacity="0.2" />
+              <line key={y} x1="0" y1={y} x2="440" y2={y} stroke="#3461D9" strokeWidth="0.5" opacity="0.2" />
             ))}
             {[80, 180, 280, 380].map((x) => (
-              <line key={x} x1={x} y1="0" x2={x} y2="300" stroke="#2A7391" strokeWidth="0.5" opacity="0.2" />
+              <line key={x} x1={x} y1="0" x2={x} y2="300" stroke="#3461D9" strokeWidth="0.5" opacity="0.2" />
             ))}
             {/* a school working the water under the course */}
-            <g fill="#1E5F7A" opacity="0.5">
+            <g fill="#2148BF" opacity="0.5">
               <g className="svg-swim">
                 <path d="M96 205 C99 201 104 200.5 108 203.8 L114 201 C113 202.3 112.5 203.6 112.5 205 C112.5 206.4 113 207.7 114 209 L108 206.2 C104 209.5 99 209 96 205 Z" />
               </g>
@@ -432,7 +432,7 @@ export default function Landing({
               </g>
             </g>
             {/* another pair near the destination — the reason the buoy is there */}
-            <g fill="#1D7A50" opacity="0.45">
+            <g fill="#0F8A5C" opacity="0.45">
               <g className="svg-swim" style={{ animationDelay: "0.4s" }}>
                 <path d="M330 100 C333 96 338 95.5 342 98.8 L348 96 C347 97.3 346.5 98.6 346.5 100 C346.5 101.4 347 102.7 348 104 L342 101.2 C338 104.5 333 104 330 100 Z" />
               </g>
@@ -448,30 +448,30 @@ export default function Landing({
                 key={i}
                 d={`M${x} ${y} q4 -3.5 8 0 t8 0`}
                 fill="none"
-                stroke="#2A7391"
+                stroke="#3461D9"
                 strokeWidth="1.1"
                 opacity="0.5"
                 strokeLinecap="round"
               />
             ))}
-            <text x="150" y="230" fontFamily="'Big Shoulders Variable',Impact,sans-serif" fontStyle="italic" fontSize="11" fill="#2A7391" opacity="0.65">27</text>
-            <text x="300" y="90" fontFamily="'Big Shoulders Variable',Impact,sans-serif" fontStyle="italic" fontSize="11" fill="#2A7391" opacity="0.65">44</text>
+            <text x="150" y="230" fontFamily="'Big Shoulders Variable',Impact,sans-serif" fontStyle="italic" fontSize="11" fill="#3461D9" opacity="0.65">27</text>
+            <text x="300" y="90" fontFamily="'Big Shoulders Variable',Impact,sans-serif" fontStyle="italic" fontSize="11" fill="#3461D9" opacity="0.65">44</text>
             {/* hatched danger areas the course detours around */}
             <g>
-              <rect x="150" y="95" width="105" height="62" fill="url(#hatch-critical)" stroke="#AF2318" strokeWidth="1.4" strokeDasharray="7 4" />
-              <text x="202" y="130" textAnchor="middle" fontFamily="'JetBrains Mono Variable',monospace" fontSize="8.5" fill="#AF2318" letterSpacing="1.5">
+              <rect x="150" y="95" width="105" height="62" fill="url(#hatch-critical)" stroke="#C81E36" strokeWidth="1.4" strokeDasharray="7 4" />
+              <text x="202" y="130" textAnchor="middle" fontFamily="'JetBrains Mono Variable',monospace" fontSize="8.5" fill="#C81E36" letterSpacing="1.5">
                 NO ENTRY
               </text>
-              <rect x="265" y="180" width="80" height="50" fill="url(#hatch-warning)" stroke="#BF4E12" strokeWidth="1.2" strokeDasharray="7 4" />
+              <rect x="265" y="180" width="80" height="50" fill="url(#hatch-warning)" stroke="#D1460E" strokeWidth="1.2" strokeDasharray="7 4" />
             </g>
             {/* direct track — the wrong answer */}
-            <line x1="60" y1="252" x2="366" y2="60" stroke="#5D7386" strokeWidth="1.6" strokeDasharray="2 6" opacity="0.6" />
+            <line x1="60" y1="252" x2="366" y2="60" stroke="#5C7189" strokeWidth="1.6" strokeDasharray="2 6" opacity="0.6" />
             {/* safest course — the answer, and it runs */}
             <path
               className="route-live"
               d="M60 252 C 105 240 120 205 138 178 C 155 152 130 120 160 84 C 185 55 260 40 320 46 C 342 48 356 52 366 60"
               fill="none"
-              stroke="#1D7A50"
+              stroke="#0F8A5C"
               strokeWidth="3"
               strokeDasharray="11 8"
               strokeLinecap="round"
@@ -479,36 +479,36 @@ export default function Landing({
             {/* boat, riding the swell */}
             <g transform="translate(60 252)">
               <g className="svg-bob">
-                <circle r="22" fill="none" stroke="#2A7391" strokeWidth="1.4" opacity="0.5" />
-                <circle r="15" fill="#12212D" stroke="#FBF7ED" strokeWidth="2.5" />
-                <path d="M0 -8 v8 M0 -6 l5.5 6 h-5.5 z" stroke="#FBF7ED" strokeWidth="1.6" fill="#FBF7ED" />
-                <path d="M-6 4 q3 2.4 6 0 t6 0" stroke="#FBF7ED" strokeWidth="1.4" fill="none" />
+                <circle r="22" fill="none" stroke="#3461D9" strokeWidth="1.4" opacity="0.5" />
+                <circle r="15" fill="#0B2A4A" stroke="#FFFFFF" strokeWidth="2.5" />
+                <path d="M0 -8 v8 M0 -6 l5.5 6 h-5.5 z" stroke="#FFFFFF" strokeWidth="1.6" fill="#FFFFFF" />
+                <path d="M-6 4 q3 2.4 6 0 t6 0" stroke="#FFFFFF" strokeWidth="1.4" fill="none" />
               </g>
             </g>
             {/* destination buoy, hailing */}
             <g transform="translate(366 60)">
-              <circle className="svg-ping" r="17" fill="none" stroke="#1D7A50" strokeWidth="2" />
+              <circle className="svg-ping" r="17" fill="none" stroke="#0F8A5C" strokeWidth="2" />
               <g className="svg-bob" style={{ animationDelay: "1.2s" }}>
-                <circle r="17" fill="#FBF7ED" stroke="#1D7A50" strokeWidth="4" />
-                <text y="6" textAnchor="middle" fontFamily="'Big Shoulders Variable',Impact,sans-serif" fontWeight="800" fontSize="16" fill="#12212D">
+                <circle r="17" fill="#FFFFFF" stroke="#0F8A5C" strokeWidth="4" />
+                <text y="6" textAnchor="middle" fontFamily="'Big Shoulders Variable',Impact,sans-serif" fontWeight="800" fontSize="16" fill="#0B2A4A">
                   1
                 </text>
               </g>
             </g>
-            <text x="392" y="64" fontFamily="'Big Shoulders Variable',Impact,sans-serif" fontStyle="italic" fontWeight="600" fontSize="13" fill="#1D7A50">
+            <text x="392" y="64" fontFamily="'Big Shoulders Variable',Impact,sans-serif" fontStyle="italic" fontWeight="600" fontSize="13" fill="#0F8A5C">
               82%
             </text>
             {/* compass */}
             <g transform="translate(400 250)" opacity="0.75">
-              <circle r="24" fill="none" stroke="#12212D" strokeWidth="1.3" />
+              <circle r="24" fill="none" stroke="#0B2A4A" strokeWidth="1.3" />
               <g className="compass-needle">
-                <path d="M0 -20 L5 6 L0 11 L-5 6 Z" fill="#12212D" />
+                <path d="M0 -20 L5 6 L0 11 L-5 6 Z" fill="#0B2A4A" />
               </g>
-              <text y="-27" textAnchor="middle" fontFamily="'JetBrains Mono Variable',monospace" fontSize="8" fill="#12212D">
+              <text y="-27" textAnchor="middle" fontFamily="'JetBrains Mono Variable',monospace" fontSize="8" fill="#0B2A4A">
                 N
               </text>
             </g>
-            <text x="60" y="285" fontFamily="'JetBrains Mono Variable',monospace" fontSize="8.5" fill="#5D7386" letterSpacing="1.5">
+            <text x="60" y="285" fontFamily="'JetBrains Mono Variable',monospace" fontSize="8.5" fill="#5C7189" letterSpacing="1.5">
               SAFEST ≠ SHORTEST · 5 KM LONGER · LEGAL
             </text>
           </svg>

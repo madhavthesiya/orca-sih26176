@@ -194,7 +194,7 @@ export function FishGlyph({ size = 16, className = "" }: G) {
         d="M1.5 6 C4.5 1.8 10 1.2 14 4.6 L20.5 1.5 C19.3 3 18.7 4.5 18.7 6 C18.7 7.5 19.3 9 20.5 10.5 L14 7.4 C10 10.8 4.5 10.2 1.5 6 Z"
         fill="currentColor"
       />
-      <circle cx="5" cy="5.3" r="0.9" fill="#F5EEDD" />
+      <circle cx="5" cy="5.3" r="0.9" fill="#EEF2F5" />
     </svg>
   );
 }
@@ -302,16 +302,16 @@ export function ChartDefs() {
     <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden focusable="false">
       <defs>
         <pattern id="hatch-critical" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
-          <rect width="7" height="7" fill="#AF2318" fillOpacity="0.08" />
-          <line x1="0" y1="0" x2="0" y2="7" stroke="#AF2318" strokeWidth="1.6" strokeOpacity="0.5" />
+          <rect width="7" height="7" fill="#C81E36" fillOpacity="0.08" />
+          <line x1="0" y1="0" x2="0" y2="7" stroke="#C81E36" strokeWidth="1.6" strokeOpacity="0.5" />
         </pattern>
         <pattern id="hatch-warning" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
-          <rect width="7" height="7" fill="#BF4E12" fillOpacity="0.07" />
-          <line x1="0" y1="0" x2="0" y2="7" stroke="#BF4E12" strokeWidth="1.4" strokeOpacity="0.45" />
+          <rect width="7" height="7" fill="#D1460E" fillOpacity="0.07" />
+          <line x1="0" y1="0" x2="0" y2="7" stroke="#D1460E" strokeWidth="1.4" strokeOpacity="0.45" />
         </pattern>
         <pattern id="hatch-info" width="8" height="8" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
-          <rect width="8" height="8" fill="#2A7391" fillOpacity="0.05" />
-          <line x1="0" y1="0" x2="0" y2="8" stroke="#2A7391" strokeWidth="1.2" strokeOpacity="0.4" />
+          <rect width="8" height="8" fill="#3461D9" fillOpacity="0.05" />
+          <line x1="0" y1="0" x2="0" y2="8" stroke="#3461D9" strokeWidth="1.2" strokeOpacity="0.4" />
         </pattern>
       </defs>
     </svg>

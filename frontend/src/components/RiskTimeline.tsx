@@ -115,8 +115,8 @@ export default function RiskTimeline({
         <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ height: 150 }}>
           <defs>
             <linearGradient id="riskArea" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#2A7391" stopOpacity="0.22" />
-              <stop offset="100%" stopColor="#2A7391" stopOpacity="0.02" />
+              <stop offset="0%" stopColor="#3461D9" stopOpacity="0.22" />
+              <stop offset="100%" stopColor="#3461D9" stopOpacity="0.02" />
             </linearGradient>
           </defs>
 
@@ -147,7 +147,7 @@ export default function RiskTimeline({
                 y1={padTop}
                 x2={x(i)}
                 y2={padTop + plotH}
-                stroke="#12212D"
+                stroke="#0B2A4A"
                 strokeWidth="0.5"
                 opacity="0.12"
               />
@@ -161,7 +161,7 @@ export default function RiskTimeline({
               y={padTop}
               width={(window[1] - window[0] + 1) * stepX}
               height={plotH}
-              fill="#1D7A50"
+              fill="#0F8A5C"
               opacity={0.1}
             />
           )}
@@ -172,7 +172,7 @@ export default function RiskTimeline({
               width={(window[1] - window[0] + 1) * stepX}
               height={plotH}
               fill="none"
-              stroke="#1D7A50"
+              stroke="#0F8A5C"
               strokeWidth="1"
               strokeDasharray="4 3"
               opacity={0.55}
@@ -180,7 +180,7 @@ export default function RiskTimeline({
           )}
 
           <path d={area} fill="url(#riskArea)" />
-          <path d={line} fill="none" stroke="#12212D" strokeWidth={2} strokeLinejoin="round" />
+          <path d={line} fill="none" stroke="#0B2A4A" strokeWidth={2} strokeLinejoin="round" />
 
           {/* per-hour dots coloured by category */}
           {points.map((p, i) => (
@@ -190,7 +190,7 @@ export default function RiskTimeline({
               cy={y(p.score)}
               r={p.warning ? 3.8 : 2.7}
               fill={RISK_COLOR[p.category]}
-              stroke={p.warning ? "#FBF7ED" : "none"}
+              stroke={p.warning ? "#FFFFFF" : "none"}
               strokeWidth={p.warning ? 1.4 : 0}
             >
               <title>
@@ -208,14 +208,14 @@ export default function RiskTimeline({
             y1={padTop - 4}
             x2={x(nowIdx)}
             y2={padTop + plotH}
-            stroke="#2A7391"
+            stroke="#3461D9"
             strokeWidth={1.3}
             strokeDasharray="4 4"
           />
           <text
             x={x(nowIdx) + 5}
             y={padTop + 6}
-            fill="#2A7391"
+            fill="#3461D9"
             fontSize="10"
             fontWeight="700"
             fontFamily="'JetBrains Mono Variable',monospace"
@@ -244,7 +244,7 @@ export default function RiskTimeline({
                 key={`t${i}`}
                 x={x(i)}
                 y={H - 8}
-                fill="#5D7386"
+                fill="#5C7189"
                 fontSize="9.5"
                 textAnchor="middle"
                 fontFamily="'JetBrains Mono Variable',monospace"
