@@ -210,7 +210,7 @@ body {
   width: 6px;
   height: 6px;
   border-radius: 9999px;
-  background: #2a7391;
+  background: var(--chart-teal);
 }
 .signal-line > i:nth-child(1) {
   animation: travelx 2.6s linear infinite;
@@ -409,9 +409,9 @@ body {
   }
 }
 
-/* ---- Leaflet: draft the map like the rest of the sheet ---- */
+/* ---- Leaflet: white controls, navy ink, rounded like the boards ---- */
 .leaflet-container {
-  background: #cfe0e6;
+  background: #d7e3f0;
   font-family: inherit;
 }
 /* Warm the basemap toward the paper. */
@@ -419,21 +419,21 @@ body {
   /* Removed sepia filter because Esri Ocean Base has beautiful bathymetry colors natively */
 }
 .leaflet-control-attribution {
-  background: rgba(245, 238, 221, 0.85) !important;
-  color: #5d7386 !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+  color: #5c7189 !important;
   font-size: 9px !important;
   font-family: "JetBrains Mono Variable", Consolas, monospace;
 }
 .leaflet-control-attribution a {
-  color: #1e5f7a !important;
+  color: #2148bf !important;
 }
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
-  background: #fbf7ed;
-  color: #263b4d;
-  border: 1px solid var(--rule-strong);
-  border-radius: 3px;
-  box-shadow: 0 10px 26px rgba(18, 33, 45, 0.28);
+  background: #ffffff;
+  color: #22476e;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(11, 42, 74, 0.22);
 }
 .leaflet-popup-content {
   margin: 11px 13px;
@@ -442,21 +442,23 @@ body {
 }
 .leaflet-popup-content b {
   font-family: "Big Shoulders Variable", Impact, sans-serif;
-  font-size: 13px;
+  font-size: 15px;
+  font-weight: 800;
 }
 .leaflet-bar {
-  border: 1px solid var(--rule-strong) !important;
-  border-radius: 2px !important;
-  box-shadow: 0 2px 6px rgba(18, 33, 45, 0.18) !important;
+  border: 1.5px solid var(--ink) !important;
+  border-radius: 10px !important;
+  overflow: hidden;
+  box-shadow: none !important;
 }
 .leaflet-bar a {
-  background: #fbf7ed !important;
-  color: #263b4d !important;
+  background: #ffffff !important;
+  color: #0b2a4a !important;
   border-color: var(--rule) !important;
 }
 .leaflet-bar a:hover {
-  background: #12212d !important;
-  color: #fbf7ed !important;
+  background: var(--flag) !important;
+  color: #0b2a4a !important;
 }
 
 /* Restricted zones: true chart hatching (patterns defined in App's <defs>). */
@@ -492,20 +494,20 @@ path.radius-drift {
 }
 /* The storm's chart annotation. */
 .leaflet-tooltip.storm-label {
-  background: #fbf7ed;
-  color: #af2318;
-  border: 1.5px solid #af2318;
-  border-radius: 2px;
+  background: #c81e36;
+  color: #ffffff;
+  border: 0;
+  border-radius: 6px;
   font-family: "JetBrains Mono Variable", Consolas, monospace;
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   padding: 3px 7px;
-  box-shadow: 0 3px 8px rgba(18, 33, 45, 0.3);
+  box-shadow: 0 3px 8px rgba(11, 42, 74, 0.3);
 }
 .leaflet-tooltip-top.storm-label::before {
-  border-top-color: #af2318;
+  border-top-color: #c81e36;
 }
 
 /* Everything moored on the chart rides the swell (never the Leaflet-positioned
@@ -530,13 +532,13 @@ path.radius-drift {
   height: 10px;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(42, 115, 145, 0.4);
+  background: rgba(11, 42, 74, 0.28);
   border-radius: 999px;
   border: 3px solid transparent;
   background-clip: content-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(30, 95, 122, 0.65);
+  background: rgba(11, 42, 74, 0.5);
   background-clip: content-box;
 }
 ::-webkit-scrollbar-track {
