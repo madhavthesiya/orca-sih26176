@@ -326,12 +326,12 @@ export default function Landing({
       {/* top strip */}
       <Reveal>
         <div className="flex flex-wrap items-center gap-3">
-          <CompassMark size={30} className="text-ink-900" />
+          <CompassMark size={32} className="text-ink-900" />
           <div className="flex flex-col">
-            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-chart-600">
+            <span className="text-[13.5px] font-bold text-ink-900">
               SIH26176 · ISRO · Smart India Hackathon 2026
             </span>
-            <span className="font-mono text-[9px] text-ink-400 tracking-[0.1em]">
+            <span className="text-[12px] text-ink-400">
               Team ID 138259 · SagarMitra · Space Technology
             </span>
           </div>
@@ -340,12 +340,9 @@ export default function Landing({
               <button
                 key={l}
                 onClick={() => onLanguage(l)}
-                className={`rounded-[2px] border px-2 py-1 font-mono text-[11px] font-bold transition ${
-                  language === l
-                    ? "border-ink-900 bg-ink-900 text-paper-50"
-                    : "text-ink-400 hover:text-ink-800"
+                className={`rounded-[7px] px-2.5 py-1 text-[13px] font-bold transition ${
+                  language === l ? "bg-ink-900 text-paper-50" : "text-ink-400 hover:text-ink-900"
                 }`}
-                style={language === l ? undefined : { borderColor: "var(--rule)" }}
               >
                 {l === "en" ? "EN" : l === "hi" ? "हिं" : "ગુજ"}
               </button>
@@ -360,23 +357,24 @@ export default function Landing({
 
 
       {/* hero */}
-      <div className="mt-12 grid items-center gap-10 lg:mt-14 lg:grid-cols-[1.15fr_1fr]">
+      <div className="mt-10 grid items-end gap-10 lg:mt-12 lg:grid-cols-[1fr_420px]">
         <div>
           <Reveal delay={80}>
-            <h1 className="font-display text-[76px] font-black leading-none tracking-tight text-ink-900">
+            {/* the name, painted like a hull registration */}
+            <h1 className="font-display text-[clamp(124px,19vw,268px)] font-black leading-[0.78] text-ink-900">
               ORCA
             </h1>
-            <div className="wave-rule mt-4 max-w-[430px]" />
+            <div className="wave-rule mt-6 max-w-[620px]" />
           </Reveal>
           <Reveal delay={200}>
-            <p className="mt-5 max-w-[520px] font-display text-[26px] font-semibold leading-snug text-ink-800">
+            <p className="mt-6 max-w-[600px] text-[23px] font-bold leading-snug text-ink-900">
               {t.tag1}
               <br />
               {t.tag2a}
-              <span className="text-chart-600">{t.tag2b}</span>
+              {t.tag2b}
               {t.tag2c}
             </p>
-            <p className="mt-4 max-w-[500px] text-[14px] leading-relaxed text-ink-500">{t.sub}</p>
+            <p className="mt-3 max-w-[560px] text-[15.5px] leading-relaxed text-ink-500">{t.sub}</p>
           </Reveal>
 
           <Reveal delay={330}>
@@ -396,7 +394,7 @@ export default function Landing({
               </button>
               <button
                 onClick={() => onScenario("Is there a cyclone near Paradip? Can I go fishing?")}
-                className="font-mono text-[11px] font-semibold uppercase tracking-[0.1em] text-chart-600 underline decoration-dashed underline-offset-4 transition-colors hover:text-ink-900"
+                className="text-[14px] font-bold text-chart-600 underline decoration-2 underline-offset-4 transition-colors hover:text-ink-900"
               >
                 {t.ctaTry}
               </button>
@@ -406,7 +404,7 @@ export default function Landing({
 
         {/* hero art: the product's promise, drawn as a living plotted course */}
         <Reveal delay={260} className="hidden justify-self-end lg:block">
-          <svg viewBox="0 0 440 300" className="w-full max-w-[440px]" aria-hidden>
+          <svg viewBox="0 0 440 300" className="w-full max-w-[420px] rounded-[14px] bg-paper-50" aria-hidden>
             {/* the water itself */}
             <rect x="0" y="0" width="440" height="300" fill="#3461D9" opacity="0.06" />
             <rect x="0" y="150" width="440" height="150" fill="#3461D9" opacity="0.05" />
@@ -515,17 +513,16 @@ export default function Landing({
 
       {/* live stats strip */}
       <Reveal delay={420}>
-        <div className="panel mt-12 grid grid-cols-2 sm:grid-cols-5">
+        <div className="mt-12 grid grid-cols-2 overflow-hidden rounded-[14px] bg-ink-900 sm:grid-cols-5">
           {stats.map((x, i) => (
             <div
               key={x.k}
-              className={`group px-4 py-3.5 transition-colors hover:bg-chart-100/40 ${i > 0 ? "border-l" : ""}`}
-              style={{ borderColor: "var(--rule-faint)" }}
+              className={`px-5 py-4 ${i > 0 ? "border-l border-paper-50/10" : ""}`}
             >
-              <div className="label truncate !text-[9px]">{x.k}</div>
+              <div className="truncate text-[12.5px] font-bold text-ink-300">{x.k}</div>
               <div
-                className={`mt-1 font-mono text-[21px] font-bold tabular-nums leading-none transition-colors ${
-                  x.warn ? "text-risk-extreme" : "text-ink-900 group-hover:text-chart-600"
+                className={`mt-1.5 font-display text-[40px] font-extrabold tabular-nums leading-none ${
+                  x.warn ? "text-flag" : "text-paper-50"
                 }`}
               >
                 {x.v}
@@ -537,8 +534,8 @@ export default function Landing({
 
       {/* impact bar — Marine Fisheries Census 2016 numbers from SIH submission */}
       <Reveal delay={460}>
-        <div className="mt-3 rounded-[2px] border bg-paper-100/60 px-5 py-3 flex flex-wrap gap-x-8 gap-y-1 items-center" style={{ borderColor: "var(--rule-faint)" }}>
-          <span className="font-mono text-[8.5px] uppercase tracking-[0.18em] text-ink-400 shrink-0">Target users · Marine Fisheries Census 2016</span>
+        <div className="mt-3 flex flex-wrap items-center gap-x-8 gap-y-1 px-1 py-2">
+          <span className="shrink-0 text-[12.5px] font-bold text-ink-400">Target users · Marine Fisheries Census 2016</span>
           {[
             { v: "9,27,081", k: "active fishermen" },
             { v: "67.3%", k: "families below poverty line" },
@@ -546,8 +543,8 @@ export default function Landing({
             { v: "535", k: "arrested by Sri Lanka in 2024" },
           ].map((s) => (
             <div key={s.k} className="flex items-baseline gap-1.5">
-              <span className="font-mono text-[15px] font-bold text-ink-900">{s.v}</span>
-              <span className="text-[10px] text-ink-500">{s.k}</span>
+              <span className="font-display text-[24px] font-extrabold text-ink-900">{s.v}</span>
+              <span className="text-[12.5px] text-ink-500">{s.k}</span>
             </div>
           ))}
         </div>
