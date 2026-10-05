@@ -351,40 +351,38 @@ body {
     outline: none;
   }
 
-  /* ------------------------------------------------ chart language */
-  /* Rubber-stamped verdicts — how officials mark a document. */
+  /* ------------------------------------------------ signal language */
+  /* Verdict tags: solid, upright, colour-led — read from across a deck. */
   .stamp {
-    @apply inline-block rounded-[2px] border-2 px-2.5 py-1 font-display text-[12px] font-black uppercase;
-    letter-spacing: 0.18em;
-    border-color: currentColor;
-    box-shadow: inset 0 0 0 1px currentColor;
-    transform: rotate(-2deg);
-    text-shadow: 0 0 0.5px currentColor;
+    @apply inline-flex items-center rounded-[6px] px-2.5 py-1 font-display text-[13px] font-extrabold;
+    letter-spacing: 0.04em;
+    color: currentColor;
+    background: color-mix(in srgb, currentColor 12%, white);
+    box-shadow: inset 0 0 0 1.5px currentColor;
   }
 
-  /* Hatched "danger area" fill, as drawn on charts. */
+  /* Danger areas keep their hatching — it is how charts say "keep out". */
   .hatch-danger {
     background-image: repeating-linear-gradient(
-      45deg,
-      rgba(175, 35, 24, 0.1) 0 1.5px,
-      transparent 1.5px 8px
+      -45deg,
+      rgba(200, 30, 54, 0.09) 0 2px,
+      transparent 2px 9px
     );
   }
 
-  /* Chart soundings: the italic serif numerals used for depths. */
+  /* Big readings in hull lettering. */
   .sounding {
     font-family: "Big Shoulders Variable", Impact, sans-serif;
-    font-style: italic;
-    font-weight: 600;
-    font-variation-settings: "SOFT" 40;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
   }
 
-  /* Sea-surface symbol, used as a section divider — and it flows. */
+  /* Divider: a short buoy-yellow bar on a navy keel line. */
   .wave-rule {
-    height: 7px;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='7'%3E%3Cpath d='M0 5 Q3.5 1 7 5 T14 5' fill='none' stroke='%232A7391' stroke-opacity='0.55' stroke-width='1'/%3E%3C/svg%3E")
-      repeat-x center;
-    animation: wavecrawl 2.6s linear infinite;
+    height: 6px;
+    background:
+      linear-gradient(var(--flag), var(--flag)) left top / 72px 6px no-repeat,
+      linear-gradient(var(--ink), var(--ink)) left bottom / 100% 2px no-repeat;
   }
 
   /* Buoy badges answer a hovered row with a ripple. */
@@ -400,35 +398,13 @@ body {
     animation: ping2 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
   }
 
-  /* The map is presented as a chart sheet: paper margin, tick marks,
-     double neatline. The inner Leaflet container is untouched. */
+  /* The map sits in a plain white board. The inner Leaflet container is untouched. */
   .chart-sheet {
-    @apply relative rounded-[3px] border bg-paper-50 p-[18px];
+    @apply relative rounded-[14px] border bg-paper-50 p-2;
     border-color: var(--rule);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.55),
-      0 1px 3px rgba(18, 33, 45, 0.1),
-      0 14px 30px -20px rgba(18, 33, 45, 0.35);
-  }
-  .chart-sheet::before {
-    content: "";
-    position: absolute;
-    inset: 8px;
-    pointer-events: none;
-    z-index: 1;
-    background:
-      repeating-linear-gradient(90deg, var(--rule-strong) 0 1px, transparent 1px 26px)
-        top left / 100% 5px no-repeat,
-      repeating-linear-gradient(90deg, var(--rule-strong) 0 1px, transparent 1px 26px)
-        bottom left / 100% 5px no-repeat,
-      repeating-linear-gradient(0deg, var(--rule-strong) 0 1px, transparent 1px 26px)
-        top left / 5px 100% no-repeat,
-      repeating-linear-gradient(0deg, var(--rule-strong) 0 1px, transparent 1px 26px)
-        top right / 5px 100% no-repeat;
   }
   .chart-frame {
-    @apply relative overflow-hidden rounded-[2px] border;
-    border-color: var(--rule-strong);
+    @apply relative overflow-hidden rounded-[9px];
     z-index: 2;
   }
 }

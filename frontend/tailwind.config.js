@@ -64,9 +64,9 @@ export default {
           "100%": { transform: "translateY(0)" },
         },
         stampIn: {
-          "0%": { transform: "scale(1.3) rotate(-5deg)" },
-          "60%": { transform: "scale(0.96) rotate(-1.4deg)" },
-          "100%": { transform: "scale(1) rotate(-2deg)" },
+          "0%": { transform: "scale(1.25)" },
+          "60%": { transform: "scale(0.97)" },
+          "100%": { transform: "scale(1)" },
         },
       },
       animation: {
