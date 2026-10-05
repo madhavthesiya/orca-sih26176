@@ -403,7 +403,7 @@ export default function Landing({
         </div>
 
         {/* hero art: the product's promise, drawn as a living plotted course */}
-        <Reveal delay={260} className="hidden justify-self-end lg:block">
+        <Reveal delay={260} className="hidden w-full lg:block">
           <svg viewBox="0 0 440 300" className="w-full max-w-[420px] rounded-[14px] bg-paper-50" aria-hidden>
             {/* the water itself */}
             <rect x="0" y="0" width="440" height="300" fill="#3461D9" opacity="0.06" />
