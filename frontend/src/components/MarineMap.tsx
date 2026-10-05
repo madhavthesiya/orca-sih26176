@@ -1,5 +1,6 @@
 import L from "leaflet";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import { mapInWords, mapWords } from "./mapInWords";
 import * as api from "../api";
 import { FlowLayer, type FlowMode } from "./FlowLayer";
 import type {
@@ -140,6 +141,9 @@ export default function MarineMap({
   const boatRef = useRef<L.Marker | null>(null);
   const flowRef = useRef<FlowLayer | null>(null);
   const [flowMode, setFlowMode] = useState<FlowMode>("wind");
+  const wordsId = useId();
+  const words = mapWords(language);
+  const inWords = mapInWords({ origin, areas, pfz, zones, routes, alerts, radiusKm }, language);
   const [probe, setProbe] = useState<PositionCheck | null>(null);
   const [dragging, setDragging] = useState(false);
   const mapHeight = heightPx ?? (areas.length ? 540 : 420);
@@ -489,7 +493,14 @@ export default function MarineMap({
           tile renders at zero width — tiles download fine, the map just vanishes.
           React writes style properties individually, so this leaves classes alone.
         */}
-        <div ref={containerRef} className="w-full" style={{ height: mapHeight }} />
+        <div
+          ref={containerRef}
+          role="region"
+          aria-label={words.region}
+          aria-describedby={wordsId}
+          className="w-full"
+          style={{ height: mapHeight }}
+        />
 
         {/* compass rose, printed on the water */}
         <CompassMark
@@ -535,6 +546,7 @@ export default function MarineMap({
               <button
                 key={m}
                 onClick={() => setFlowMode(m)}
+                aria-pressed={flowMode === m}
                 className={`rounded-[6px] border px-1.5 py-0.5 font-mono text-[9.5px] font-bold transition ${
                   flowMode === m
                     ? "border-ink-900 bg-ink-900 text-paper-50"
@@ -634,6 +646,16 @@ export default function MarineMap({
           {(LEGEND[language] ?? LEGEND.en).marginR}
         </span>
       </div>
+
+      {/* the same chart, in sentences — what a screen reader hears as the map's description */}
+      <details className="mt-2 px-1">
+        <summary className="cursor-pointer text-[13px] font-bold text-chart-600">{words.inWords}</summary>
+        <ul id={wordsId} className="mt-1.5 space-y-1 pb-1 text-[13.5px] leading-snug text-ink-700">
+          {inWords.map((line) => (
+            <li key={line}>{line}</li>
+          ))}
+        </ul>
+      </details>
     </div>
   );
 }
