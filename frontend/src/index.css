@@ -252,46 +252,40 @@ body {
 
 @layer components {
   /* ------------------------------------------------ panels */
+  /* Flat white boards on the spray. No shadows: hierarchy comes from
+     the lead stripe and from type, not from elevation. */
   .panel {
-    @apply relative rounded-[3px] border bg-paper-50;
+    @apply relative rounded-[14px] border bg-paper-50;
     border-color: var(--rule);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.55),
-      0 1px 3px rgba(18, 33, 45, 0.1),
-      0 14px 30px -20px rgba(18, 33, 45, 0.35);
   }
   .panel-tint {
-    @apply relative rounded-[3px] border bg-paper-100;
-    border-color: var(--rule);
+    @apply relative rounded-[10px] border bg-paper-100;
+    border-color: var(--rule-faint);
   }
-  /* Double rule across the top — reserved for the sheet's lead panels. */
+  /* Lead panels carry a navy band across the top, like a boat's sheer strake. */
   .rule-double {
-    border-top: 3px double var(--rule-strong);
+    border-top: 5px solid var(--ink);
   }
   .hd {
-    @apply flex items-baseline justify-between gap-3 border-b px-4 py-2.5;
+    @apply flex items-center justify-between gap-3 border-b px-5 py-3;
     border-color: var(--rule-faint);
-    /* shallow-water wash on every panel header */
-    background: linear-gradient(180deg, rgba(42, 115, 145, 0.06), rgba(42, 115, 145, 0.015));
   }
 
-  /* Interactive sheets lift off the table slightly. */
+  /* Interactive boards answer hover with an ink outline, not a lift. */
   .lift {
-    transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
   }
   .lift:hover {
-    transform: translateY(-3px);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.55),
-      0 3px 6px rgba(18, 33, 45, 0.1),
-      0 22px 40px -22px rgba(18, 33, 45, 0.45);
+    border-color: var(--ink);
+    box-shadow: 0 0 0 1px var(--ink);
   }
   .lift.rule-double:hover {
-    border-top-color: #2a7391;
+    border-top-color: var(--flag);
   }
 
   .label {
-    @apply font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-ink-400;
+    @apply font-sans text-[12.5px] font-bold text-ink-500;
+    letter-spacing: 0.01em;
   }
 
   /* ------------------------------------------------ controls */
