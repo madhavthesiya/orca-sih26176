@@ -61,6 +61,10 @@ const T: Record<Language, Record<string, string>> = {
     returnBySay: "Be back before {t}.",
     noTrip: "No trip today",
     noTripNote: "Grounds and times are hidden until the sea is safe.",
+    hear: "Hear",
+    onMap: "On map",
+    groundSay: "Area {n}: {km} kilometres away, {p} percent chance of fish.",
+    likelySay: "Likely {s}.",
   },
   hi: {
     today: "आज",
@@ -84,6 +88,10 @@ const T: Record<Language, Record<string, string>> = {
     returnBySay: "{t} से पहले लौट आएँ।",
     noTrip: "आज कोई यात्रा नहीं",
     noTripNote: "समुद्र सुरक्षित होने तक जगहें और समय छिपे हैं।",
+    hear: "सुनें",
+    onMap: "नक्शे पर",
+    groundSay: "जगह {n}: {km} किलोमीटर दूर, मछली की उम्मीद {p} प्रतिशत।",
+    likelySay: "संभावित मछली: {s}।",
   },
   gu: {
     today: "આજે",
@@ -107,6 +115,10 @@ const T: Record<Language, Record<string, string>> = {
     returnBySay: "{t} પહેલાં પાછા આવો.",
     noTrip: "આજે કોઈ સફર નહીં",
     noTripNote: "દરિયો સુરક્ષિત થાય ત્યાં સુધી જગ્યાઓ અને સમય છુપાવ્યા છે.",
+    hear: "સાંભળો",
+    onMap: "નકશા પર",
+    groundSay: "જગ્યા {n}: {km} કિલોમીટર દૂર, માછલીની શક્યતા {p} ટકા.",
+    likelySay: "સંભવિત માછલી: {s}.",
   },
 };
 
@@ -331,13 +343,18 @@ export default function MobileApp() {
   // A no-go day plans nothing: no times, no grounds, no money.
   const off = outlook ? tripIsOff(outlook) : false;
 
-  const speakArea = (a: FishingOutlook["areas"][number]) => {
-    const line = `${a.rank}. ${Math.round(a.distance_km)} ${t.km}. ${a.probability}%. ${(
-      a.likely_species ?? []
-    )
-      .map((s) => s.split(" (")[0])
-      .join(", ")}`;
-    speak(line, language);
+  type Ground = FishingOutlook["areas"][number];
+  // Hearing a ground and seeing it are separate choices: a fisher may want
+  // the numbers read out without leaving the list, or the chart without sound.
+  const hearArea = (a: Ground) => {
+    const species = (a.likely_species ?? []).map((s) => s.split(" (")[0]);
+    const line = t.groundSay
+      .replace("{n}", String(a.rank))
+      .replace("{km}", String(Math.round(a.distance_km)))
+      .replace("{p}", String(a.probability));
+    speak(species.length ? `${line} ${t.likelySay.replace("{s}", species.join(", "))}` : line, language);
+  };
+  const showArea = (a: Ground) => {
     setFocusRank(a.rank);
     setTab("map");
   };
@@ -496,11 +513,8 @@ export default function MobileApp() {
                 </div>
                 <div className="divide-y" style={{ borderColor: "var(--rule-faint)" }}>
                   {outlook.areas.slice(0, 3).map((a) => (
-                    <button
-                      key={a.id}
-                      onClick={() => speakArea(a)}
-                      className="flex w-full items-center gap-3 px-3 py-3 text-left active:bg-paper-150"
-                    >
+                    <div key={a.id} className="px-3 pb-2.5 pt-3">
+                    <div className="flex w-full items-center gap-3">
                       <span
                         className="grid h-12 w-12 shrink-0 place-items-center rounded-full border-4 bg-paper-50 font-display text-[19px] font-extrabold text-ink-900"
                         style={{ borderColor: RATING_COLOR[a.rating] }}
@@ -522,7 +536,23 @@ export default function MobileApp() {
                         {a.probability}
                         <span className="text-[14px]">%</span>
                       </span>
-                    </button>
+                    </div>
+                    {/* two big targets — usable with wet hands or gloves */}
+                    <div className="mt-2.5 grid grid-cols-2 gap-2 pl-[60px]">
+                      <button
+                        onClick={() => hearArea(a)}
+                        className="flex min-h-[44px] items-center justify-center gap-2 rounded-[10px] bg-flag text-[15px] font-bold text-ink-900 active:translate-y-px"
+                      >
+                        <SpeakerGlyph size={16} /> {t.hear}
+                      </button>
+                      <button
+                        onClick={() => showArea(a)}
+                        className="flex min-h-[44px] items-center justify-center gap-2 rounded-[10px] border-[1.5px] border-ink-900 bg-paper-50 text-[15px] font-bold text-ink-900 active:translate-y-px"
+                      >
+                        <MapGlyph size={16} /> {t.onMap}
+                      </button>
+                    </div>
+                    </div>
                   ))}
                 </div>
               </div>
