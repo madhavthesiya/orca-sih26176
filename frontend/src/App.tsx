@@ -23,6 +23,7 @@ import RiskCard from "./components/RiskCard";
 import { RISK_COLOR } from "./components/RiskDial";
 import SystemPanel from "./components/SystemPanel";
 import { tripIsOff } from "./today";
+import { failKind, failureText, type FailKind } from "./failure";
 import RiskTimeline from "./components/RiskTimeline";
 import type {
   ChatMessage,
@@ -119,7 +120,7 @@ export default function App() {
   const [mode, setMode] = useState<string>("DEMO");
   const [switching, setSwitching] = useState(false);
   const [speak, setSpeak] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<FailKind | null>(null);
 
   // ---- fisher's own position + outlook ----
   const [place, setPlace] = useState<PickedLocation | null>(null);
@@ -185,6 +186,11 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Screen readers, the crash guard and the browser's own spellings follow the reader.
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+
   // ---------------------------------------------------- outlook on position
   useEffect(() => {
     if (!place) return;
@@ -245,15 +251,10 @@ export default function App() {
         }
       }
     } catch (e) {
-      setError(String(e));
-      setMessages((m) => [
-        ...m,
-        {
-          id: `${Date.now()}-e`,
-          role: "orca",
-          text: "I could not reach the ORCA backend. Is it running on port 8000?",
-        },
-      ]);
+      const kind = failKind(e);
+      const f = failureText(kind, language);
+      setError(kind);
+      setMessages((m) => [...m, { id: `${Date.now()}-e`, role: "orca", text: `${f.title} ${f.hint}` }]);
     } finally {
       setBusy(false);
     }
@@ -475,12 +476,16 @@ export default function App() {
         )}
 
         {error && (
-          <div className="panel hatch-danger flex items-center gap-3 border-signal/60 px-4 py-2.5 text-[12.5px] text-risk-extreme">
-            <WarnGlyph size={15} className="shrink-0" />
-            <span>
-              {error} — start the backend with{" "}
-              <code className="font-mono font-bold">uvicorn app.main:app --port 8000</code>
-            </span>
+          <div
+            role="alert"
+            className="panel hatch-danger flex flex-wrap items-center gap-x-3 gap-y-1 border-signal/60 px-4 py-2.5 text-[13.5px]"
+          >
+            <WarnGlyph size={15} className="shrink-0 text-risk-extreme" />
+            <span className="font-bold text-risk-extreme">{failureText(error, language).title}</span>
+            <span className="text-ink-700">{failureText(error, language).hint}</span>
+            <button onClick={() => setError(null)} className="ml-auto text-[13px] font-bold text-chart-600 underline underline-offset-4">
+              {language === "gu" ? "બંધ કરો" : language === "hi" ? "बंद करें" : "Dismiss"}
+            </button>
           </div>
         )}
 

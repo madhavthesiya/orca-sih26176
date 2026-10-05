@@ -17,6 +17,7 @@ import { PORTS } from "./LocationPicker";
 import MarineMap from "./MarineMap";
 import { RISK_COLOR } from "./RiskDial";
 import { tripIsOff } from "../today";
+import { failKind, failureText } from "../failure";
 
 /**
  * The phone — ORCA for the fisher himself, many of whom read little.
@@ -212,6 +213,10 @@ export default function MobileApp() {
   }, []);
 
   useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+
+  useEffect(() => {
     if (!place) return;
     let alive = true;
     setOutlook(null);
@@ -283,8 +288,9 @@ export default function MobileApp() {
       setSuggestions(res.suggestions.slice(0, 3));
       if (res.language !== language) setLanguage(res.language);
       speak(res.answer.split(". ").slice(0, 3).join(". "), res.language);
-    } catch {
-      setAnswer("…");
+    } catch (e) {
+      const f = failureText(failKind(e), language);
+      setAnswer(`${f.title} ${f.hint}`);
     } finally {
       setBusy(false);
     }
