@@ -4,37 +4,38 @@ export default {
   theme: {
     extend: {
       colors: {
-        // "Living nautical chart": warm chart paper, marine ink, shallow-water
-        // teal, and buoy/signal colours. Everything reads like a drafted sheet.
+        // "Signal flags & hull lettering": sea-spray surfaces, navy ink,
+        // code-flag cobalt, and buoy yellow — the colours a boat talks in.
         paper: {
-          50: "#FBF7ED",
-          100: "#F5EEDD",
-          150: "#EFE6CF",
-          200: "#E6DABD",
-          300: "#D6C7A2",
-          400: "#B9A67C",
+          50: "#FFFFFF",
+          100: "#EEF2F5",
+          150: "#E3E9EE",
+          200: "#D5DDE4",
+          300: "#BAC6D1",
+          400: "#8C9BAA",
         },
         ink: {
-          900: "#12212D",
-          800: "#1B2F3E",
-          700: "#263B4D",
-          500: "#42596D",
-          400: "#5D7386",
-          300: "#82949F",
+          900: "#0B2A4A",
+          800: "#13355A",
+          700: "#22476E",
+          500: "#3F5A78",
+          400: "#5C7189",
+          300: "#8A9AAD",
         },
         chart: {
-          700: "#174F68",
-          600: "#1E5F7A",
-          500: "#2A7391",
-          300: "#7FA9BC",
-          100: "#D8E7EB",
+          700: "#1A3C9E",
+          600: "#2148BF",
+          500: "#3461D9",
+          300: "#93AEEB",
+          100: "#E1E9FB",
         },
-        signal: "#C7442E",
+        signal: "#C81E36",
+        flag: "#FFC21A",
         risk: {
-          low: "#1D7A50",
-          moderate: "#A17000",
-          high: "#BF4E12",
-          extreme: "#AF2318",
+          low: "#0F8A5C",
+          moderate: "#A86B00",
+          high: "#D1460E",
+          extreme: "#C81E36",
         },
       },
       fontFamily: {
