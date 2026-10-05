@@ -2,9 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 // Self-hosted fonts — the demo must not depend on a font CDN being reachable.
 // Display: hull-registration lettering (opsz keeps small headings legible).
-// Body: Atkinson Hyperlegible — built for low vision, holds up in sun glare.
+// Body: Overpass — Highway Gothic lineage, signage clarity at any size.
 import "@fontsource-variable/big-shoulders/opsz.css";
-import "@fontsource-variable/atkinson-hyperlegible-next";
+import "@fontsource-variable/overpass";
+import "@fontsource-variable/overpass/wght-italic.css";
 import "@fontsource-variable/jetbrains-mono";
 import "@fontsource-variable/noto-sans-devanagari";
 import App from "./App";
