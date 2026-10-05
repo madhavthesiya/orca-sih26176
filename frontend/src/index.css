@@ -4,21 +4,21 @@
 @tailwind utilities;
 
 /* ============================================================
-   ORCA — "the living nautical chart"
-   Warm chart paper, marine ink, hairline rules, hatched danger
-   areas. The app should read like a beautifully drafted sea
-   chart that happens to be alive.
+   ORCA — "signal flags & hull lettering"
+   Sea-spray surfaces, navy ink, code-flag cobalt and one buoy
+   yellow. Plain, bright, legible at arm's length in sunlight.
    ============================================================ */
 
 :root {
   color-scheme: light;
-  --paper: #f5eedd;
-  --paper-bright: #fbf7ed;
-  --ink: #12212d;
-  --rule: rgba(18, 33, 45, 0.28);
-  --rule-strong: rgba(18, 33, 45, 0.55);
-  --rule-faint: rgba(18, 33, 45, 0.14);
-  --chart-teal: #2a7391;
+  --paper: #eef2f5;
+  --paper-bright: #ffffff;
+  --ink: #0b2a4a;
+  --rule: #d5dde4;
+  --rule-strong: #8c9baa;
+  --rule-faint: #e3e9ee;
+  --chart-teal: #3461d9;
+  --flag: #ffc21a;
 }
 
 html {
@@ -33,56 +33,12 @@ body,
 }
 
 body {
-  color: #263b4d;
-  font-family: "Atkinson Hyperlegible Next Variable", "Segoe UI", "Nirmala UI", system-ui, sans-serif;
+  color: #22476e;
+  font-family: "Atkinson Hyperlegible Next Variable", "Noto Sans Devanagari Variable", "Nirmala UI",
+    system-ui, sans-serif;
+  font-size: 15px;
   -webkit-font-smoothing: antialiased;
-  /* The sheet itself: graticule grid, aged edges, and the sea rising from
-     the foot of the sheet — the page always stands in shallow water. */
-  background:
-    repeating-linear-gradient(
-      90deg,
-      rgba(42, 115, 145, 0.06) 0 1px,
-      transparent 1px 130px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      rgba(42, 115, 145, 0.06) 0 1px,
-      transparent 1px 130px
-    ),
-    radial-gradient(130% 100% at 50% -10%, transparent 55%, rgba(185, 166, 124, 0.24) 100%),
-    linear-gradient(
-      0deg,
-      rgba(42, 115, 145, 0.16),
-      rgba(42, 115, 145, 0.05) 32%,
-      transparent 60%
-    ),
-    var(--paper);
-}
-
-/* Bathymetric contours — a surveyed seamount, lower left of the sheet. */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='860' height='640' viewBox='0 0 860 640' fill='none' stroke='%232A7391' stroke-width='1'%3E%3Cg opacity='0.16'%3E%3Cpath d='M430 40 C640 55 800 170 805 320 C810 470 640 595 430 600 C220 605 55 480 60 320 C65 160 220 25 430 40 Z'/%3E%3Cpath d='M430 92 C598 102 742 196 748 320 C754 444 604 543 430 549 C256 555 112 452 116 320 C120 188 262 82 430 92 Z'/%3E%3Cpath d='M441 146 C574 152 684 231 689 325 C694 419 575 494 441 499 C307 504 196 424 201 325 C206 226 308 140 441 146 Z'/%3E%3Cpath d='M446 201 C545 206 624 261 627 325 C630 389 546 444 446 447 C346 450 266 394 269 325 C272 256 347 196 446 201 Z'/%3E%3Cpath d='M451 256 C515 259 564 291 566 327 C568 363 516 394 451 396 C386 398 337 364 339 327 C341 290 387 253 451 256 Z'/%3E%3Ctext x='430' y='330' font-family='Impact' font-size='14' fill='%232A7391' stroke='none' text-anchor='middle'%3E9%3C/text%3E%3Ctext x='560' y='250' font-family='Impact' font-size='13' fill='%232A7391' stroke='none'%3E18%3C/text%3E%3Ctext x='250' y='420' font-family='Impact' font-size='13' fill='%232A7391' stroke='none'%3E27%3C/text%3E%3Ctext x='640' y='430' font-family='Impact' font-size='13' fill='%232A7391' stroke='none'%3E44%3C/text%3E%3Ctext x='300' y='150' font-family='Impact' font-size='13' fill='%232A7391' stroke='none'%3E61%3C/text%3E%3C/g%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420' viewBox='0 0 420 420'%3E%3Cg fill='%2312212D' opacity='0.05'%3E%3Ccircle cx='210' cy='210' r='168' fill='none' stroke='%2312212D' stroke-width='1.5'/%3E%3Ccircle cx='210' cy='210' r='128' fill='none' stroke='%2312212D' stroke-width='1'/%3E%3Cg%3E%3Cpath d='M210 30 L224 196 L210 210 L196 196 Z'/%3E%3Cpath d='M210 390 L224 224 L210 210 L196 224 Z'/%3E%3Cpath d='M30 210 L196 196 L210 210 L196 224 Z'/%3E%3Cpath d='M390 210 L224 196 L210 210 L224 224 Z'/%3E%3C/g%3E%3Cg transform='rotate(45 210 210)'%3E%3Cpath d='M210 82 L220 200 L210 210 L200 200 Z'/%3E%3Cpath d='M210 338 L220 220 L210 210 L200 220 Z'/%3E%3Cpath d='M82 210 L200 200 L210 210 L200 220 Z'/%3E%3Cpath d='M338 210 L220 200 L210 210 L220 220 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  background-repeat: no-repeat, no-repeat;
-  background-position:
-    left -180px bottom -140px,
-    right -60px top 40px;
-}
-
-/* Paper fibre — one quiet grain pass over everything. */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 2000;
-  pointer-events: none;
-  opacity: 0.045;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  background: var(--paper);
 }
 
 #root {
@@ -91,13 +47,14 @@ body::after {
 }
 
 ::selection {
-  background: var(--chart-teal);
-  color: var(--paper-bright);
+  background: var(--flag);
+  color: var(--ink);
 }
 
 :focus-visible {
-  outline: 2px dashed var(--chart-teal);
+  outline: 3px solid var(--chart-teal);
   outline-offset: 2px;
+  border-radius: 6px;
 }
 
 /* Keyframes live here, not in the Tailwind config: the map's divIcon markers
@@ -162,21 +119,6 @@ body::after {
     background-position-x: -14px;
   }
 }
-@keyframes seadrift-a {
-  to {
-    background-position-x: -280px;
-  }
-}
-@keyframes seadrift-b {
-  to {
-    background-position-x: 340px;
-  }
-}
-@keyframes seadrift-c {
-  to {
-    background-position-x: -420px;
-  }
-}
 /* Bars draw themselves in. Deliberately NO fill-mode: if animations never
    run (projector, hidden tab), the bar simply shows at full width — data is
    never hidden behind an animation that might not fire. */
@@ -213,25 +155,6 @@ body::after {
   transform-box: fill-box;
   transform-origin: center;
   animation: swim 3.8s ease-in-out infinite;
-}
-
-/* Schools crossing the foot of the page, upstream of the drifting swell. */
-@keyframes schoolrun {
-  to {
-    background-position-x: 620px;
-  }
-}
-.fish-drift {
-  position: fixed;
-  inset: auto 0 26px 0;
-  height: 90px;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.6;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='620' height='90' viewBox='0 0 620 90' fill='%231E5F7A'%3E%3Cg opacity='0.35'%3E%3Cpath d='M40 30 C43 26 48 25.5 52 28.8 L58 26 C57 27.3 56.5 28.6 56.5 30 C56.5 31.4 57 32.7 58 34 L52 31.2 C48 34.5 43 34 40 30 Z'/%3E%3Cpath d='M70 44 C73 40 78 39.5 82 42.8 L88 40 C87 41.3 86.5 42.6 86.5 44 C86.5 45.4 87 46.7 88 48 L82 45.2 C78 48.5 73 48 70 44 Z'/%3E%3Cpath d='M52 60 C55 56 60 55.5 64 58.8 L70 56 C69 57.3 68.5 58.6 68.5 60 C68.5 61.4 69 62.7 70 64 L64 61.2 C60 64.5 55 64 52 60 Z'/%3E%3C/g%3E%3Cg opacity='0.22' transform='translate(330 12)'%3E%3Cpath d='M0 18 C4 13 10 12.5 15 16.5 L23 13 C21.7 14.7 21 16.3 21 18 C21 19.7 21.7 21.3 23 23 L15 19.5 C10 23.5 4 23 0 18 Z'/%3E%3Cpath d='M38 34 C42 29 48 28.5 53 32.5 L61 29 C59.7 30.7 59 32.3 59 34 C59 35.7 59.7 37.3 61 39 L53 35.5 C48 39.5 42 39 38 34 Z'/%3E%3C/g%3E%3C/svg%3E");
-  background-repeat: repeat-x;
-  background-size: 620px 90px;
-  animation: schoolrun 46s linear infinite;
 }
 
 /* ------------------------------------------------------------------
@@ -325,45 +248,6 @@ body::after {
   transform-box: fill-box;
   transform-origin: center;
   animation: ping2 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-
-/* ------------------------------------------------------------------
-   The sea itself: three translucent swell layers drifting at their own
-   speeds along the foot of every screen. Fixed, behind all content.
-   ------------------------------------------------------------------ */
-.sea-drift {
-  position: fixed;
-  inset: auto 0 0 0;
-  height: 150px;
-  z-index: -1;
-  pointer-events: none;
-}
-.sea-drift,
-.sea-drift::before,
-.sea-drift::after {
-  background-repeat: repeat-x;
-  background-position: bottom left;
-}
-.sea-drift {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='70' viewBox='0 0 280 70'%3E%3Cpath d='M0 34 Q35 14 70 34 T140 34 T210 34 T280 34 L280 70 L0 70 Z' fill='%232A7391' fill-opacity='0.10'/%3E%3C/svg%3E");
-  background-size: 280px 70px;
-  animation: seadrift-a 13s linear infinite;
-}
-.sea-drift::before,
-.sea-drift::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-}
-.sea-drift::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='84' viewBox='0 0 340 84'%3E%3Cpath d='M0 40 Q42 18 85 40 T170 40 T255 40 T340 40 L340 84 L0 84 Z' fill='%232A7391' fill-opacity='0.07'/%3E%3C/svg%3E");
-  background-size: 340px 84px;
-  animation: seadrift-b 21s linear infinite;
-}
-.sea-drift::after {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='100' viewBox='0 0 420 100'%3E%3Cpath d='M0 46 Q52 24 105 46 T210 46 T315 46 T420 46 L420 100 L0 100 Z' fill='%231E5F7A' fill-opacity='0.05'/%3E%3C/svg%3E");
-  background-size: 420px 100px;
-  animation: seadrift-c 31s linear infinite;
 }
 
 @layer components {

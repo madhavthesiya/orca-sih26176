@@ -322,8 +322,6 @@ export default function Landing({
 
   return (
     <div className="mx-auto flex min-h-full max-w-[1240px] flex-col px-5 py-5">
-      <div className="sea-drift" aria-hidden />
-      <div className="fish-drift" aria-hidden />
 
       {/* top strip */}
       <Reveal>

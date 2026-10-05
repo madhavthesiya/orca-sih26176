@@ -301,7 +301,6 @@ export default function MobileApp() {
   return (
     <div className="flex min-h-full flex-col">
       <ChartDefs />
-      <div className="sea-drift" aria-hidden />
       {debugInfo && (
         <pre className="fixed left-0 top-0 z-[999] max-w-[300px] whitespace-pre-wrap bg-black p-1 text-[10px] leading-tight text-white">
           {debugInfo}

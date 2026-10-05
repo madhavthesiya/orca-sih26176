@@ -379,8 +379,6 @@ export default function App() {
   return (
     <div className="mx-auto flex min-h-full max-w-[1580px] flex-col gap-4 p-4 lg:p-6">
       <ChartDefs />
-      <div className="sea-drift" aria-hidden />
-      <div className="fish-drift" aria-hidden />
 
       {/* ---------------- title block, drafted like a chart's cartouche ---------------- */}
       <header className="panel rule-double">
