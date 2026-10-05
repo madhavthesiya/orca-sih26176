@@ -289,95 +289,65 @@ body {
   }
 
   /* ------------------------------------------------ controls */
+  /* Primary action is buoy yellow — the one thing on screen you can't miss. */
   .btn-ink {
-    @apply inline-flex items-center gap-2 rounded-[2px] bg-ink-900 px-4 py-2 font-mono text-[11px] font-bold uppercase tracking-[0.12em] text-paper-50;
-    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    @apply inline-flex items-center gap-2 rounded-[10px] px-4 py-2 font-sans text-[14px] font-bold text-ink-900;
+    background: var(--flag);
+    box-shadow: inset 0 -2px 0 rgba(11, 42, 74, 0.18);
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
   }
   .btn-ink:hover:not(:disabled) {
-    @apply bg-ink-700;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 14px -6px rgba(18, 33, 45, 0.5);
+    background: #ffcf47;
   }
   .btn-ink:active {
-    transform: translateY(1px);
-    box-shadow: none;
+    box-shadow: inset 0 2px 0 rgba(11, 42, 74, 0.18);
   }
   .btn-line {
-    @apply inline-flex items-center gap-2 rounded-[2px] border px-3.5 py-2 font-mono text-[11px] font-bold uppercase tracking-[0.1em] text-ink-700;
-    border-color: var(--rule-strong);
-    background: transparent;
-    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease,
-      transform 0.2s ease, box-shadow 0.2s ease;
+    @apply inline-flex items-center gap-2 rounded-[10px] border-[1.5px] bg-paper-50 px-3.5 py-2 font-sans text-[14px] font-bold text-ink-900;
+    border-color: var(--ink);
+    transition: background-color 0.15s ease, color 0.15s ease;
   }
   .btn-line:hover:not(:disabled) {
     @apply bg-ink-900 text-paper-50;
-    border-color: #12212d;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 14px -6px rgba(18, 33, 45, 0.45);
-  }
-  .btn-line:active {
-    transform: translateY(1px);
-    box-shadow: none;
   }
   .btn-square {
-    @apply grid h-9 w-9 shrink-0 place-items-center rounded-[2px] border text-ink-700 transition;
-    border-color: var(--rule-strong);
+    @apply grid h-9 w-9 shrink-0 place-items-center rounded-[10px] border-[1.5px] bg-paper-50 text-ink-900 transition;
+    border-color: var(--rule);
   }
   .btn-square:hover:not(:disabled) {
-    @apply bg-ink-900 text-paper-50;
-    border-color: #12212d;
+    border-color: var(--ink);
   }
 
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-[2px] border bg-paper-50 px-2.5 py-1.5 text-[12px] font-medium text-ink-700;
+    @apply inline-flex items-center gap-1.5 rounded-full border bg-paper-50 px-3 py-1.5 text-[13px] font-semibold text-ink-800;
     border-color: var(--rule);
-    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease,
-      transform 0.2s ease;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
   }
   .chip:hover:not(:disabled) {
-    @apply bg-ink-900 text-paper-50;
-    border-color: #12212d;
-    transform: translateY(-1px);
+    @apply bg-chart-100;
+    border-color: var(--chart-teal);
   }
 
-  /* Folio tabs: the underline draws itself from the left; hovering an
-     inactive tab previews it in chart teal. */
+  /* Segmented tabs: the active one is a filled navy pill. */
   .tab {
-    @apply relative px-1 pb-2.5 pt-1 font-mono text-[11.5px] font-bold uppercase tracking-[0.14em] text-ink-300;
-    transition: color 0.2s ease;
-  }
-  .tab::after {
-    content: "";
-    position: absolute;
-    inset: auto 0 -1px 0;
-    height: 2px;
-    background: #12212d;
-    transform: scaleX(0);
-    transform-origin: left center;
-    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.3, 1), background-color 0.2s ease;
+    @apply relative rounded-full px-3.5 py-1.5 font-sans text-[14px] font-bold text-ink-400;
+    transition: background-color 0.15s ease, color 0.15s ease;
   }
   .tab:hover {
-    @apply text-ink-700;
-  }
-  .tab:not(.tab-on):hover::after {
-    transform: scaleX(1);
-    background: #2a7391;
-  }
-  .tab-on {
     @apply text-ink-900;
   }
-  .tab-on::after {
-    transform: scaleX(1);
+  .tab-on,
+  .tab-on:hover {
+    @apply bg-ink-900 text-paper-50;
   }
 
   .field {
-    @apply w-full rounded-[2px] border px-3.5 py-2.5 text-[13.5px] text-ink-800 outline-none transition placeholder:text-ink-300;
+    @apply w-full rounded-[10px] border-[1.5px] bg-paper-50 px-3.5 py-2.5 text-[15px] text-ink-900 outline-none transition placeholder:text-ink-300;
     border-color: var(--rule);
-    background: var(--paper-bright);
   }
   .field:focus {
-    border-color: var(--rule-strong);
-    box-shadow: 0 0 0 1px var(--rule-strong);
+    border-color: var(--chart-teal);
+    box-shadow: 0 0 0 3px rgba(52, 97, 217, 0.18);
     outline: none;
   }
 
