@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 // Self-hosted fonts — the demo must not depend on a font CDN being reachable.
-import "@fontsource-variable/archivo";
-import "@fontsource-variable/fraunces";
-import "@fontsource-variable/fraunces/wght-italic.css";
-import "@fontsource-variable/noto-serif-devanagari";
-import "@fontsource-variable/spline-sans-mono";
+// Display: hull-registration lettering (opsz keeps small headings legible).
+// Body: Atkinson Hyperlegible — built for low vision, holds up in sun glare.
+import "@fontsource-variable/big-shoulders/opsz.css";
+import "@fontsource-variable/atkinson-hyperlegible-next";
+import "@fontsource-variable/jetbrains-mono";
+import "@fontsource-variable/noto-sans-devanagari";
 import App from "./App";
 import MobileApp from "./components/MobileApp";
 import "./index.css";

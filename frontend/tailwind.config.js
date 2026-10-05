@@ -39,19 +39,20 @@ export default {
       },
       fontFamily: {
         display: [
-          '"Fraunces Variable"',
-          '"Noto Serif Devanagari Variable"',
-          "Georgia",
-          "serif",
+          '"Big Shoulders Variable"',
+          '"Noto Sans Devanagari Variable"',
+          '"Nirmala UI"',
+          "Impact",
+          "sans-serif",
         ],
         sans: [
-          '"Archivo Variable"',
-          '"Segoe UI"',
+          '"Atkinson Hyperlegible Next Variable"',
+          '"Noto Sans Devanagari Variable"',
           '"Nirmala UI"',
           "system-ui",
           "sans-serif",
         ],
-        mono: ['"Spline Sans Mono Variable"', '"Nirmala UI"', "Consolas", "monospace"],
+        mono: ['"JetBrains Mono Variable"', '"Nirmala UI"', "Consolas", "monospace"],
       },
       // Transform-only entrances, deliberately: an animation that starts at
       // opacity 0 with fill-mode both leaves content INVISIBLE if animations
