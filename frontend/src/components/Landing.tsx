@@ -586,12 +586,12 @@ export default function Landing({
 
       {/* how it decides — the differentiator */}
       <Reveal delay={880}>
-        <div className="panel mt-5 overflow-hidden">
+        <div className="panel mt-6 overflow-hidden">
           <div className="hd">
             <span className="label">{t.pipelineTitle}</span>
             <button
               onClick={() => onEnter("system")}
-              className="font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-chart-600 underline decoration-dashed underline-offset-4 transition-colors hover:text-ink-900"
+              className="text-[13.5px] font-bold text-chart-600 underline decoration-2 underline-offset-4 transition-colors hover:text-ink-900"
             >
               {t.watchLive}
             </button>
@@ -600,16 +600,20 @@ export default function Landing({
             {t.phases.map((p, i) => (
               <div
                 key={p.t}
-                className={`group relative px-4 py-3.5 transition-colors hover:bg-chart-100/40 ${i > 0 ? "sm:border-l" : ""}`}
+                className={`group relative px-5 py-4 ${i > 0 ? "sm:border-l" : ""}`}
                 style={{ borderColor: "var(--rule-faint)" }}
               >
-                <div className="flex items-baseline gap-2">
-                  <span className="font-display text-[15px] font-bold text-ink-900">{p.t}</span>
+                <div className="flex items-center gap-2.5">
+                  {/* the phases run in order, so they are numbered */}
+                  <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-flag font-display text-[16px] font-black text-ink-900">
+                    {i + 1}
+                  </span>
+                  <span className="font-display text-[22px] font-extrabold leading-none text-ink-900">{p.t}</span>
                   {i === 1 && (
-                    <span className="font-mono text-[9px] font-bold text-chart-700">∥ 5</span>
+                    <span className="rounded-full bg-chart-100 px-2 py-0.5 text-[11.5px] font-bold text-chart-700">∥ 5</span>
                   )}
                 </div>
-                <p className="mt-1 text-[11.5px] italic leading-snug text-ink-500">{p.n}</p>
+                <p className="mt-2 text-[13.5px] leading-snug text-ink-500">{p.n}</p>
                 {i < 3 && (
                   <CourseArrow
                     size={13}
@@ -625,14 +629,14 @@ export default function Landing({
       {/* footer */}
       <Reveal delay={980}>
         <div className="mt-8 flex flex-wrap items-baseline justify-between gap-2 pb-4">
-          <span className="font-mono text-[9.5px] uppercase tracking-[0.14em] text-ink-400">
+          <span className="text-[12.5px] text-ink-400">
             {t.footer}
           </span>
           <a
             href="https://github.com/madhavthesiya/orca-sih26176"
             target="_blank"
             rel="noreferrer"
-            className="font-mono text-[9.5px] uppercase tracking-[0.14em] text-chart-600 transition-colors hover:text-ink-900"
+            className="text-[12.5px] font-bold text-chart-600 transition-colors hover:text-ink-900"
           >
             github.com/madhavthesiya/orca-sih26176
           </a>
