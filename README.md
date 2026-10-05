@@ -3,7 +3,7 @@
 **Team ID 138259 · SagarMitra · SIH 2026 · Problem Statement PS-26176**  
 *Space Technology Theme · Software Category — Marine Fishermen Safety*
 
-🔗 **Live Demo:** [orca-marine-six.vercel.app](https://orca-marine-six.vercel.app/) &nbsp;|&nbsp; 📂 **GitHub:** [madhavthesiya/orca-sih26176](https://github.com/madhavthesiya/orca-sih26176)
+🔗 **Live Demo:** [orca-marine-six.vercel.app](https://orca-marine-six.vercel.app/) &nbsp;|&nbsp; 🎥 **Video Demo:** [YouTube (4 min)](https://youtu.be/lbz6ioSUom4) &nbsp;|&nbsp; 📂 **GitHub:** [madhavthesiya/orca-sih26176](https://github.com/madhavthesiya/orca-sih26176)
 
 ---
 
@@ -11,11 +11,13 @@
 
 ORCA is a real-time marine ecosystem safety platform for Indian coastal fishermen. It uses a **10-agent AI pipeline** to assess sea conditions, detect hazards, and deliver go/no-go safety decisions in English, Hindi, and Gujarati — including voice output.
 
-> **Demo it right now, no API key, no internet needed:**
+> 📺 **Watch the Demo Video:** **https://youtu.be/lbz6ioSUom4**  
+> 🌐 **Try the Live App:** **https://orca-marine-six.vercel.app/**  
+> 
+> **Run locally (no API key, no internet needed):**
 > ```
 > RUN-ORCA.bat
 > ```
-> Or try the live demo: **https://orca-marine-six.vercel.app/**
 > Then open `http://localhost:5173`
 
 ---
