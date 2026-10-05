@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { tripIsOff } from "../today";
-import { kilometres, rupees } from "../units";
+import { kilometres, metres, rupees } from "../units";
 import type { CatchRating, FishingOutlook, Language } from "../types";
 import { FishGlyph, SchoolGlyph, WarnGlyph } from "./glyphs";
 
@@ -409,7 +409,7 @@ export default function FishingPanel({
                   </span>
                   {data.duration.return_reason_wave_m != null && (
                     <span className="font-mono text-[10.5px] text-ink-500">
-                      — {t.returnWhy} {data.duration.return_reason_wave_m} m
+                      — {t.returnWhy} {metres(data.duration.return_reason_wave_m)} m
                     </span>
                   )}
                 </div>
@@ -553,7 +553,7 @@ export default function FishingPanel({
                 <div className="mt-1.5 text-[10.5px] leading-tight text-ink-500">
                   {t.bestAt} {clock12(f.best_hour)}
                 </div>
-                <div className="mt-0.5 font-mono text-[10px] text-ink-400">{f.wave_height_m} m</div>
+                <div className="mt-0.5 font-mono text-[10px] text-ink-400">{metres(f.wave_height_m)} m</div>
                 {f.official_warning && (
                   <div className="mt-1.5 inline-flex items-center gap-1 border border-risk-extreme/60 px-1.5 py-0.5 text-risk-extreme">
                     <WarnGlyph size={10} />

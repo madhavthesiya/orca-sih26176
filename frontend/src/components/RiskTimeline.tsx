@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import * as api from "../api";
 import type { Language, Location, TimelinePoint } from "../types";
 import { RISK_COLOR } from "./RiskDial";
+import { metres } from "../units";
 
 const L: Record<Language, Record<string, string>> = {
   en: {
@@ -195,7 +196,7 @@ export default function RiskTimeline({
             >
               <title>
                 {String(p.hour).padStart(2, "0")}:00 — {p.score}/100 {p.category}
-                {p.wave_height_m != null ? ` · wave ${p.wave_height_m} m` : ""}
+                {p.wave_height_m != null ? ` · wave ${metres(p.wave_height_m)} m` : ""}
                 {p.wind_speed_kmh != null ? ` · wind ${p.wind_speed_kmh} km/h` : ""}
                 {p.warning ? " · official warning" : ""}
               </title>

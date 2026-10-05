@@ -1,5 +1,6 @@
 import type { Language, PFZZone } from "../types";
 import { SchoolGlyph } from "./glyphs";
+import { metres } from "../units";
 
 const L: Record<Language, Record<string, string>> = {
   en: {
@@ -71,7 +72,7 @@ export default function PFZList({
                 </div>
                 <div className="mt-0.5 truncate font-mono text-[10.5px] text-ink-400">
                   SST {z.sst_c ?? "—"}°C · Chl {z.chlorophyll_mg_m3 ?? "—"} mg/m³
-                  {z.wave_height_m != null ? ` · ${z.wave_height_m} m` : ""}
+                  {z.wave_height_m != null ? ` · ${metres(z.wave_height_m)} m` : ""}
                 </div>
               </div>
               <div className="shrink-0 text-right">

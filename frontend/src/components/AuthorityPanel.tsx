@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import * as api from "../api";
 import type { AuthorityDashboard, Language } from "../types";
 import { RISK_COLOR } from "./RiskDial";
+import { metres } from "../units";
 
 const T: Record<Language, Record<string, string>> = {
   en: {
@@ -196,7 +197,7 @@ export default function AuthorityPanel({ language = "en" }: { language?: Languag
                       </div>
                     </td>
                     <td className="px-3 py-2.5 font-mono tabular-nums text-ink-800">
-                      {row.wave_height_m ?? "—"} m
+                      {metres(row.wave_height_m)} m
                     </td>
                     <td className="px-3 py-2.5 font-mono tabular-nums text-ink-800">
                       {row.wind_speed_kmh ?? "—"} km/h
