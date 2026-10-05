@@ -1,8 +1,9 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as api from "../api";
-import type { Language } from "../types";
-import { CourseArrow, FishGlyph, LockGlyph, WarnGlyph } from "./glyphs";
+import type { Language, RiskCategory } from "../types";
+import { CourseArrow, FishGlyph, LockGlyph } from "./glyphs";
 import { PORTS } from "./LocationPicker";
+import { RISK_COLOR } from "./RiskDial";
 
 /** The engine room, in the fisher's three languages. */
 const L10N: Record<Language, Record<string, string>> = {
@@ -170,14 +171,104 @@ const L10N: Record<Language, Record<string, string>> = {
   },
 };
 
+/** Stage names, the law ladder and the weights — the parts the redesign adds. */
+const X: Record<
+  Language,
+  {
+    stages: { title: string; sub: string }[];
+    memoryCaption: string;
+    floorsCaption: string;
+    floors: Record<"severe" | "waveWind" | "fishermen" | "lightning" | "zone", string>;
+    weightsTitle: string;
+    weights: Record<string, string>;
+    lands: string;
+    configLink: string;
+  }
+> = {
+  en: {
+    stages: [
+      { title: "Intake", sub: "what comes in" },
+      { title: "Memory", sub: "read once, answered many times" },
+      { title: "Crew", sub: "who reasons over it" },
+      { title: "The law", sub: "floors that only raise" },
+      { title: "Out", sub: "what it becomes" },
+    ],
+    memoryCaption: "the first answer for a spot, then every answer after it",
+    floorsCaption: "The lowest score each hazard forces, on the 0–100 risk scale",
+    floors: {
+      severe: "Official severe warning",
+      waveWind: "Waves ≥ {m} m or wind ≥ {k} km/h",
+      fishermen: "IMD fishermen warning",
+      lightning: "Lightning",
+      zone: "Inside a restricted zone",
+    },
+    weightsTitle: "How the risk engine weighs a reading, before any floor",
+    weights: {
+      wave: "Waves", cyclone: "Official warnings", wind: "Wind",
+      weather: "Rain & visibility", ocean: "Sea state & current", gis: "Position & zones",
+    },
+    lands: "lands in",
+    configLink: "Open the live config",
+  },
+  hi: {
+    stages: [
+      { title: "आगम", sub: "क्या आता है" },
+      { title: "स्मृति", sub: "एक बार पढ़ो, कई बार जवाब" },
+      { title: "टीम", sub: "कौन तर्क करता है" },
+      { title: "नियम", sub: "जो सिर्फ़ जोखिम बढ़ाते हैं" },
+      { title: "परिणाम", sub: "क्या बनता है" },
+    ],
+    memoryCaption: "किसी जगह का पहला जवाब, फिर उसके बाद का हर जवाब",
+    floorsCaption: "हर ख़तरा 0–100 जोखिम पैमाने पर कम-से-कम कितना स्कोर तय करता है",
+    floors: {
+      severe: "आधिकारिक भीषण चेतावनी",
+      waveWind: "लहर ≥ {m} मी या हवा ≥ {k} किमी/घं",
+      fishermen: "IMD मछुआरा चेतावनी",
+      lightning: "बिजली",
+      zone: "प्रतिबंधित क्षेत्र के भीतर",
+    },
+    weightsTitle: "किसी भी नियम से पहले, रिस्क इंजन हर जानकारी को कितना वज़न देता है",
+    weights: {
+      wave: "लहरें", cyclone: "आधिकारिक चेतावनियाँ", wind: "हवा",
+      weather: "बारिश और दृश्यता", ocean: "समुद्र और धारा", gis: "स्थान और क्षेत्र",
+    },
+    lands: "श्रेणी",
+    configLink: "लाइव कॉन्फ़िग खोलें",
+  },
+  gu: {
+    stages: [
+      { title: "આવક", sub: "શું આવે છે" },
+      { title: "મેમરી", sub: "એક વાર વાંચો, ઘણી વાર જવાબ" },
+      { title: "ટીમ", sub: "કોણ તર્ક કરે છે" },
+      { title: "નિયમો", sub: "જે માત્ર જોખમ વધારે છે" },
+      { title: "પરિણામ", sub: "શું બને છે" },
+    ],
+    memoryCaption: "કોઈ જગ્યાનો પહેલો જવાબ, પછી તે પછીનો દરેક જવાબ",
+    floorsCaption: "દરેક જોખમ 0–100 ના પાયા પર ઓછામાં ઓછો કેટલો સ્કોર નક્કી કરે છે",
+    floors: {
+      severe: "સત્તાવાર આકરી ચેતવણી",
+      waveWind: "મોજાં ≥ {m} મી અથવા પવન ≥ {k} કિમી/કલાક",
+      fishermen: "IMD માછીમાર ચેતવણી",
+      lightning: "વીજળી",
+      zone: "પ્રતિબંધિત ક્ષેત્રમાં",
+    },
+    weightsTitle: "કોઈપણ નિયમ પહેલાં, રિસ્ક એન્જિન દરેક માહિતીને કેટલું વજન આપે છે",
+    weights: {
+      wave: "મોજાં", cyclone: "સત્તાવાર ચેતવણીઓ", wind: "પવન",
+      weather: "વરસાદ અને દૃશ્યતા", ocean: "સમુદ્ર અને પ્રવાહ", gis: "સ્થાન અને ઝોન",
+    },
+    lands: "શ્રેણી",
+    configLink: "લાઇવ કોન્ફિગ ખોલો",
+  },
+};
+
 /**
- * The engine room — the whole machine on one sheet, running.
+ * The engine room, read top to bottom as the pipeline actually runs.
  *
- * Three stories, told in order: what data comes in and what we do with it
- * (the part judges ask about), the crew that reasons over it, and the safety
- * law that no model output can undo. At the bottom, the machine is shown
- * actually running: a live feed cycling through the coast, port by port,
- * with provenance on every reading.
+ * It opens on the machine working — a navy band reading the coast port by
+ * port — then walks the five stages on one numbered spine: intake, memory,
+ * the crew, the safety law and what comes out. The law and the weights are
+ * drawn from GET /api/config, so the page can never drift from the engine.
  */
 
 type FeedRow = {
@@ -193,11 +284,42 @@ type FeedRow = {
   at: string;
 };
 
+type EngineConfig = {
+  risk_weights: Record<string, number>;
+  risk_thresholds: Record<string, number>;
+  deterministic_overrides: Record<string, number>;
+};
+
+/** What the engine ships with — shown if /api/config cannot be reached. */
+const DEFAULT_CONFIG: EngineConfig = {
+  risk_weights: { wave: 0.25, cyclone: 0.25, wind: 0.2, weather: 0.1, ocean: 0.1, gis: 0.1 },
+  risk_thresholds: { LOW: 25, MODERATE: 50, HIGH: 79, EXTREME: 100 },
+  deterministic_overrides: {
+    severe_warning_floor: 92, fishermen_warning_floor: 70, wave_danger_m: 4,
+    wave_danger_floor: 85, wind_danger_kmh: 62, wind_danger_floor: 85, restricted_zone_floor: 60,
+  },
+};
+/** Lightning's floor lives in the engine code, not the config. */
+const LIGHTNING_FLOOR = 65;
+
 const POLL_MS = 7000;
 
 function fmt(m?: api.Measurement | null): string {
   if (!m || m.value == null) return "—";
   return `${m.value} ${m.unit}`;
+}
+
+/** "0.89 m" → ["0.89", "m"], so the number and its unit can be set apart. */
+function split(reading: string): [string, string] {
+  const i = reading.indexOf(" ");
+  return i < 0 ? [reading, ""] : [reading.slice(0, i), reading.slice(i + 1)];
+}
+
+function categoryOf(score: number, th: Record<string, number>): RiskCategory {
+  if (score <= th.LOW) return "LOW";
+  if (score <= th.MODERATE) return "MODERATE";
+  if (score <= th.HIGH) return "HIGH";
+  return "EXTREME";
 }
 
 export default function SystemPanel({
@@ -208,10 +330,16 @@ export default function SystemPanel({
   language?: Language;
 }) {
   const t = L10N[language] ?? L10N.en;
+  const x = X[language] ?? X.en;
   const [rows, setRows] = useState<FeedRow[]>([]);
   const [tick, setTick] = useState(0);
   const [scanning, setScanning] = useState(true);
+  const [cfg, setCfg] = useState<EngineConfig>(DEFAULT_CONFIG);
   const portIdx = useRef(0);
+
+  useEffect(() => {
+    api.config().then(setCfg).catch(() => {});
+  }, []);
 
   // Cycle the coastline: one port per poll, newest reading on top.
   useEffect(() => {
@@ -235,7 +363,7 @@ export default function SystemPanel({
           at: new Date().toLocaleTimeString("en-IN", { hour12: false }),
         };
         setRows((r) => [row, ...r].slice(0, 6));
-        setTick((t) => t + 1);
+        setTick((n) => n + 1);
         setScanning(true);
       } catch {
         if (alive) setScanning(false);
@@ -277,11 +405,11 @@ export default function SystemPanel({
   const pText = providerText[language] ?? providerText.en;
 
   const providers = [
-    { name: "Open-Meteo Marine", status: "LIVE", color: "#0F8A5C", live: true, ...pText[0] },
-    { name: "Open-Meteo Forecast", status: "LIVE", color: "#0F8A5C", live: true, ...pText[1] },
-    { name: "INCOIS · IMD · MOSDAC", status: "INTERFACE READY", color: "#A86B00", live: false, ...pText[2] },
-    { name: "OBIS · Map of Life", status: "BUNDLED SNAPSHOT", color: "#2148BF", live: false, ...pText[3] },
-    { name: "Demo store", status: "ALWAYS ON", color: "#3F5A78", live: false, ...pText[4] },
+    { name: "Open-Meteo Marine", status: "Live", color: "#0F8A5C", live: true, ...pText[0] },
+    { name: "Open-Meteo Forecast", status: "Live", color: "#0F8A5C", live: true, ...pText[1] },
+    { name: "INCOIS · IMD · MOSDAC", status: "Interface ready", color: "#A86B00", live: false, ...pText[2] },
+    { name: "OBIS · Map of Life", status: "Bundled snapshot", color: "#2148BF", live: false, ...pText[3] },
+    { name: "Demo store", status: "Always on", color: "#3F5A78", live: false, ...pText[4] },
   ];
 
   const crewText: Record<Language, { phase: string; agents: string[]; note: string }[]> = {
@@ -306,196 +434,230 @@ export default function SystemPanel({
   };
   const crew = crewText[language] ?? crewText.en;
 
-  return (
-    <div className="space-y-4">
-      {/* ---------------- intro ---------------- */}
-      <div className="panel rule-double overflow-hidden">
-        <div className="hd">
-          <span className="label">{t.engineRoom}</span>
-          <span className="hidden font-mono text-[12px] text-chart-600 sm:block">
-            {t.configNote}
+  // ---- the law, from the live config: highest floor first -------------------
+  const o = cfg.deterministic_overrides;
+  const th = cfg.risk_thresholds;
+  const floors = [
+    { label: x.floors.severe, value: o.severe_warning_floor },
+    {
+      label: x.floors.waveWind.replace("{m}", String(o.wave_danger_m)).replace("{k}", String(o.wind_danger_kmh)),
+      value: Math.max(o.wave_danger_floor, o.wind_danger_floor),
+    },
+    { label: x.floors.fishermen, value: o.fishermen_warning_floor },
+    { label: x.floors.lightning, value: LIGHTNING_FLOOR },
+    { label: x.floors.zone, value: o.restricted_zone_floor },
+  ].sort((a, b) => b.value - a.value);
+  const weights = Object.entries(cfg.risk_weights).sort((a, b) => b[1] - a[1]);
+  const maxWeight = Math.max(...weights.map(([, w]) => w), 0.01);
+
+  const stageBody = [
+    /* 1 · intake — the providers as a status list */
+    <ul key="intake" className="divide-y divide-paper-150 rounded-[12px] border border-paper-200">
+      {providers.map((p) => (
+        <li key={p.name} className="grid gap-x-4 gap-y-1 px-4 py-3 sm:grid-cols-[minmax(180px,220px)_1fr_auto] sm:items-center">
+          <span className="flex items-center gap-2.5">
+            <span
+              className={`pulse-dot ${p.live ? "" : "pulse-dot--still"}`}
+              style={{ background: p.color, color: p.color }}
+            />
+            <span className="font-display text-[19px] font-extrabold leading-tight text-ink-900">{p.name}</span>
           </span>
-        </div>
-        <div className="px-5 py-4">
-          <h2 className="font-display text-[24px] font-bold leading-snug text-ink-900">
-            {t.title}
-          </h2>
-          <p className="mt-1.5 max-w-[860px] text-[13.5px] leading-relaxed text-ink-500">
-            {t.intro}
-          </p>
-        </div>
-      </div>
-
-      {/* ---------------- the data intake ---------------- */}
-      <div className="panel overflow-hidden">
-        <div className="hd">
-          <span className="label">{t.s1}</span>
-        </div>
-        <div className="grid gap-3 px-4 py-4 sm:grid-cols-2 lg:grid-cols-5">
-          {providers.map((p) => (
-            <div
-              key={p.name}
-              className="lift rounded-[6px] border bg-paper-100 px-3.5 py-3"
-              style={{ borderColor: "var(--rule)" }}
-            >
-              <div className="flex items-center gap-2">
-                <span
-                  className={`pulse-dot ${p.live ? "" : "pulse-dot--still"}`}
-                  style={{ background: p.color, color: p.color }}
-                />
-                <span className="font-display text-[14px] font-bold text-ink-900">{p.name}</span>
-              </div>
-              <div
-                className="mt-1.5 inline-block border px-1.5 py-px font-mono text-[11px] font-bold"
-                style={{ color: p.color, borderColor: p.color }}
-              >
-                {p.status}
-              </div>
-              <p className="mt-2 text-[11.5px] leading-relaxed text-ink-700">{p.gives}</p>
-              <p className="mt-1 text-[12px] italic leading-snug text-ink-400">{p.note}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* the flow into the cache */}
-        <div className="grid items-center gap-2 px-4 pb-4 lg:grid-cols-[1fr_auto_1.2fr_auto_1fr]">
-          <div className="text-center text-[12px] text-ink-500 font-bold">
-            {t.oneFetch}
-            <br />
-            <span className="text-ink-400">{t.perProvider}</span>
-          </div>
-          <div className="signal-line hidden w-24 lg:block">
-            <i />
-            <i />
-            <i />
-          </div>
-          <div
-            className="rounded-[6px] border-2 border-chart-600 bg-chart-100/40 px-4 py-3 text-center"
+          <span>
+            <span className="block text-[14px] leading-snug text-ink-800">{p.gives}</span>
+            <span className="block text-[12.5px] leading-snug text-ink-400">{p.note}</span>
+          </span>
+          <span
+            className="justify-self-start rounded-full px-2.5 py-0.5 text-[12px] font-bold sm:justify-self-end"
+            style={{ color: p.color, background: `${p.color}14`, boxShadow: `inset 0 0 0 1.5px ${p.color}` }}
           >
-            <div className="font-display text-[15px] font-bold text-ink-900">
-              {t.cacheTitle}
-            </div>
-            <p className="mt-1 text-[11.5px] leading-relaxed text-ink-700">{t.cacheBody}</p>
-            <p className="mt-1 text-[11.5px] text-chart-700 font-bold">
-              {t.cacheMeta}
-            </p>
-          </div>
-          <div className="signal-line hidden w-24 lg:block">
-            <i />
-            <i />
-            <i />
-          </div>
-          <div className="text-center text-[12px] text-ink-500 font-bold">
-            {t.everyAgent}
-            <br />
-            <span className="text-ink-400">{t.fromMemory}</span>
-          </div>
-        </div>
+            {p.status}
+          </span>
+        </li>
+      ))}
+    </ul>,
 
-        <p
-          className="border-t px-4 py-2.5 text-[11px] italic leading-relaxed text-ink-500"
-          style={{ borderColor: "var(--rule-faint)" }}
-        >
-          {t.degrade}
-        </p>
+    /* 2 · memory — one number says it */
+    <div key="memory" className="grid gap-5 lg:grid-cols-[auto_1fr] lg:items-center lg:gap-8">
+      <div>
+        <div className="font-display text-[56px] font-black leading-none tabular-nums text-ink-900">
+          32 s <span className="text-chart-500">→</span> 0.02 s
+        </div>
+        <div className="mt-1.5 text-[13px] font-bold text-ink-500">{x.memoryCaption}</div>
+      </div>
+      <div>
+        <div className="font-display text-[22px] font-extrabold text-ink-900">{t.cacheTitle}</div>
+        <p className="mt-1 max-w-[640px] text-[14px] leading-relaxed text-ink-700">{t.cacheBody}</p>
+        <div className="mt-3 flex flex-wrap items-center gap-2 text-[12.5px] font-bold text-ink-700">
+          <span className="rounded-full bg-paper-100 px-3 py-1">{t.oneFetch} · {t.perProvider}</span>
+          <CourseArrow size={12} className="text-ink-300" />
+          <span className="rounded-full bg-chart-100 px-3 py-1 text-chart-700">{t.cacheTitle}</span>
+          <CourseArrow size={12} className="text-ink-300" />
+          <span className="rounded-full bg-paper-100 px-3 py-1">{t.everyAgent} · {t.fromMemory}</span>
+        </div>
+        <p className="mt-3 max-w-[640px] text-[13px] leading-relaxed text-ink-500">{t.degrade}</p>
+      </div>
+    </div>,
+
+    /* 3 · crew — four phases, then how the engine weighs what they bring */
+    <div key="crew" className="space-y-5">
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {crew.map((c, i) => (
+          <div key={c.phase} className="rounded-[12px] bg-paper-100 px-4 py-3.5">
+            <div className="flex items-baseline justify-between gap-2">
+              <span className="font-display text-[22px] font-extrabold leading-none text-ink-900">{c.phase}</span>
+              {i === 1 && (
+                <span className="rounded-full bg-chart-100 px-2 py-0.5 text-[11.5px] font-bold text-chart-700">
+                  ∥ {c.agents.length}
+                </span>
+              )}
+            </div>
+            <div className="mt-2.5 flex flex-wrap gap-1.5">
+              {c.agents.map((a) => (
+                <span key={a} className="rounded-[7px] bg-paper-50 px-2 py-1 text-[12.5px] font-bold text-ink-800 shadow-[inset_0_0_0_1px_var(--rule)]">
+                  {a}
+                </span>
+              ))}
+            </div>
+            <p className="mt-2.5 text-[12.5px] leading-snug text-ink-500">{c.note}</p>
+          </div>
+        ))}
       </div>
 
-      {/* ---------------- the crew ---------------- */}
-      <div className="panel overflow-hidden">
-        <div className="hd">
-          <span className="label">{t.s2}</span>
-          <span className="font-mono text-[12px] text-ink-400">{t.s2note}</span>
-        </div>
-        <div className="grid gap-0 px-4 py-4 lg:grid-cols-[1fr_auto_1.6fr_auto_1.2fr_auto_1fr]">
-          {crew.map((c, i) => (
-            <Fragment key={c.phase}>
-              {i > 0 && (
-                <div className="signal-line mx-1 hidden w-14 self-center lg:block">
-                  <i />
-                  <i />
-                  <i />
-                </div>
-              )}
-              <div className="py-2">
-                <div className="flex items-baseline gap-2">
-                  <span className="font-display text-[16px] font-bold text-ink-900">{c.phase}</span>
-                  {c.agents.length > 1 && i === 1 && (
-                    <span className="font-mono text-[11.5px] font-bold text-chart-700">
-                      ∥ {c.agents.length} CONCURRENT
-                    </span>
-                  )}
-                </div>
-                <div className="mt-2 flex flex-wrap gap-1.5">
-                  {c.agents.map((a, j) => (
-                    <span
-                      key={a}
-                      className="flex items-center gap-1.5 rounded-[6px] border bg-paper-100 px-2 py-1 font-mono text-[12px] font-semibold text-ink-800"
-                      style={{ borderColor: "var(--rule)" }}
-                    >
-                      <span
-                        className="pulse-dot !h-[6px] !w-[6px]"
-                        style={{
-                          background: "#3461D9",
-                          color: "#3461D9",
-                          animationDelay: `${j * 0.3}s`,
-                        }}
-                      />
-                      {a}
-                    </span>
-                  ))}
-                </div>
-                <p className="mt-2 text-[11px] italic leading-snug text-ink-500">{c.note}</p>
-              </div>
-            </Fragment>
+      {/* weights: one series, so one hue; each bar labelled directly */}
+      <figure>
+        <figcaption className="text-[13.5px] font-bold text-ink-900">{x.weightsTitle}</figcaption>
+        <div className="mt-2.5 space-y-2">
+          {weights.map(([k, w]) => (
+            <div
+              key={k}
+              className="grid grid-cols-[minmax(130px,190px)_1fr_44px] items-center gap-3"
+              title={`${x.weights[k] ?? k}: ${Math.round(w * 100)}%`}
+            >
+              <span className="truncate text-[13px] text-ink-700">{x.weights[k] ?? k}</span>
+              <span className="h-2 rounded-r-[4px] bg-paper-150">
+                <span
+                  className="grow-x block h-full rounded-r-[4px] bg-chart-500"
+                  style={{ width: `${(w / maxWeight) * 100}%` }}
+                />
+              </span>
+              <span className="text-right text-[13px] font-bold tabular-nums text-ink-900">{Math.round(w * 100)}%</span>
+            </div>
           ))}
         </div>
-      </div>
+      </figure>
+    </div>,
 
-      {/* ---------------- the safety law ---------------- */}
-      <div className="panel hatch-danger overflow-hidden border-risk-extreme/50">
-        <div className="hd border-risk-extreme/25">
-          <span className="label flex items-center gap-2 !text-risk-extreme">
-            <WarnGlyph size={13} /> {t.s3}
+    /* 4 · the law — every floor on the 0–100 scale, category written beside it */
+    <figure key="law">
+      <figcaption className="flex items-start gap-2 text-[13.5px] font-bold text-ink-900">
+        <LockGlyph size={14} className="mt-0.5 shrink-0 text-risk-extreme" />
+        {x.floorsCaption}
+      </figcaption>
+      <div className="mt-3 space-y-2.5">
+        {floors.map((f) => {
+          const cat = categoryOf(f.value, th);
+          return (
+            <div
+              key={f.label}
+              className="grid grid-cols-[minmax(150px,260px)_1fr_150px] items-center gap-3"
+              title={`${f.label}: ≥ ${f.value} (${cat})`}
+            >
+              <span className="text-[13.5px] text-ink-800">{f.label}</span>
+              <span className="relative h-2.5 rounded-r-[4px] bg-paper-150">
+                {/* category boundaries, recessive */}
+                {[th.LOW, th.MODERATE, th.HIGH].map((b) => (
+                  <span key={b} aria-hidden className="absolute -top-1 h-[18px] w-px bg-ink-300/50" style={{ left: `${b}%` }} />
+                ))}
+                <span
+                  className="grow-x absolute inset-y-0 left-0 rounded-r-[4px]"
+                  style={{ width: `${f.value}%`, background: RISK_COLOR[cat] }}
+                />
+              </span>
+              <span className="flex items-baseline gap-2 whitespace-nowrap">
+                <span className="font-display text-[24px] font-black leading-none tabular-nums text-ink-900">{f.value}</span>
+                <span className="text-[11.5px] font-bold text-ink-500">
+                  {x.lands} {cat}
+                </span>
+              </span>
+            </div>
+          );
+        })}
+        {/* the scale itself, so the boundaries read as numbers */}
+        <div className="grid grid-cols-[minmax(150px,260px)_1fr_150px] gap-3">
+          <span />
+          <span className="relative h-4 text-[11px] font-bold tabular-nums text-ink-400">
+            {[0, th.LOW, th.MODERATE, th.HIGH, 100].map((b) => (
+              <span key={b} className="absolute -translate-x-1/2" style={{ left: `${b}%` }}>
+                {b}
+              </span>
+            ))}
           </span>
-        </div>
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 px-5 py-4">
-          <span className="stamp text-[12px] text-risk-extreme">{t.stamp}</span>
-          <div className="space-y-1 font-mono text-[11px] text-ink-800">
-            <div>{t.law1}</div>
-            <div>{t.law2}</div>
-            <div>{t.law3}</div>
-          </div>
-          <p className="max-w-[380px] text-[11.5px] italic leading-relaxed text-ink-600">
-            <LockGlyph size={12} className="mr-1 inline text-risk-extreme" />
-            {t.lawNote}
-          </p>
+          <span />
         </div>
       </div>
+      <p className="mt-3 max-w-[720px] text-[13.5px] leading-relaxed text-ink-700">{t.lawNote}</p>
+    </figure>,
 
-      {/* ---------------- the live feed ---------------- */}
-      <div className="panel rule-double overflow-hidden">
-        <div className="hd">
-          <span className="label flex items-center gap-2">
+    /* 5 · out */
+    <div key="out" className="grid gap-3 sm:grid-cols-3">
+      {[
+        { h: t.outVerdict, d: t.outVerdictD },
+        { h: t.outPlan, d: t.outPlanD },
+        { h: t.outLedger, d: t.outLedgerD },
+      ].map((o2) => (
+        <div key={o2.h} className="rounded-[12px] border-[1.5px] border-ink-900 px-4 py-3.5">
+          <div className="font-display text-[26px] font-extrabold leading-none text-ink-900">{o2.h}</div>
+          <p className="mt-2 text-[13.5px] leading-relaxed text-ink-700">{o2.d}</p>
+        </div>
+      ))}
+    </div>,
+  ];
+
+  return (
+    <div className="space-y-5">
+      {/* ---------------- masthead ---------------- */}
+      <header className="panel px-6 py-6 lg:px-8 lg:py-7">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <span className="label">{t.engineRoom}</span>
+          <a
+            href={api.apiUrl("/config")}
+            target="_blank"
+            rel="noreferrer"
+            title={t.configNote}
+            className="text-[13px] font-bold text-chart-600 underline decoration-2 underline-offset-4 hover:text-ink-900"
+          >
+            {x.configLink}
+          </a>
+        </div>
+        <h2 className="mt-2 font-display text-[clamp(40px,4.6vw,64px)] font-black leading-[0.95] text-ink-900">
+          {t.title}
+        </h2>
+        <div className="wave-rule mt-4 max-w-[440px]" />
+        <p className="mt-4 max-w-[760px] text-[15px] leading-relaxed text-ink-500">{t.intro}</p>
+      </header>
+
+      {/* ---------------- the machine, running ---------------- */}
+      <section className="overflow-hidden rounded-[14px] bg-ink-900 text-paper-50" aria-live="polite">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-6 pt-5">
+          <span className="flex items-center gap-2.5 text-[13px] font-bold text-ink-300">
             <span
               className={`pulse-dot ${scanning ? "" : "pulse-dot--still"}`}
-              style={{ background: scanning ? "#0F8A5C" : "#C81E36", color: scanning ? "#0F8A5C" : "#C81E36" }}
+              style={{ background: scanning ? "#3DDC97" : "#FF6B7A", color: scanning ? "#3DDC97" : "#FF6B7A" }}
             />
             {t.reading}
           </span>
-          <span className="font-mono text-[12px] tabular-nums text-ink-400">
+          <span className="text-[12.5px] text-ink-300">
             {t.onePort} {POLL_MS / 1000} s · {mode} {t.flipNote}
           </span>
         </div>
 
         {latest ? (
-          <div key={tick} className="popin grid grid-cols-2 gap-0 border-b sm:grid-cols-6" style={{ borderColor: "var(--rule-faint)" }}>
-            <div className="col-span-2 px-4 py-3">
-              <div className="label !text-[11.5px]">{t.nowReading}</div>
-              <div className="font-display text-[19px] font-bold leading-tight text-ink-900">
-                {latest.port}
-              </div>
-              <div className="font-mono text-[12px] text-ink-400">
-                {latest.state} · {latest.at} IST
+          <div key={tick} className="grid gap-x-6 gap-y-4 px-6 pb-5 pt-3 sm:grid-cols-2 lg:grid-cols-[minmax(220px,1.3fr)_repeat(4,1fr)] lg:items-end">
+            <div>
+              <div className="text-[12.5px] font-bold text-ink-300">{t.nowReading}</div>
+              <div className="popin font-display text-[46px] font-black leading-none text-flag">{latest.port}</div>
+              <div className="mt-1.5 font-mono text-[12px] text-ink-300">
+                {latest.state} · {latest.at} IST · {latest.source}
               </div>
             </div>
             {[
@@ -503,109 +665,88 @@ export default function SystemPanel({
               { k: t.wind, v: latest.wind },
               { k: t.sst, v: latest.sst },
               { k: t.vis, v: latest.vis },
-            ].map((x) => (
-              <div key={x.k} className="border-l px-3 py-3" style={{ borderColor: "var(--rule-faint)" }}>
-                <div className="label truncate !text-[11.5px]">{x.k}</div>
-                <div className="mt-1 font-mono text-[16px] font-bold tabular-nums text-ink-900">
-                  {x.v}
+            ].map((r) => {
+              const [n, u] = split(r.v);
+              return (
+                <div key={r.k}>
+                  <div className="truncate text-[12.5px] font-bold text-ink-300">{r.k}</div>
+                  <div className="mt-1 font-display text-[36px] font-extrabold leading-none tabular-nums">
+                    {n}
+                    <span className="ml-1 font-sans text-[13px] font-bold text-ink-300">{u}</span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
-          <div className="border-b px-4 py-4 text-[13px] italic text-ink-400" style={{ borderColor: "var(--rule-faint)" }}>
-            {scanning ? t.hailing : t.unreachable}
-          </div>
+          <div className="px-6 pb-5 pt-3 text-[14px] text-ink-300">{scanning ? t.hailing : t.unreachable}</div>
         )}
 
         {/* the log */}
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[680px] text-left font-mono text-[11px]">
+        <div className="overflow-x-auto border-t border-paper-50/10">
+          <table className="w-full min-w-[680px] text-left font-mono text-[12px]">
             <thead>
-              <tr className="border-b" style={{ borderColor: "var(--rule)" }}>
-                {[t.hPort, t.wave, t.wind, "SST", t.vis, t.hSource, t.hMode, t.hLatency, t.hAt].map(
-                  (h, i) => (
-                    <th
-                      key={h}
-                      className={`py-2 text-[11px] font-bold text-ink-400 ${
-                        i === 0 ? "pl-4 pr-3" : "px-3"
-                      }`}
-                    >
-                      {h}
-                    </th>
-                  ),
-                )}
+              <tr className="font-sans text-[12px] font-bold text-ink-300">
+                {[t.hPort, t.wave, t.wind, "SST", t.vis, t.hSource, t.hMode, t.hLatency, t.hAt].map((h, i) => (
+                  <th key={h} className={`py-2.5 font-bold ${i === 0 ? "pl-6 pr-3" : "px-3"}`}>
+                    {h}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
               {rows.map((r, i) => (
                 <tr
                   key={`${r.port}-${r.at}`}
-                  className={`border-b last:border-0 ${i === 0 ? "popin bg-chart-100/40" : ""}`}
-                  style={{ borderColor: "var(--rule-faint)", opacity: 1 - i * 0.1 }}
+                  className={`border-t border-paper-50/10 ${i === 0 ? "popin bg-paper-50/[0.06]" : ""}`}
+                  style={{ opacity: 1 - i * 0.12 }}
                 >
-                  <td className="py-2 pl-4 pr-3 font-sans font-bold text-ink-900">{r.port}</td>
-                  <td className="px-3 py-2 tabular-nums text-ink-800">{r.wave}</td>
-                  <td className="px-3 py-2 tabular-nums text-ink-800">{r.wind}</td>
-                  <td className="px-3 py-2 tabular-nums text-ink-800">{r.sst}</td>
-                  <td className="px-3 py-2 tabular-nums text-ink-800">{r.vis}</td>
-                  <td className="px-3 py-2 text-ink-500">{r.source}</td>
+                  <td className="py-2 pl-6 pr-3 font-sans font-bold text-paper-50">{r.port}</td>
+                  <td className="px-3 py-2 tabular-nums text-paper-50/85">{r.wave}</td>
+                  <td className="px-3 py-2 tabular-nums text-paper-50/85">{r.wind}</td>
+                  <td className="px-3 py-2 tabular-nums text-paper-50/85">{r.sst}</td>
+                  <td className="px-3 py-2 tabular-nums text-paper-50/85">{r.vis}</td>
+                  <td className="px-3 py-2 text-ink-300">{r.source}</td>
                   <td className="px-3 py-2">
-                    <span
-                      className="border px-1.5 py-px text-[11px] font-bold"
-                      style={{
-                        color: r.mode === "LIVE" ? "#0F8A5C" : "#A86B00",
-                        borderColor: r.mode === "LIVE" ? "#0F8A5C" : "#A86B00",
-                      }}
-                    >
+                    <span className={`rounded-full px-2 py-0.5 font-sans text-[11.5px] font-bold ${r.mode === "LIVE" ? "bg-[#3DDC97] text-ink-900" : "bg-flag text-ink-900"}`}>
                       {r.mode}
                     </span>
                   </td>
-                  <td className="px-3 py-2 tabular-nums text-ink-500">{r.latency} ms</td>
-                  <td className="px-3 py-2 tabular-nums text-ink-400">{r.at}</td>
+                  <td className="px-3 py-2 tabular-nums text-ink-300">{r.latency} ms</td>
+                  <td className="px-3 py-2 tabular-nums text-ink-300">{r.at}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-
-        <p
-          className="flex items-center gap-2 border-t px-4 py-2.5 text-[11px] italic leading-relaxed text-ink-500"
-          style={{ borderColor: "var(--rule-faint)" }}
-        >
-          <FishGlyph size={16} className="swim shrink-0 text-chart-500" />
+        <p className="flex items-center gap-2 border-t border-paper-50/10 px-6 py-3 text-[12.5px] leading-relaxed text-ink-300">
+          <FishGlyph size={16} className="swim shrink-0 text-flag" />
           {t.feedNote}
         </p>
-      </div>
+      </section>
 
-      {/* ---------------- where it goes ---------------- */}
-      <div className="panel overflow-hidden">
-        <div className="hd">
-          <span className="label">{t.s4}</span>
-        </div>
-        <div className="grid gap-0 sm:grid-cols-3">
-          {[
-            { h: t.outVerdict, d: t.outVerdictD },
-            { h: t.outPlan, d: t.outPlanD },
-            { h: t.outLedger, d: t.outLedgerD },
-          ].map((x, i) => (
-            <div
-              key={x.h}
-              className={`group px-5 py-4 transition-colors hover:bg-chart-100/40 ${i > 0 ? "sm:border-l" : ""}`}
-              style={{ borderColor: "var(--rule-faint)" }}
-            >
-              <div className="flex items-center gap-2">
-                <span className="font-display text-[16px] font-bold text-ink-900">{x.h}</span>
-                <CourseArrow
-                  size={12}
-                  className="text-ink-300 transition-all group-hover:translate-x-0.5 group-hover:text-chart-600"
-                />
+      {/* ---------------- the pipeline, on one numbered spine ---------------- */}
+      <ol className="panel px-5 py-7 lg:px-8">
+        {x.stages.map((st, i) => (
+          <li key={st.title} className="relative grid gap-4 pb-10 last:pb-0 lg:grid-cols-[230px_1fr] lg:gap-10">
+            {i < x.stages.length - 1 && (
+              <span aria-hidden className="absolute bottom-0 left-[19px] top-12 w-[2px] bg-paper-200" />
+            )}
+            <div className="flex items-start gap-4">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-flag font-display text-[20px] font-black text-ink-900">
+                {i + 1}
+              </span>
+              <div>
+                <h3 className={`font-display text-[30px] font-extrabold leading-none ${i === 3 ? "text-risk-extreme" : "text-ink-900"}`}>
+                  {st.title}
+                </h3>
+                <p className="mt-1.5 text-[13.5px] text-ink-500">{st.sub}</p>
               </div>
-              <p className="mt-1.5 text-[12px] leading-relaxed text-ink-600">{x.d}</p>
             </div>
-          ))}
-        </div>
-      </div>
+            <div className="min-w-0 pl-14 lg:pl-0">{stageBody[i]}</div>
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }
