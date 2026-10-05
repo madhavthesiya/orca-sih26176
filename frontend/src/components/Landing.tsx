@@ -550,40 +550,39 @@ export default function Landing({
         </div>
       </Reveal>
 
-      {/* feature cards */}
-      <div className="mt-5 grid gap-4 md:grid-cols-3">
-        {t.cards.map((c, i) => (
-          <Reveal key={cardTabs[i]} delay={520 + i * 110}>
-            <div className="panel rule-double lift group flex h-full flex-col">
-              <div className="hd">
-                <span className="label flex items-center gap-2 transition-colors group-hover:!text-chart-600">
+      {/* three doors in — one board, a row per audience */}
+      <Reveal delay={520}>
+        <div className="panel mt-6 divide-y divide-paper-150 overflow-hidden">
+          {t.cards.map((c, i) => (
+            <div
+              key={cardTabs[i]}
+              className="grid gap-4 px-6 py-5 transition-colors hover:bg-paper-100 md:grid-cols-[minmax(220px,300px)_1fr_auto] md:items-center md:gap-8"
+            >
+              <div>
+                <span className="label flex items-center gap-2">
                   {c.kicker}
                   {i === 0 && <FishGlyph size={15} className="swim text-chart-500" />}
                 </span>
-              </div>
-              <div className="flex-1 px-4 py-4">
-                <h3 className="font-display text-[19px] font-bold leading-snug text-ink-900">
+                <h3 className="mt-1 font-display text-[30px] font-extrabold leading-[1.05] text-ink-900">
                   {c.title}
                 </h3>
-                <ul className="mt-3 space-y-2">
-                  {c.lines.map((l) => (
-                    <li key={l} className="flex gap-2.5 text-[12.5px] leading-relaxed text-ink-700">
-                      <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rotate-45 bg-chart-500/70 transition-transform group-hover:rotate-[135deg] group-hover:bg-chart-500" style={{ transitionDuration: "500ms" }} />
-                      {l}
-                    </li>
-                  ))}
-                </ul>
               </div>
-              <div className="border-t px-4 py-3" style={{ borderColor: "var(--rule-faint)" }}>
-                <button onClick={() => onEnter(cardTabs[i])} className="btn-line group/open w-full justify-center">
-                  {t.openWord}{" "}
-                  <CourseArrow size={12} className="transition-transform group-hover/open:translate-x-1" />
-                </button>
-              </div>
+              <ul className="space-y-1.5">
+                {c.lines.map((l) => (
+                  <li key={l} className="flex gap-2.5 text-[14px] leading-relaxed text-ink-700">
+                    <span className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-chart-500" />
+                    {l}
+                  </li>
+                ))}
+              </ul>
+              <button onClick={() => onEnter(cardTabs[i])} className="btn-line group/open justify-center">
+                {t.openWord}{" "}
+                <CourseArrow size={12} className="transition-transform group-hover/open:translate-x-1" />
+              </button>
             </div>
-          </Reveal>
-        ))}
-      </div>
+          ))}
+        </div>
+      </Reveal>
 
       {/* how it decides — the differentiator */}
       <Reveal delay={880}>
